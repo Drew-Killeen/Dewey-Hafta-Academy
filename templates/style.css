@@ -1,0 +1,47 @@
+body {
+    font-family: Verdana;
+    font-size: 97%;
+}
+
+#header {
+    height: 40px;
+    background-color: #6dabad;
+    width: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+    padding: 10px;
+    color: #e2e2e2;
+    border-bottom: 2px solid #629192;
+    z-index: 1;
+}
+
+#title {
+    font-size: 150%;
+    font-weight: bold;
+    text-decoration: none;
+    color: #e2e2e2;
+    position: absolute;
+    top: 14px;
+}
+
+div#main {
+    position: relative;
+    top: 52px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 85%;
+    border-right: 2px solid #e5e5e5;
+    border-left: 2px solid #e5e5e5;
+    padding: 15px;
+    background-color: whitesmoke;
+    line-height: 1.5;
+}
+
+span#usrHeader {
+    position: absolute;
+    right: 45px;
+    top: 19px;
+}
