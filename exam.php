@@ -7,26 +7,35 @@ $exam = $_GET['exam'];
 $temp = mysql_fetch_assoc(mysql_query("SELECT id,title FROM exams WHERE course='".$course['enrollment']."' AND module='".$exam."'"));
 $examNum = $temp["id"];
 $examTitle = $temp["title"];
+if($_GET['question']) $questionNum = $_GET['question']+1;
+else $questionNum = 1;
 
-        $questions = mysql_query ("SELECT * FROM questions WHERE examNum='".$examNum."' ORDER BY RAND()");
-        if (mysql_num_rows($questions) > 0) 
-        {
-            // output data of each row
-            while($row = mysql_fetch_assoc($questions)) {
-               echo $questions['question'];
-                if($questions['option1']) echo $questions['option1'];
-                if($questions['option2']) echo $questions['option2'];
-                if($questions['option3']) echo $questions['option3'];
-                if($questions['option4']) echo $questions['option4'];
-                if($questions['option5']) echo $questions['option5'];
-            }
-        } else 
-        {
-            echo "0 results";
-        }
+$_SESSION['examData'] = mysql_query ("SELECT * FROM questions WHERE examNum='".$examNum."' ORDER BY RAND()");
 
-$questions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE examNum='.$examNum.'"));
+$_SESSION['msg']['questions'] = "<p>You are about to begin an exam. You have 0 attempts remaining. If there is a time limit, the countdown will begin as soon as your press continue. Blah, blah, blah.</p>";
 
+
+if($_POST['continue'] == 'Continue') {
+    header("Location: exam?exam=".$exam."&question=".$questionNum);
+}
+
+if($_POST['submit'] == 'Submit') {
+    unset($_SESSION['questions']);
+}
+
+if(!$_GET['question']) {
+    $i = 1;
+    // output data of each row
+    while($row = mysql_fetch_assoc($_SESSION['examData'])) {
+        $_SESSION['questions'][$i] = $row['question'];
+        if($row['option1']) $_SESSION['option1'][$i] = $row['option1'];
+        if($row['option2']) $_SESSION['option2'][$i] = $row['option2'];
+        if($row['option3']) $_SESSION['option3'][$i] = $row['option3'];
+        if($row['option4']) $_SESSION['option4'][$i] = $row['option4'];
+        if($row['option5']) $_SESSION['option5'][$i] = $row['option5'];
+        $i++;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +64,23 @@ $questions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE examNu
     ?>
         <!--Authorized-->
         <?php echo "<h2>Module ".$examNum.": ".$examTitle."</h2>"; ?>
-        
-        <p>You are about to begin an exam. You have 0 attempts remaining. If there is a time limit, the countdown will begin as soon as your press continue. Blah, blah, blah.</p>
-        
         <form action="" method="post">
+        <?php
+            if($_GET['question']) {
+            echo "<b>".$_SESSION['questions'][$_GET['question']]."</b><br>
+                <input type='radio' name='option' value='".$_SESSION['option1'][$_GET['question']]."'/><label for='".$_SESSION['option1'][$_GET['question']]."'>".$_SESSION['option1'][$_GET['question']]."</label><br>
+                <input type='radio' name='option' value='".$_SESSION['option2'][$_GET['question']]."'/><label for='".$_SESSION['option2'][$_GET['question']]."'>".$_SESSION['option2'][$_GET['question']]."</label><br>
+                <input type='radio' name='option' value='".$_SESSION['option3'][$_GET['question']]."'/><label for='".$_SESSION['option3'][$_GET['question']]."'>".$_SESSION['option3'][$_GET['question']]."</label><br>
+                <input type='radio' name='option' value='".$_SESSION['option4'][$_GET['question']]."'/><label for='".$_SESSION['option4'][$_GET['question']]."'>".$_SESSION['option4'][$_GET['question']]."</label><br>
+                <input type='radio' name='option' value='".$_SESSION['option5'][$_GET['question']]."'/><label for='".$_SESSION['option5'][$_GET['question']]."'>".$_SESSION['option5'][$_GET['question']]."</label><br>";
+            }
+            else {
+                echo $_SESSION['msg']['questions'];
+            }
+        ?>
+        
             <input type="submit" name="continue" value="Continue" />
+            <input type="submit" name="submit" value="Submit" />
         </form>
         
     <?php
