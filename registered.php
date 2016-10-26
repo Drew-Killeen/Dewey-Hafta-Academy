@@ -145,6 +145,8 @@ if($_POST['submit']=='Submit Sass')
     <a href="main" id="title">Dewey Hafta Academy</a>
 </div>
     
+<?php include_once("templates/menu.php"); ?>
+    
 <div id="main">
     <?php
         if($_SESSION['msg']['update-success'])

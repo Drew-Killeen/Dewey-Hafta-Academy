@@ -20,6 +20,9 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
     
     <?php include_once("templates/login.php"); ?>
 </div>
+    
+<?php include_once("templates/menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php

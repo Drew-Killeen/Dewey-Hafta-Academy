@@ -26,6 +26,9 @@ if($_POST['submit']=='Submit')
     
     <?php include_once("templates/login.php"); ?>
 </div>
+    
+<?php include_once("templates/menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php
@@ -36,7 +39,8 @@ if($_POST['submit']=='Submit')
     <?php
         else:            
     ?>
-        <!--Authorized-->    
+        <!--Authorized-->
+        <h2>Course Enrollment</h2>
         <?php
             $current_data = mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
             if(empty($current_data))

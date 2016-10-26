@@ -17,4 +17,4 @@
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
-<script src="templates/script.js"></script>
+<script src="http://deweyhaftaacademy.x10host.com/templates/script.js"></script>

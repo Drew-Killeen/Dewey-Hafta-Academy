@@ -66,6 +66,8 @@ if($_POST['submit']=='Submit')
     <?php include_once("../templates/login.php"); ?>
 </div>
     
+<?php include_once("../templates/subfolder_menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php
