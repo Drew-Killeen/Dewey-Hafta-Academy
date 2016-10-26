@@ -2,11 +2,19 @@
     
     '../templates/header.php'; 
 
-if($_POST['add']=='Add question')
+if($_POST['add']=='New')
 {   
-    mysql_query("INSERT INTO questions (examNum,question,option1,option2,option3,option4,option5,createby,dt) VALUES ('".$_GET['exam']."', '', '', '', '', '', '', '".$_SESSION['usr']."', NOW())");
+    mysql_query("INSERT INTO questions( examNum, question, option1, option2, option3, option4, option5, createdby ) 
+                VALUES ( ".$_GET['exam'].", '',  '',  '',  '',  '',  '',  '".$_SESSION['usr']."' )");
     header("Location: edit_exam?exam=".$_GET['exam']);
 }
+
+if($_POST['update']=='Update')
+{   
+    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
+    header("Location: edit_exam?exam=".$_GET['exam']."&question=".$_GET['question']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +76,7 @@ if($_POST['add']=='Add question')
                         echo 
                             "<b>Question:</b> ".$row['question']." (<a href='?exam=".$_GET['exam']."&question=".$row['id']."'>edit</a>)<br>";
                     }
-                    echo "<form action='' method='post'><input type='submit' name='add' value='Add question' /></form>";
+                    echo "<form action='' method='post'><input type='submit' name='add' value='New' /></form>";
                 } else 
                 {
                     echo "0 results";
@@ -87,7 +95,7 @@ if($_POST['add']=='Add question')
                     <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
                     <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
                     <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br>
-                    <input type='submit' name='update' value='update' />
+                    <input type='submit' name='update' value='Update' />
                     </form><br>";
             }
             ?>
