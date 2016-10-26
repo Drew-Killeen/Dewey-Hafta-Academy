@@ -3,21 +3,28 @@
 require '../templates/header.php'; 
 require '../templates/functions.php';
 
-if($_POST['approve']=='Approve')
+if($_POST['update']=='Update')
 {
     // If the form has been submitted
+    
+    $userData = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
+    
+    if($userData['privilege'] == 'unapproved') {
     
     $pass = substr(md5($_SERVER['REMOTE_ADDR'].microtime().rand(1,100000)),0,6);
     // Generate a random password
     
-    mysql_query("UPDATE dewey_members SET pass='".md5($pass)."', privilege='student' WHERE id='".$_POST['user']."'");
+    mysql_query("UPDATE dewey_members SET pass='".md5($pass)."', privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
     
-    $email = mysql_fetch_assoc(mysql_query("SELECT email FROM dewey_members WHERE id='".$_POST['user']."'"));
     send_mail('noreply@deweyhaftaacademy.x10host.com',
-              $email['email'],
+              $userData['email'],
               'Registration System - Your Password',
               "Your account has been approved. Your password is ".$pass.". You can now log into your account where you can change your password."
              );
+    } else
+    {
+        mysql_query("UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
+    }
 }
 ?>
 
@@ -54,12 +61,10 @@ if($_POST['approve']=='Approve')
         $unapproved_users = mysql_query("SELECT id,usr FROM dewey_members WHERE privilege='unapproved'");
         if (mysql_num_rows($unapproved_users) > 0) 
         {
-            echo "<form action='' method='post'>";
             // output data of each row
             while($row = mysql_fetch_assoc($unapproved_users)) {
-                echo "<input class='field' type='radio' name='user' value='".$row["id"]."'/><label class='grey' for='".$row["id"]."'>".$row["usr"]."</label>";
+                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
-            echo '<input type="submit" name="approve" value="Approve"/></form>';
         } else 
         {
             echo "0 results";
@@ -130,7 +135,18 @@ if($_POST['approve']=='Approve')
         }
         
             else:
-                echo "<h3>Editing user: ".$_GET['user']."</h3>";
+                $user = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
+                echo 
+                    "<h3><a href='users'>&larr;</a> Editing user: ".$_GET['user']."</h3>
+                    <p>Member since ".$user['dt'].", id # ".$user['id'].". Currently enrolled in ".$user['enrollment'].". Email address: ".$user['email'].".</p>
+                    <form action='' method='post'>
+                        <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label></input><br>
+                        <input type='radio' name='privilege' value='student'><label for='student'>Student</label></input><br>
+                        <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label></input><br>
+                        <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label></input><br>
+                        <input type='radio' name='privilege' value='sysop'><label for='sysop'>Sysop</label></input><br>
+                        <input type='submit' name='update' value='Update' />
+                    </form>";
             endif;
         endif; 
     ?>
