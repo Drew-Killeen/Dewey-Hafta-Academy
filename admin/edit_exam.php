@@ -22,6 +22,8 @@ if($_POST['add']=='Add question')
     <?php include_once("../templates/login.php"); ?>
 </div>
     
+<?php include_once("../templates/subfolder_menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php
@@ -37,7 +39,7 @@ if($_POST['add']=='Add question')
             <?php
             if(!$_GET['exam']) {
                 echo "<h2>Current Exams</h2>";
-                $courses = mysql_query("SELECT course FROM courses");
+                $courses = mysql_query("SELECT course FROM courses ORDER BY course ASC");
                 if (mysql_num_rows($courses) > 0) 
                 {
                     // output data of each row
