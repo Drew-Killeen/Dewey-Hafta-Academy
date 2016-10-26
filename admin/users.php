@@ -34,6 +34,8 @@ if($_POST['approve']=='Approve')
     <?php include_once("../templates/login.php"); ?>
 </div>
     
+<?php include_once("../templates/subfolder_menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php
@@ -43,9 +45,10 @@ if($_POST['approve']=='Approve')
         <p>You do not have sufficient privileges to access this page.</p>
     <?php
         else:
+            echo "<h1>Administrator Control Panel</h1>";
+            if(!$_GET['user']):
     ?>
         <!--Authorized-->
-        <h1>Administrator Control Panel</h1>
         <h3>Unapproved Users</h3>
         <?php
         $unapproved_users = mysql_query("SELECT id,usr FROM dewey_members WHERE privilege='unapproved'");
@@ -54,7 +57,7 @@ if($_POST['approve']=='Approve')
             echo "<form action='' method='post'>";
             // output data of each row
             while($row = mysql_fetch_assoc($unapproved_users)) {
-                echo "<input class='field' type='radio' name='user' value='".$row["id"]."'/><label class='grey' for='".$row["id"]."'>".$row["usr"]."</label><br>";
+                echo "<input class='field' type='radio' name='user' value='".$row["id"]."'/><label class='grey' for='".$row["id"]."'>".$row["usr"]."</label>";
             }
             echo '<input type="submit" name="approve" value="Approve"/></form>';
         } else 
@@ -70,7 +73,7 @@ if($_POST['approve']=='Approve')
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($students)) {
-                echo "<li>".$row['usr']."</li><br>";
+                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -86,7 +89,7 @@ if($_POST['approve']=='Approve')
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($teachers)) {
-                echo "<li>".$row['usr']."</li><br>";
+                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -102,7 +105,7 @@ if($_POST['approve']=='Approve')
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($admins)) {
-                echo "<li>".$row['usr']."</li><br>";
+                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -118,13 +121,17 @@ if($_POST['approve']=='Approve')
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($sysops)) {
-                echo "<li>".$row['usr']."</li><br>";
+                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
         {
             echo "0 results";
         }
+        
+            else:
+                echo "<h3>Editing user: ".$_GET['user']."</h3>";
+            endif;
         endif; 
     ?>
     </div>
