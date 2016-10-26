@@ -53,6 +53,9 @@ if(!$_GET['question']) {
     
     <?php include_once("templates/login.php"); ?>
 </div>
+    
+<?php include_once("templates/menu.php"); ?>
+    
 <div id="main">
     <div class="container">
     <?php
@@ -81,7 +84,7 @@ if(!$_GET['question']) {
         ?>
         
             <input type="submit" name="continue" value="Continue" />
-            <input type="submit" name="submit" value="Submit" />
+            <?php if($_GET['question']) echo '<input type="submit" name="submit" value="Submit" />'; ?>
         </form>
         
     <?php
