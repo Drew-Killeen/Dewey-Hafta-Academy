@@ -16,6 +16,7 @@ $_SESSION['msg']['questions'] = "<p>You are about to begin an exam. You have 0 a
 
 
 if($_POST['continue'] == 'Continue') {
+    $_SESSION['question'.$_GET['question']] = $_POST['option'];
     header("Location: exam?exam=".$exam."&question=".$questionNum);
 }
 

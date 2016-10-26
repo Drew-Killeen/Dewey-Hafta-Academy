@@ -1,4 +1,13 @@
-<?php require '../templates/header.php'; ?>
+<?php require 
+    
+    '../templates/header.php'; 
+
+if($_POST['add']=='Add question')
+{   
+    mysql_query("INSERT INTO questions (examNum,question,option1,option2,option3,option4,option5,createby,dt) VALUES ('".$_GET['exam']."', '', '', '', '', '', '', '".$_SESSION['usr']."', NOW())");
+    header("Location: edit_exam?exam=".$_GET['exam']);
+}
+?>
 
 <!DOCTYPE html>
 <html>
@@ -56,12 +65,12 @@
                     while($row = mysql_fetch_assoc($examQuestions)) {
                         echo 
                             "<form action='' method='post'>
-                            <input type='field' name='question' value='".$row['question']."'/><br>
-                            <input type='field' name='option1' value='".$row['option1']."'/><br>
-                            <input type='field' name='option2' value='".$row['option2']."'/><br>
-                            <input type='field' name='option3' value='".$row['option3']."'/><br>
-                            <input type='field' name='option4' value='".$row['option4']."'/><br>
-                            <input type='field' name='option5' value='".$row['option5']."'/><br>
+                            <b>Question:</b> <input class='editExam' type='field' name='question' value='".$row['question']."'/><br>
+                            <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$row['option1']."'/><br>
+                            <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$row['option2']."'/><br>
+                            <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$row['option3']."'/><br>
+                            <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$row['option4']."'/><br>
+                            <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$row['option5']."'/><br>
                             <input type='submit' name='update' value='update' />
                             </form><br>";
                     }
@@ -71,6 +80,9 @@
                 }
             }
             ?>
+        <form action="" method="post">
+            <input type="submit" name="add" value="Add question" />
+        </form>
         
     <?php
 	   endif;
