@@ -56,35 +56,41 @@ if($_POST['add']=='Add question')
                 {
                     echo "0 results";
                 }
-            } else
+            } else if(!$_GET['question'])
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
-                echo "<h2>Module ".$examName['module'].": ".$examName['title']."</h2>";
-                $examQuestions = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."'");
+                echo "<h2><a href='edit_exam'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
+                $examQuestions = mysql_query("SELECT id,question FROM questions WHERE examNum='".$_GET['exam']."'");
                 if (mysql_num_rows($examQuestions) > 0) 
                 {
                     // output data of each row
                     while($row = mysql_fetch_assoc($examQuestions)) {
                         echo 
-                            "<form action='' method='post'>
-                            <b>Question:</b> <input class='editExam' type='field' name='question' value='".$row['question']."'/><br>
-                            <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$row['option1']."'/><br>
-                            <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$row['option2']."'/><br>
-                            <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$row['option3']."'/><br>
-                            <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$row['option4']."'/><br>
-                            <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$row['option5']."'/><br>
-                            <input type='submit' name='update' value='update' />
-                            </form><br>";
+                            "<b>Question:</b> ".$row['question']." (<a href='?exam=".$_GET['exam']."&question=".$row['id']."'>edit</a>)<br>";
                     }
+                    echo "<form action='' method='post'><input type='submit' name='add' value='Add question' /></form>";
                 } else 
                 {
                     echo "0 results";
                 }
+            } else
+            {
+                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
+                echo "<h2><a href='edit_exam?exam=".$_GET['exam']."'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
+                $examQuestions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id='".$_GET['question']."'"));
+
+                echo 
+                    "<form action='' method='post'>
+                    <b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                    <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/><br>
+                    <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/><br>
+                    <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
+                    <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
+                    <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br>
+                    <input type='submit' name='update' value='update' />
+                    </form><br>";
             }
             ?>
-        <form action="" method="post">
-            <input type="submit" name="add" value="Add question" />
-        </form>
         
     <?php
 	   endif;
