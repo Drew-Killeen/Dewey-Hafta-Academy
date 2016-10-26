@@ -19,7 +19,6 @@ body {
 #title {
     font-size: 150%;
     font-weight: bold;
-    text-decoration: none;
     color: rgb(236, 236, 236);
     position: absolute;
     top: 14px;
@@ -46,7 +45,7 @@ div#main {
 span#usrHeader {
     position: absolute;
     right: 45px;
-    top: 19px;
+    top: 20px;
 }
 
 #usrHeader > a {
