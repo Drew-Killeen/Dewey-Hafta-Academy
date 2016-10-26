@@ -12,28 +12,29 @@ else $questionNum = 1;
 
 $_SESSION['examData'] = mysql_query ("SELECT * FROM questions WHERE examNum='".$examNum."' ORDER BY RAND()");
 
-$_SESSION['msg']['questions'] = "<p>You are about to begin an exam. You have 0 attempts remaining. If there is a time limit, the countdown will begin as soon as your press continue. Blah, blah, blah.</p>";
-
-
 if($_POST['continue'] == 'Continue') {
-    $_SESSION['question'.$_GET['question']] = $_POST['option'];
+    /* When continue button is pressed */
+    $_SESSION['question'][$_GET['question']] = $_POST['option'];
     header("Location: exam?exam=".$exam."&question=".$questionNum);
 }
 
 if($_POST['submit'] == 'Submit') {
-    unset($_SESSION['questions']);
+    /* When exam is submitted */
+    header("Location: grade");
 }
 
 if(!$_GET['question']) {
     $i = 1;
     // output data of each row
     while($row = mysql_fetch_assoc($_SESSION['examData'])) {
+        $_SESSION['options'][$i] = array();
         $_SESSION['questions'][$i] = $row['question'];
-        if($row['option1']) $_SESSION['option1'][$i] = $row['option1'];
-        if($row['option2']) $_SESSION['option2'][$i] = $row['option2'];
-        if($row['option3']) $_SESSION['option3'][$i] = $row['option3'];
-        if($row['option4']) $_SESSION['option4'][$i] = $row['option4'];
-        if($row['option5']) $_SESSION['option5'][$i] = $row['option5'];
+        if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
+        if($row['option2']) array_push($_SESSION['options'][$i], $row['option2']);
+        if($row['option3']) array_push($_SESSION['options'][$i], $row['option3']);
+        if($row['option4']) array_push($_SESSION['options'][$i], $row['option4']);
+        if($row['option5']) array_push($_SESSION['options'][$i], $row['option5']);
+        shuffle($_SESSION['options'][$i]);
         $i++;
     }
 }
@@ -71,15 +72,44 @@ if(!$_GET['question']) {
         <form action="" method="post">
         <?php
             if($_GET['question']) {
-            echo "<b>".$_SESSION['questions'][$_GET['question']]."</b><br>
-                <input type='radio' name='option' value='".$_SESSION['option1'][$_GET['question']]."'/><label for='".$_SESSION['option1'][$_GET['question']]."'>".$_SESSION['option1'][$_GET['question']]."</label><br>
-                <input type='radio' name='option' value='".$_SESSION['option2'][$_GET['question']]."'/><label for='".$_SESSION['option2'][$_GET['question']]."'>".$_SESSION['option2'][$_GET['question']]."</label><br>
-                <input type='radio' name='option' value='".$_SESSION['option3'][$_GET['question']]."'/><label for='".$_SESSION['option3'][$_GET['question']]."'>".$_SESSION['option3'][$_GET['question']]."</label><br>
-                <input type='radio' name='option' value='".$_SESSION['option4'][$_GET['question']]."'/><label for='".$_SESSION['option4'][$_GET['question']]."'>".$_SESSION['option4'][$_GET['question']]."</label><br>
-                <input type='radio' name='option' value='".$_SESSION['option5'][$_GET['question']]."'/><label for='".$_SESSION['option5'][$_GET['question']]."'>".$_SESSION['option5'][$_GET['question']]."</label><br>";
+                echo "<b>".$_SESSION['questions'][$_GET['question']]."</b><br>";
+                if($_SESSION['options'][$_GET['question']][0]) { 
+                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][0]."' "; 
+                    if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][0]) {
+                        echo 'checked';
+                    } 
+                    echo "/><label for='".$_SESSION['options'][$_GET['question']][0]."'>".$_SESSION['options'][$_GET['question']][0]."</label><br>";
+                }
+                if($_SESSION['options'][$_GET['question']][1]) { 
+                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][1]."' "; 
+                    if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][1]) {
+                        echo 'checked';
+                    } 
+                    echo "/><label for='".$_SESSION['options'][$_GET['question']][1]."'>".$_SESSION['options'][$_GET['question']][1]."</label><br>";
+                }
+                if($_SESSION['options'][$_GET['question']][2]) { 
+                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][2]."' "; 
+                    if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][2]) {
+                        echo 'checked';
+                    } 
+                    echo "/><label for='".$_SESSION['options'][$_GET['question']][2]."'>".$_SESSION['options'][$_GET['question']][2]."</label><br>";
+                }
+                if($_SESSION['options'][$_GET['question']][3]) { 
+                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][3]."' "; 
+                    if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][3]) {
+                        echo 'checked';
+                    } echo "/><label for='".$_SESSION['options'][$_GET['question']][3]."'>".$_SESSION['options'][$_GET['question']][3]."</label><br>";
+                }
+                if($_SESSION['options'][$_GET['question']][4]) { 
+                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][4]."' "; 
+                    if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][4]) {
+                        echo 'checked';
+                    } 
+                    echo "/><label for='".$_SESSION['options'][$_GET['question']][4]."'>".$_SESSION['options'][$_GET['question']][4]."</label><br>";
+                }
             }
             else {
-                echo $_SESSION['msg']['questions'];
+                echo "<p>You are about to begin an exam. You have 0 attempts remaining. If there is a time limit, the countdown will begin as soon as your press continue. Blah, blah, blah.</p>";
             }
         ?>
         
