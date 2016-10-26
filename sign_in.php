@@ -49,7 +49,7 @@ if($_POST['submit']=='Login')
 
     else 
     {
-	   header("Location: index");
+	   header("Location: main");
 	   exit;
     }
 }
@@ -69,68 +69,43 @@ if($_POST['submit']=='Login')
     <a href="main" id="title">Dewey Hafta Academy</a>
 </div>
     
-<!-- Panel -->
-<div id="toppanel">
-	<div id="panel">
-		<div class="content clearfix">            
-            
-            <?php
-			
-			if(!$_SESSION['id']):
-			
-			?>
-            
-			<div class="left">
-				<!-- Login Form -->
-				<form class="clearfix" action="" method="post">
-					<h1>Member Login</h1>
-                    
-                    <?php
-						
-						if($_SESSION['msg']['login-err'])
-						{
-							echo '<div class="err">'.$_SESSION['msg']['login-err'].'</div>';
-							unset($_SESSION['msg']['login-err']);
-						}
-					?>
-					
-					<label class="grey" for="username">Username:</label>
-					<input class="field" type="text" name="username" id="username" value="" size="23" />
-					<label class="grey" for="password">Password:</label>
-					<input class="field" type="password" name="password" id="password" size="23" />
-	            	<label><input name="rememberMe" id="rememberMe" type="checkbox" checked="checked" value="1" /> &nbsp;Remember me</label>
-        			<div class="clear"></div>
-					<input type="submit" name="submit" value="Login" class="bt_login" />
-				</form>
-			</div>
-            
-            <?php
-			
-			else:
-			
-			?>
-            
-            <div class="left">
-            
-            <h1>Members panel</h1>
-            
-            <p>You can put member-only data here</p>
-            <a href="registered.php">View a special member page</a>
-            <p>- or -</p>
-            <a href="?logoff">Log off</a>
-            
-            </div>
-            
-            <div class="left right">
-            </div>
-            
-            <?php
-			endif;
-			?>
-		</div>
-	</div> <!-- /login -->	
-	
-</div> <!-- /panel -->
+<div id="main">
+    <div class="container">
+    <?php
+        if(!$_SESSION['id']):
+    ?>
+        <div class="left">
+            <!-- Login Form -->
+            <form class="clearfix" action="" method="post">
+                <h1>Member Login</h1>
+
+                <?php
+
+                    if($_SESSION['msg']['login-err'])
+                    {
+                        echo '<div class="err">'.$_SESSION['msg']['login-err'].'</div>';
+                        unset($_SESSION['msg']['login-err']);
+                    }
+                ?>
+
+                <label class="grey" for="username">Username:</label>
+                <input class="field" type="text" name="username" id="username" value="" size="23" />
+                <label class="grey" for="password">Password:</label>
+                <input class="field" type="password" name="password" id="password" size="23" />
+                <label><input name="rememberMe" id="rememberMe" type="checkbox" checked="checked" value="1" /> &nbsp;Remember me</label>
+                <div class="clear"></div>
+                <input type="submit" name="submit" value="Login" class="bt_login" />
+            </form>
+        </div>
+    <?php
+        else:
+        
+        header("Location: main");
+        
+	   endif;
+    ?>
+    </div>
+</div>
 
 </body>
 </html>
