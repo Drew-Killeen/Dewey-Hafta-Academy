@@ -28,7 +28,7 @@
         else:
     ?>
         <!--Authorized-->
-        <p>This site is currently under construction. We'll notify you when things are up and running. In the meantime, if you'd like to update your account info, please visit your <a href="registered">preferences</a>, or go to <a href="enroll">enroll</a> to manage your enrollments. Thanks for visiting!</p>
+        <p>This site is currently under construction. We'll notify you when things are up and running. In the meantime, feel free to mess around with whatever you can find. Don't worry, you won't break anything. Thanks for visiting!</p>
         
     <?php
 	   endif;
