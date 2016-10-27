@@ -16,3 +16,4 @@ TODO
 10. Add error pages
 11. Update user management system so that admins cannot edit sysops
 12. Limit the number of questions an exam displays to the number of questions that exist
+13. Allow for inputs to contain single or double quotation marks and other common characters
