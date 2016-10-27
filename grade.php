@@ -4,6 +4,18 @@ require 'templates/header.php';
 unset($_SESSION['questions']);
 unset($_SESSION['options']);
 
+mysql_query
+for($i = 0; i < count($_SESSION['questions']); $i++) {
+mysql_query("INSERT INTO answers (questionNum, attemptNum, correct, usr)
+            VALUES (
+            1,
+            1,
+            0,
+            '".$_SESSION['usr']."'
+            )");
+}
+
+
 ?>
 
 <!DOCTYPE html>
