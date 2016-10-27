@@ -6,13 +6,20 @@ if($_POST['add']=='New')
 {   
     mysql_query("INSERT INTO questions( examNum, question, option1, option2, option3, option4, option5, createdby ) 
                 VALUES ( ".$_GET['exam'].", '',  '',  '',  '',  '',  '',  '".$_SESSION['usr']."' )");
-    header("Location: edit_exam?exam=".$_GET['exam']);
+    $newQuestion = mysql_fetch_assoc(mysql_query("SELECT id FROM questions ORDER BY id DESC LIMIT 1;"));
+    header("Location: edit_exam?exam=".$_GET['exam']."&question=".$newQuestion['id']);
 }
 
 if($_POST['update']=='Update')
 {   
-    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
-    header("Location: edit_exam?exam=".$_GET['exam']."&question=".$_GET['question']);
+    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
+    header("Location: edit_exam?exam=".$_GET['exam']);
+}
+
+if($_POST['updateExam']=='Update')
+{   
+    mysql_query("UPDATE exams SET public=".$_POST['public']." WHERE id='".$_GET['exam']."'");
+    header("Location: edit_exam?exam=".$_GET['exam']);
 }
 
 ?>
@@ -66,7 +73,7 @@ if($_POST['update']=='Update')
                 }
             } else if(!$_GET['question'])
             {
-                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
+                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public FROM exams WHERE id='".$_GET['exam']."'"));
                 echo "<h2><a href='edit_exam'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
                 $examQuestions = mysql_query("SELECT id,question FROM questions WHERE examNum='".$_GET['exam']."'");
                 if (mysql_num_rows($examQuestions) > 0) 
@@ -76,11 +83,15 @@ if($_POST['update']=='Update')
                         echo 
                             "<b>Question:</b> ".$row['question']." (<a href='?exam=".$_GET['exam']."&question=".$row['id']."'>edit</a>)<br>";
                     }
-                    echo "<form action='' method='post'><input type='submit' name='add' value='New' /></form>";
                 } else 
                 {
                     echo "0 results";
                 }
+                echo "<form action='' method='post'><b>Public?</b> <input type='radio' name='public' value='1' ";
+                if($examName['public'] == 1) {echo "checked ";} 
+                echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
+                if($examName['public'] == 0) {echo "checked ";} 
+                echo "><label>No</label></input><br><input type='submit' name='updateExam' value='Update' /><input type='submit' name='add' value='New' /></form>";
             } else
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
@@ -95,7 +106,11 @@ if($_POST['update']=='Update')
                     <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
                     <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
                     <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br>
-                    <input type='submit' name='update' value='Update' />
+                    <b>Public?</b> <input type='radio' name='public' value='1' ";
+                if($examQuestions['public'] == 1) {echo "checked ";} 
+                echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
+                if($examQuestions['public'] == 0) {echo "checked ";} 
+                echo "><label>No</label></input><br><input type='submit' name='update' value='Update' />
                     </form><br>";
             }
             ?>

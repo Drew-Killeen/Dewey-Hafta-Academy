@@ -62,7 +62,7 @@ if($_POST['submit']=='Submit')
         ?>
         <form action="" method="post">
             <?php                    
-                $courses = mysql_query ("SELECT course FROM courses");
+                $courses = mysql_query ("SELECT course FROM courses WHERE public=1");
                 if (mysql_num_rows($courses) > 0) 
                 {
                     // output data of each row

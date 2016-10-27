@@ -10,7 +10,7 @@ $examTitle = $temp["title"];
 if($_GET['question']) $questionNum = $_GET['question']+1;
 else $questionNum = 1;
 
-$_SESSION['examData'] = mysql_query ("SELECT * FROM questions WHERE examNum='".$examNum."' ORDER BY RAND()");
+$_SESSION['examData'] = mysql_query ("SELECT * FROM questions WHERE examNum='".$examNum."' AND public=1 ORDER BY RAND()");
 
 if($_POST['continue'] == 'Continue') {
     /* When continue button is pressed */
@@ -20,7 +20,9 @@ if($_POST['continue'] == 'Continue') {
 
 if($_POST['submit'] == 'Submit') {
     /* When exam is submitted */
-    header("Location: grade");
+    mysql_query("INSERT INTO attempts (examNum,usr) VALUES (".$_GET['exam'].", '".$_SESSION['usr']."')");
+    $attemptNum = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts ORDER BY id DESC LIMIT 1;"));
+    header("Location: grade?attempt=".$attemptNum['id']);
 }
 
 if(!$_GET['question']) {
