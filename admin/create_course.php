@@ -78,6 +78,7 @@ if($_POST['submit']=='Submit')
     ?>
         <!--Authorized-->
         <h1>Administrator Control Panel</h1>
+        <p>You can use this page to create a new course. Please only create the course if you intend to immediately begin creating exams. The less empty courses lying around the better.</p>
         <form action="" method="post">
                 <?php
 						

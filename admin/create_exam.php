@@ -80,6 +80,7 @@ if($_POST['submit']=='Submit')
     ?>
         <!--Authorized-->
         <h1>Administrator Control Panel</h1>
+        <p>You can use this page to create new exams for any of the courses available. As with the courses, please do not create an exam unless you intend to immediately begin filling it with questions.</p>
         <?php		
             if($_SESSION['msg']['create-err'])
             {
