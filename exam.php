@@ -55,7 +55,14 @@ if($_POST['begin'] == 'Begin') {
 
 if($_POST['submit'] == 'Submit') {
     /* When exam is submitted */
-    mysql_query("UPDATE attempts SET score=0 WHERE usr='".$_SESSION['usr']."' AND examNum='".$exam."' AND score=-1");
+    $answersData = mysql_query("SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['usr']."'");
+    $finalScore = 0;
+    while($row = mysql_fetch_assoc($answersData)) 
+    {
+        if($row['correct'] == 1) $finalScore++;
+    }
+    $finalScore = ($finalScore/mysql_num_rows($answersData)) * 100;
+    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['usr']."' AND examNum='".$exam."' AND score=-1");
     unset($_SESSION['questions']);
     unset($_SESSION['question']);
     unset($_SESSION['options']);
