@@ -17,4 +17,5 @@
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML"></script>
 <script src="http://deweyhaftaacademy.x10host.com/templates/script.js"></script>
