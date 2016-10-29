@@ -6,7 +6,7 @@ TODO
 
 1. Finish grade.php page for reviewing grades
 2. Streamline error/success messages
-3. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc.)
+3. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc. - possibly incorporate MathJax)
 4. Update user approval system to allow users to login to the site without approval, but not to enroll in courses
 5. Add notifications
 6. Tweak minor CSS details to be more consistent across the site
