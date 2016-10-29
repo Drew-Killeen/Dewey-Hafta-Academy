@@ -20,3 +20,4 @@ TODO
 14. Add ability for teachers to view and edit their students' progress
 15. Rename table dewey_members to members
 16. Add exam overview
+17. Optimize the excessive database queries
