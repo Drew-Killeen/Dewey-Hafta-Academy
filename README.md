@@ -4,7 +4,7 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. Complete grading system
+1. Finish grade.php page for reviewing grades
 2. Streamline error/success messages
 3. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc.)
 4. Update user approval system to allow users to login to the site without approval, but not to enroll in courses
@@ -22,6 +22,7 @@ TODO
 16. Optimize the excessive database queries
 17. Give admins the ability to edit courses
 18. Give admins the ability to delete courses/exams/questions
+19. Change usr column in all tables to user id
 
 Completed
 ----
@@ -38,3 +39,4 @@ Completed
 11. ~~Teach the system the difference between public and non-public~~
 12. ~~Create new exam.php page~~
 13. ~~Add error pages~~
+14. ~~Complete grading system~~
