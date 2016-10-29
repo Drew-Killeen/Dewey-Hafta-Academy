@@ -32,6 +32,8 @@ if($_POST['submit']=='Submit')
     
     if(!count($err))
 	{
+        $_POST['module'] = mysql_real_escape_string($_POST['module']);
+        $_POST['title'] = mysql_real_escape_string($_POST['title']);
         mysql_query("INSERT INTO exams(course,module,title,createdby,dt)
             VALUES(
             '".$_POST['course']."',
@@ -41,6 +43,8 @@ if($_POST['submit']=='Submit')
             NOW()
         )");
         $_SESSION['msg']['create-success']='Exam successfully created.';
+        $examNum = mysql_fetch_assoc(mysql_query("SELECT id FROM exams ORDER BY id DESC LIMIT 1;"));
+        header("Location: edit_exam?exam=".$examNum['id']);
     }
     else $err[]='Error creating exam.';
     
