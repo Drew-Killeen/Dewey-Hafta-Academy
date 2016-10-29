@@ -27,14 +27,13 @@ if($_POST['submit']=='Submit')
     
     if(!count($err))
 	{
+        $_POST['course'] = mysql_real_escape_string($_POST['course']);
         mysql_query("INSERT INTO courses(course,createdby,dt)
         VALUES(
         '".$_POST['course']."',
         '".$_SESSION['usr']."',
         NOW()							
         )");
-        
-        mysql_query("ALTER TABLE dewey_members ADD ".$_POST['course']." tinyint(1) NOT NULL default '0'");
         
         $_SESSION['msg']['create-success']='Course successfully created.';
         header("Location: create_exam?".$_POST['course']);
