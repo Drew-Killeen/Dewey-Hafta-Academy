@@ -38,13 +38,13 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
         
         echo "<h3>Exams available for ".$course['enrollment']."</h3>";
 
-        $exams = mysql_query ("SELECT module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
+        $exams = mysql_query ("SELECT id,module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
         if (mysql_num_rows($exams) > 0) 
         {
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($exams)) {
-               echo "<li><a href='exam?exam=".$row['module']."'>Module ".$row['module'].": ".$row['title']."</a></li>";
+               echo "<li><a href='exam?exam=".$row['id']."'>Module ".$row['module'].": ".$row['title']."</a></li>";
             }
             echo "</ul>";
         } else 
