@@ -44,7 +44,10 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
             echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($exams)) {
-               echo "<li><a href='exam?exam=".$row['id']."'>Module ".$row['module'].": ".$row['title']."</a></li>";
+                $score = mysql_fetch_assoc(mysql_query ("SELECT id,score FROM attempts WHERE examNum='".$row['id']."' AND usr='".$_SESSION['usr']."' ORDER BY score DESC LIMIT 1;"));
+                echo "<li><a href='exam?exam=".$row['id']."'>Module ".$row['module'].": ".$row['title']."</a>";
+                if($score) echo " - <a href='grade?attempt=".$score['id']."' class='whiteLink'>".$score['score']."%</a>";
+                echo "</li>";
             }
             echo "</ul>";
         } else 
