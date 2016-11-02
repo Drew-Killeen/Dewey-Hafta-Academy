@@ -23,6 +23,7 @@ TODO
 17. Give admins the ability to edit courses
 18. Give admins the ability to delete courses/exams/questions
 19. Change usr column in all tables to user id
+20. Implement AJAX wherever possible
 
 Completed
 ----
