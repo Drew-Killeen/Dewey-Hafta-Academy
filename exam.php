@@ -16,7 +16,7 @@ $temp = mysql_fetch_assoc(mysql_query("SELECT title,module FROM exams WHERE cour
 $examModule = $temp['module'];
 $examTitle = $temp["title"];
 
-$attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['usr']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+$attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
     
 if($_GET['question']) $questionNum = $_GET['question']+1;
 else $questionNum = 1;
@@ -35,14 +35,14 @@ if($_POST['continue'] == 'Continue') {
 
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
-    mysql_query("INSERT INTO attempts (examNum,usr,score) VALUES (".$_GET['exam'].", '".$_SESSION['usr']."', -1)");
-    $_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['usr']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    mysql_query("INSERT INTO attempts (examNum,usr,score) VALUES (".$_GET['exam'].", '".$_SESSION['id']."', -1)");
+    $_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $examData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
     $i = 1;
     // output data of each row
     while($row = mysql_fetch_assoc($examData)) {
         $attemptNum = $attempt['id'] + 1;
-        mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['usr']."')");
+        mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['id']."')");
         $_SESSION['options'][$i] = array();
         $_SESSION['questions'][$i] = $row['question'];
         if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
@@ -59,7 +59,7 @@ if($_POST['begin'] == 'Begin') {
 
 if($_POST['continue_attempt'] == "Continue") {
     
-    $currentAttempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['usr']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    $currentAttempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     if($_SESSION['attemptNum'] != $currentAttempt) {
         $_SESSION['attemptNum'] = $currentAttempt;
         $examData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
@@ -67,7 +67,7 @@ if($_POST['continue_attempt'] == "Continue") {
         // output data of each row
         while($row = mysql_fetch_assoc($examData)) {
             $attemptNum = $attempt['id'] + 1;
-            mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['usr']."')");
+            mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['id']."')");
             $_SESSION['options'][$i] = array();
             $_SESSION['questions'][$i] = $row['question'];
             if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
@@ -82,8 +82,8 @@ if($_POST['continue_attempt'] == "Continue") {
     }
     header("Location: exam?exam=".$_GET['exam']."&question=1");
 
-    /*$_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['usr']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-    $prevAnswerData = mysql_query("SELECT questionNum FROM answers WHERE examNum='".$_GET['exam']."' AND usr=".$_SESSION['usr']);
+    /*$_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    $prevAnswerData = mysql_query("SELECT questionNum FROM answers WHERE examNum='".$_GET['exam']."' AND usr=".$_SESSION['id']);
     // output data of each row
     for($i = 1; $i < mysql_num_rows($prevAnswerData); $i++) {
         $row = mysql_fetch_assoc($prevAnswerData);
@@ -104,14 +104,14 @@ if($_POST['continue_attempt'] == "Continue") {
 
 if($_POST['submit'] == 'Submit') {
     /* When exam is submitted */
-    $answersData = mysql_query("SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['usr']."'");
+    $answersData = mysql_query("SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['id']."'");
     $finalScore = 0;
     while($row = mysql_fetch_assoc($answersData)) 
     {
         if($row['correct'] == 1) $finalScore++;
     }
     $finalScore = round(($finalScore/mysql_num_rows($answersData)) * 100);
-    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['usr']."' AND examNum='".$_GET['exam']."' AND score=-1");
+    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
     unset($_SESSION['questions']);
     unset($_SESSION['question']);
     unset($_SESSION['options']);
