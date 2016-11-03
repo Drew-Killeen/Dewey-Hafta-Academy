@@ -2,7 +2,7 @@
 
 require '../templates/header.php';
 
-if($_POST['submit']=='Submit')
+if(isset($_POST['submit']))
 {
     // If the form has been submitted
     
@@ -95,7 +95,7 @@ if($_POST['submit']=='Submit')
 				?>
             <label class="grey" for="course">Course Name:</label>
             <input class="field" type="text" name="course" id="course" value="" size="23"/>
-            <input type="submit" name="submit" value="Submit"/>
+            <input type="submit" name="submit" value="&#10004;"/>
         </form>
         
     <?php
