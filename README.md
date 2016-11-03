@@ -22,6 +22,7 @@ TODO
 16. Give admins the ability to edit courses
 17. Give admins the ability to delete courses/exams/questions
 18. Implement AJAX wherever possible
+19. Make grade.php prettier and more useful
 
 Completed
 ----
