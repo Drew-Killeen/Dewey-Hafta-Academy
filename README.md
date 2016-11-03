@@ -4,26 +4,24 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. Finish grade.php page for reviewing grades
-2. Streamline error/success messages
-3. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc. - possibly incorporate MathJax)
-4. Update user approval system to allow users to login to the site without approval, but not to enroll in courses
-5. Add notifications
-6. Tweak minor CSS details to be more consistent across the site
-7. Implement administrator ability to send emails from the site
-8. Create new progress.php page
-9. Create new print.php page
-10. Update user management system so that admins cannot edit sysops
-11. Limit the number of questions an exam displays to the number of questions that exist
-12. Allow for inputs to contain single or double quotation marks and other common characters
-13. Add ability for teachers to view and edit their students' progress
-14. Rename table dewey_members to members
-15. Add exam overview
-16. Optimize the excessive database queries
-17. Give admins the ability to edit courses
-18. Give admins the ability to delete courses/exams/questions
-19. Change usr column in all tables to user id
-20. Implement AJAX wherever possible
+1. Streamline error/success messages
+2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc)
+3. Update user approval system to allow users to login to the site without approval, but not to enroll in courses
+4. Add notifications
+5. Tweak minor CSS details to be more consistent across the site
+6. Implement administrator ability to send emails from the site
+7. Create new progress.php page
+8. Create new print.php page
+9. Update user management system so that admins cannot edit sysops
+10. Limit the number of questions an exam displays to the number of questions that exist
+11. Allow for inputs to contain single or double quotation marks and other common characters
+12. Add ability for teachers to view and edit their students' progress
+13. Rename table dewey_members to members
+14. Add exam overview
+15. Optimize the excessive database queries
+16. Give admins the ability to edit courses
+17. Give admins the ability to delete courses/exams/questions
+18. Implement AJAX wherever possible
 
 Completed
 ----
@@ -41,3 +39,6 @@ Completed
 12. ~~Create new exam.php page~~
 13. ~~Add error pages~~
 14. ~~Complete grading system~~
+15. ~~Incoporate MathJax~~
+16. ~~Change usr column in all tables to user id~~
+17. ~~Finish grade.php page for reviewing grades~~
