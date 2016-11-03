@@ -30,9 +30,11 @@
         <p>See the following pages to configure the site.</p>
         <ul>
             <li><a href="create_course">Create Course</a></li>
+            <li><a href="edit_course">Edit Course</a></li>
             <li><a href="create_exam">Create Exam</a></li>
             <li><a href="edit_exam">Edit Exam</a></li>
             <li><a href="users">View Users</a></li>
+            <li><a href="mail">Send Mail</a></li>
         </ul>
         
     <?php
