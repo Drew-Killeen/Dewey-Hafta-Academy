@@ -25,6 +25,7 @@ TODO
 19. Make grade.php prettier and more useful
 20. Give option to reset password if forgotten
 21. Allow a user to request their privileges to be changed
+22. Make the sass switch an on/off button
 
 Completed
 ----
