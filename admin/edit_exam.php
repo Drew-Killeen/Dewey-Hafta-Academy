@@ -18,7 +18,7 @@ if($_POST['update']=='Update')
     $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
     $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
     $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
-    mysql_query("UPDATE questions SET question='".$_POST['option1']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
+    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
     header("Location: edit_exam?exam=".$_GET['exam']);
 }
 
