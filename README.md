@@ -4,10 +4,10 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. Streamline error/success messages
+1. _Streamline error/success messages_
 2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc)
 3. Implement confirm password feature on sign_up.php and registered.php
-4. Add notifications
+4. _Add notifications_
 5. Tweak minor CSS details to be more consistent across the site
 6. Implement administrator ability to send emails from the site
 7. Create new progress.php page
@@ -19,10 +19,10 @@ TODO
 13. Add exam overview
 14. Optimize the excessive database queries
 15. Give admins the ability to edit courses
-16. Give admins the ability to delete courses/exams/questions
+16. _Give admins the ability to delete courses/exams/questions_
 17. Implement AJAX wherever possible
 18. Make grade.php prettier and more useful
-19. Give option to reset password if forgotten
+19. _Give option to reset password if forgotten_
 20. Create style for radio buttons
 
 Completed
