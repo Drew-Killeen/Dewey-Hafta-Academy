@@ -15,7 +15,7 @@ if($_POST['update']=='Update')
     send_mail('noreply@deweyhaftaacademy.x10host.com',
               $userData['email'],
               'Registration System - Your Password',
-              "Your account has been approved. You can now use your account to take exams."
+              "Your account has been approved. You can now use your account to enroll in a course."
              );
     }
 }

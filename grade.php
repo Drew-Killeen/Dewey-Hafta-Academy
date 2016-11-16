@@ -31,7 +31,7 @@ require 'templates/header.php';
     <?php
         elseif($_SESSION['privilege'] == 'unapproved'):
     ?>
-        <p>Your account must be approved before you can take an exam. If it has been more than 48 hours since you created your account, please contact admin@deweyhaftaacademy.x10host.com.</p>
+        <p>Your account must be approved before you can enroll in a course.</p>
     <?php
         else:
     ?>

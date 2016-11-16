@@ -37,6 +37,10 @@ if($_POST['submit']=='Submit')
         <!--Unauthorized-->
         <p>This site is for members only. Click <a href="sign_in">here</a> to login. To apply for a membership, please visit the <a href="sign_up">sign up</a> page.</p>
     <?php
+        elseif($_SESSION['privilege'] == 'unapproved'):
+    ?>
+        <p>Your account must be approved before you can enroll in a course.</p>
+    <?php
         else:            
     ?>
         <!--Authorized-->
