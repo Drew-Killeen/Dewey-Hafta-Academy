@@ -117,12 +117,12 @@ if($_POST['updateExam']=='Update')
                     <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
                     <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
                     <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br>
-                    <b>Public?</b> <input type='radio' name='public' value='1' ";
+                    <p><b>Public?</b> <input type='radio' name='public' value='1' ";
                 if($examQuestions['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examQuestions['public'] == 0) {echo "checked ";} 
-                echo "><label>No</label></input><br><input type='submit' name='update' value='Update' />
-                    </form><br>";
+                echo "><label>No</label></input><br></p><p><input type='submit' name='update' value='Update' /> <input type='submit' name='delete' value='Delete' /></p>
+                    </form>";
             }
             ?>
         
