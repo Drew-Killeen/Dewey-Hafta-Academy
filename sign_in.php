@@ -67,6 +67,7 @@ if($_POST['submit']=='Login')
     
 <div id="header">
     <a href="main" id="title">Dewey Hafta Academy</a>
+    <span id="usrHeader"><a href="sign_up">Sign up</a></span>
 </div>
     
 <div id="main">

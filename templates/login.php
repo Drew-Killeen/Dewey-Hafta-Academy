@@ -3,7 +3,7 @@
         if(!$_SESSION['id']):
     ?>
     
-    <a href="../sign_in">Sign in</a> - 
+    <a href="../sign_in">Login</a> - 
     <a href="../sign_up">Sign up</a>
     
     <?php

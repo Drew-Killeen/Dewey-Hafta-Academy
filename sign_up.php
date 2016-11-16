@@ -84,6 +84,7 @@ if($_POST['submit']=='Register')
     
 <div id="header">
     <a href="main" id="title">Dewey Hafta Academy</a>
+    <span id="usrHeader"><a href="sign_in">Login</a></span>
 </div>
     
 <div id="main">
