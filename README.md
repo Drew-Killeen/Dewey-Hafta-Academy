@@ -23,6 +23,7 @@ TODO
 17. Give admins the ability to delete courses/exams/questions
 18. Implement AJAX wherever possible
 19. Make grade.php prettier and more useful
+20. Give option to reset password
 
 Completed
 ----
