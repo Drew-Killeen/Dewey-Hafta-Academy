@@ -10,7 +10,7 @@ if($_POST['submit']=='Update')
 	$err = array();
 	// Will hold our errors
     
-    if(!$_POST['oldpass'] || !$_POST['newpass']) 
+    if(!$_POST['oldpass'] || !$_POST['newpass'] || !$_POST['newpass_confirm']) 
     {
 		$err[] = 'All the fields must be filled in.';
     }
@@ -19,6 +19,11 @@ if($_POST['submit']=='Update')
 	{
 		$err[]='Your new password must be between 6 and 32 characters.';
 	}
+    
+    if($_POST['newpass'] != $_POST['newpass_confirm'])
+    {
+        $err[]='The passwords do not match.';
+    }
     
     $row = mysql_fetch_assoc(mysql_query("SELECT id,usr,pass FROM dewey_members WHERE id='{$_SESSION['id']}'"));
     
@@ -120,42 +125,35 @@ if($_POST['submit']=='Update Info')
 		$_SESSION['msg']['info-err'] = implode('<br />',$err);
 	}
 }
-
-if($_POST['submit']=='Submit Sass')
-{
-    // Checking whether sass has been submitted
-          
-        mysql_query("UPDATE dewey_members SET sass='".$_POST['sass']."' WHERE id='".$_SESSION['id']."'");
-        
-        $_SESSION['msg']['sass-success']='Sass successfully updated.';
-        header("Location: registered");
-	   exit;
-}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>    
 <?php include_once('templates/htmlHeader.php'); ?>
+<script>    
+    function sasstivate() {
+        var xhttp = new XMLHttpRequest();
+        <?php echo 'xhttp.open("GET", "scripts/update.php?usr='.$_SESSION['id'].'&sass=1", true);'; ?>
+        xhttp.send();
+        console.log("sass1");
+    }
+</script>
     
 </head>
 <body>
     
 <div id="header">
     <a href="main" id="title">Dewey Hafta Academy</a>
-    <span id="usrHeader"><a href="?logoff">Logout</a>
+    <?php if($_SESSION['id']): ?>
+    <span id="usrHeader"><a href="?logoff">Logout</a></span>
+    <?php endif; ?>
+    
 </div>
     
 <?php include_once("templates/menu.php"); ?>
     
 <div id="main">
-    <?php
-        if($_SESSION['msg']['update-success'])
-        {
-            echo '<div class="success">'.$_SESSION['msg']['update-success'].'</div>';
-            unset($_SESSION['msg']['update-success']);
-        }
-    ?>
     <div class="container">
     
     <?php if(!$_SESSION['id']): ?>
@@ -163,11 +161,17 @@ if($_POST['submit']=='Submit Sass')
         <p>This page is for registered users only. Please, <a href="sign_in">login</a> and come back later.</p>
         
     <?php else: ?>
-        <h1>Preferences</h1>    
+        <h1>Preferences</h1>
+        <?php
+            if($_SESSION['msg']['update-success'])
+            {
+                echo '<div class="success">'.$_SESSION['msg']['update-success'].'</div>';
+                unset($_SESSION['msg']['update-success']);
+            }
+        ?>
         <h3>Current account status</h3>
-        <form action="" method="post"><i style="font-size:110%;">
-            <?php echo $userInfo['privilege']; ?></i> <input type="submit" name="submit" value="Request Change" style="margin-left:20px;"/>
-        </form>
+        <i style="font-size:110%;">
+        <?php echo $userInfo['privilege']; ?></i> <input type="button" onclick="location.href='?requestchange';" value="Request Change" style="margin-left:20px;"/>
         
         <h3>Update Password</h3>
         <form action="" method="post">               
@@ -180,7 +184,7 @@ if($_POST['submit']=='Submit Sass')
             ?>
             <input class="field" type="password" name="oldpass" value="" size="23" placeholder="Old Password"/>
             <input class="field" type="password" name="newpass" value="" size="23" placeholder="New Password"/>
-            <input class="field" type="password" name="newpass" value="" size="23" placeholder="Confirm New Password"/>
+            <input class="field" type="password" name="newpass_confirm" value="" size="23" placeholder="Confirm New Password"/>
             <input type="submit" name="submit" value="Update" />
         </form>
         
@@ -217,12 +221,15 @@ if($_POST['submit']=='Submit Sass')
             <input type="submit" name="submit" value="Update Info" />
         </form>
         
-        <form action="" method="post">
-            <h4>Sass Level</h4>
-            <input type="radio" name="sass" value="0" <?php if($userInfo['sass'] == 0) echo "checked"; ?> /><label class="grey" for="0">0</label>
-            <input type="radio" name="sass" value="1" <?php if($userInfo['sass'] == 1) echo "checked"; ?> /><label class="grey" for="1">1</label>
-            <input type="submit" name="submit" value="Submit Sass" />
-        </form>
+        <h3>Sass</h3>    
+        <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" <?php if($userInfo['sass'] == 1) echo "checked"; ?>>
+            <label class="onoffswitch-label" for="myonoffswitch" onclick="sasstivate();">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+            </label>
+        </div>
+
         
     <?php endif; ?>
         
