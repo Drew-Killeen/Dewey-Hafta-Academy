@@ -14,18 +14,16 @@ TODO
 8. Create new print.php page
 9. Update user management system so that admins cannot edit sysops
 10. Limit the number of questions an exam displays to the number of questions that exist
-11. Allow for inputs to contain single or double quotation marks and other common characters
-12. Add ability for teachers to view and edit their students' progress
-13. Rename table dewey_members to members
-14. Add exam overview
-15. Optimize the excessive database queries
-16. Give admins the ability to edit courses
-17. Give admins the ability to delete courses/exams/questions
-18. Implement AJAX wherever possible
-19. Make grade.php prettier and more useful
-20. Give option to reset password if forgotten
-21. Allow a user to request their privileges to be changed
-22. Make the sass switch an on/off button
+11. Add ability for teachers to view and edit their students' progress
+12. Rename table dewey_members to members
+13. Add exam overview
+14. Optimize the excessive database queries
+15. Give admins the ability to edit courses
+16. Give admins the ability to delete courses/exams/questions
+17. Implement AJAX wherever possible
+18. Make grade.php prettier and more useful
+19. Give option to reset password if forgotten
+20. Allow a user to request their privileges to be changed
 
 Completed
 ----
@@ -48,3 +46,5 @@ Completed
 17. ~~Finish grade.php page for reviewing grades~~
 18. ~~Update user approval system to allow users to login to the site without approval, but not to enroll in courses~~
 19. ~~Display current user privileges under preferences~~
+20. ~~Make the sass switch an on/off button~~
+21. ~~Allow for inputs to contain single or double quotation marks and other common characters~~
