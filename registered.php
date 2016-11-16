@@ -1,7 +1,7 @@
 <?php
 require 'templates/header.php';
 
-$sass = mysql_fetch_assoc(mysql_query("SELECT sass FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$userInfo = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE id='{$_SESSION['id']}'"));
 
 if($_POST['submit']=='Update')
 {
@@ -143,6 +143,7 @@ if($_POST['submit']=='Submit Sass')
     
 <div id="header">
     <a href="main" id="title">Dewey Hafta Academy</a>
+    <span id="usrHeader"><a href="?logoff">Logout</a>
 </div>
     
 <?php include_once("templates/menu.php"); ?>
@@ -162,8 +163,11 @@ if($_POST['submit']=='Submit Sass')
         <p>This page is for registered users only. Please, <a href="sign_in">login</a> and come back later.</p>
         
     <?php else: ?>
-        
-        <p>Use this form to update your account information.</p>
+        <h1>Preferences</h1>    
+        <h3>Current account status</h3>
+        <form action="" method="post"><i style="font-size:110%;">
+            <?php echo $userInfo['privilege']; ?></i> <input type="submit" name="submit" value="Request Change" style="margin-left:20px;"/>
+        </form>
         
         <h3>Update Password</h3>
         <form action="" method="post">               
@@ -174,19 +178,18 @@ if($_POST['submit']=='Submit Sass')
 				    unset($_SESSION['msg']['update-err']);
 				}
             ?>
-            <label class="grey" for="oldpass">Old Password:</label>
-            <input class="field" type="password" name="oldpass" value="" size="23" />
-            <label class="grey" for="newpass">New Password:</label>
-            <input class="field" type="password" name="newpass" value="" size="23" />
+            <input class="field" type="password" name="oldpass" value="" size="23" placeholder="Old Password"/>
+            <input class="field" type="password" name="newpass" value="" size="23" placeholder="New Password"/>
+            <input class="field" type="password" name="newpass" value="" size="23" placeholder="Confirm New Password"/>
             <input type="submit" name="submit" value="Update" />
         </form>
         
         <h3>Add Supervisor</h3>
-        <p>Current supervisor: 
+        <p>Current supervisor: <i>
         <?php 
             $current_data = mysql_fetch_assoc(mysql_query("SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
             echo $current_data['supervisor'];
-        ?></p>
+            ?></i></p>
         <form action="" method="post">
             <?php
 				if($_SESSION['msg']['supervisor-err'])
@@ -195,8 +198,7 @@ if($_POST['submit']=='Submit Sass')
 				    unset($_SESSION['msg']['supervisor-err']);
 				}
             ?>
-            <label class="grey" for="supervisor">Supervisor Username:</label>
-            <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" />
+            <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" placeholder="Supervisor Username"/>
             <input type="submit" name="submit" value="Add" class="bt_add" />
             <input type="submit" name="submit" value="Remove Supervisor" />
         </form>
@@ -210,17 +212,15 @@ if($_POST['submit']=='Submit Sass')
 				}
             ?>
             <h3>Personal Info</h3>
-            <label class="grey" for="name">Full Name:</label>
-            <input class="field" type="text" name="name" value="" size="23" />
-            <label class="grey" for="grade">Grade:</label>
-            <input class="field" type="text" name="grade" value="" size="23" />
+            <input class="field" type="text" name="name" value="" size="23" placeholder="Full Name" />
+            <input class="field" type="text" name="grade" value="" size="23" placeholder="Grade"/>
             <input type="submit" name="submit" value="Update Info" />
         </form>
         
         <form action="" method="post">
             <h4>Sass Level</h4>
-            <input type="radio" name="sass" value="0" <?php if($sass['sass'] == 0) echo "checked"; ?> /><label class="grey" for="0">0</label>
-            <input type="radio" name="sass" value="1" <?php if($sass['sass'] == 1) echo "checked"; ?> /><label class="grey" for="1">1</label>
+            <input type="radio" name="sass" value="0" <?php if($userInfo['sass'] == 0) echo "checked"; ?> /><label class="grey" for="0">0</label>
+            <input type="radio" name="sass" value="1" <?php if($userInfo['sass'] == 1) echo "checked"; ?> /><label class="grey" for="1">1</label>
             <input type="submit" name="submit" value="Submit Sass" />
         </form>
         
