@@ -1,6 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+::selection {
+    background-color: #EBEBF2;
+    color: #83828D;
+}
+
 body {
-    font-family: Verdana;
+    font-family: 'Montserrat', Verdana, serif;
     font-size: 97%;
+}
+
+table {
+    padding:10px;
+}
+
+h3 {
+    margin-top: 40px;
 }
 
 #header {
@@ -96,19 +113,10 @@ li {
     list-style: none;
 }
 
-* {
-    box-sizing: border-box;
+p.note {
+    font-size: 85%;
+    opacity: 0.8;
 }
-
-body {
-    font-family: 'Montserrat', Arial, serif;
-}
-
-::selection {
-    background-color: #EBEBF2;
-    color: #83828D;
-}
-
 
 /* ==================================== */
 /*		  	Buttons & Inputs		
@@ -159,9 +167,8 @@ input[type="submit"] {
     color: #ffffff;
     padding: 5px 15px;
     position: relative;
-    top: 3px;
-    font-size: 120%;
-    text-shadow: 0px 1px 1px #ffffff;
+    top: 1px;
+    font-size: 110%;
 }
 
 input[type="submit"]:hover {
