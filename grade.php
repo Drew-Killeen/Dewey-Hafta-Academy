@@ -29,6 +29,10 @@ require 'templates/header.php';
         <!--Unauthorized-->
         <p>This site is for members only. Click <a href="sign_in">here</a> to login. To apply for a membership, please visit the <a href="sign_up">sign up</a> page.</p>
     <?php
+        elseif($_SESSION['privilege'] == 'unapproved'):
+    ?>
+        <p>Your account must be approved before you can take an exam. If it has been more than 48 hours since you created your account, please contact admin@deweyhaftaacademy.x10host.com.</p>
+    <?php
         else:
     ?>
         <!--Authorized-->

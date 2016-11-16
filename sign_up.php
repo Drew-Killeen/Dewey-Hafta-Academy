@@ -24,24 +24,29 @@ if($_POST['submit']=='Register')
 		$err[]='Your email is not valid.';
 	}
 	
+    /*if($_POST['pass'] != $_POST['pass_again'])
+    {
+        $err[]='Passwords do not match.';
+    }*/
+    
 	if(!count($err))
 	{
 		// If there are no errors
 		
 		$_POST['email'] = mysql_real_escape_string($_POST['email']);
 		$_POST['username'] = mysql_real_escape_string($_POST['username']);
+        $_POST['pass'] = mysql_real_escape_string($_POST['pass']);
 		// Escape the input data
 		
-		mysql_query("INSERT INTO dewey_members(usr,email,regIP,dt)
+		mysql_query("INSERT INTO dewey_members(usr,email,pass,regIP,dt)
 				VALUES(
 				'".$_POST['username']."',
 				'".$_POST['email']."',
+                '".md5($_POST['pass'])."',
 				'".$_SERVER['REMOTE_ADDR']."',
 				NOW()
                 )");
-		
-		if(mysql_affected_rows($link)==1)
-		{
+        
 			send_mail(	'noreply@deweyhaftaacademy.x10host.com',
 						'admin@deweyhaftaacademy.x10host.com',
 						'Registration System - New Account',
@@ -49,17 +54,15 @@ if($_POST['submit']=='Register')
             send_mail(	'noreply@deweyhaftaacademy.x10host.com',
 						$_POST['email'],
 						'Registration System - New Account',
-						"Your account has been successfully created. An administrator must approve your account before you may login. If you do not receive an email confirming your account's approval or denial, please contact admin@deweyhaftaacademy.x10host.com.");
+						"Your account has been successfully created. An administrator must approve your account before you have full access to the site. If you do not receive an email confirming your account's approval or denial, please contact admin@deweyhaftaacademy.x10host.com.");
 
 			$_SESSION['msg']['reg-success']='An administrator has been notified and will approve your account shortly.';
-		}
-		else $err[]='This username is already taken.';
 	}
 
 	if(count($err))
 	{
 		$_SESSION['msg']['reg-err'] = implode('<br />',$err);
-        header("Location: sign_in");
+        header("Location: sign_up");
 	    exit;
 	}	
 	
@@ -106,12 +109,11 @@ if($_POST['submit']=='Register')
                     unset($_SESSION['msg']['reg-success']);
                 }
             ?>
-
-            <label class="grey" for="username">Username:</label>
-            <input class="field" type="text" name="username" id="username" value="" size="23" />
-            <label class="grey" for="email">Email:</label>
-            <input class="field" type="text" name="email" id="email" size="23" />
-            <label>An administrator will be notified of your account and will respond within 48 hours.</label>
+            <input class="field" type="text" name="username" id="username" value="" size="23" placeholder="Username"/><br>
+            <input class="field" type="text" name="email" id="email" size="23" placeholder="Email"/><br>
+            <input class="field" type="password" name="pass" id="pass" size="23" placeholder="Password"/><br>
+            <input class="field" type="password" name="pass_again" id="pass_again" size="23" placeholder="Confirm Password"/>
+            <p class="note">An administrator will be notified of your account and will respond within 48 hours.</p>
             <input type="submit" name="submit" value="Register" class="bt_register" />
         </form>
     <?php

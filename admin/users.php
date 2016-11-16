@@ -7,23 +7,16 @@ if($_POST['update']=='Update')
 {
     // If the form has been submitted
     
+    mysql_query("UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
+    
     $userData = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
     
-    if($userData['privilege'] == 'unapproved') {
-    
-    $pass = substr(md5($_SERVER['REMOTE_ADDR'].microtime().rand(1,100000)),0,6);
-    // Generate a random password
-    
-    mysql_query("UPDATE dewey_members SET pass='".md5($pass)."', privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
-    
+    if($userData['privilege'] == 'unapproved') {    
     send_mail('noreply@deweyhaftaacademy.x10host.com',
               $userData['email'],
               'Registration System - Your Password',
-              "Your account has been approved. Your password is ".$pass.". You can now log into your account where you can change your password."
+              "Your account has been approved. You can now use your account to take exams."
              );
-    } else
-    {
-        mysql_query("UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
     }
 }
 ?>
