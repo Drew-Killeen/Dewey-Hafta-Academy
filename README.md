@@ -6,7 +6,7 @@ TODO
 
 1. Streamline error/success messages
 2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc)
-3. Update user approval system to allow users to login to the site without approval, but not to enroll in courses
+3. Implement confirm password feature on sign_up.php and registered.php
 4. Add notifications
 5. Tweak minor CSS details to be more consistent across the site
 6. Implement administrator ability to send emails from the site
@@ -23,7 +23,8 @@ TODO
 17. Give admins the ability to delete courses/exams/questions
 18. Implement AJAX wherever possible
 19. Make grade.php prettier and more useful
-20. Give option to reset password
+20. Give option to reset password if forgotten
+21. Allow a user to request their privileges to be changed
 
 Completed
 ----
@@ -44,3 +45,5 @@ Completed
 15. ~~Incoporate MathJax~~
 16. ~~Change usr column in all tables to user id~~
 17. ~~Finish grade.php page for reviewing grades~~
+18. ~~Update user approval system to allow users to login to the site without approval, but not to enroll in courses~~
+19. ~~Display current user privileges under preferences~~
