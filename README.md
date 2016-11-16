@@ -23,8 +23,7 @@ TODO
 17. Implement AJAX wherever possible
 18. Make grade.php prettier and more useful
 19. Give option to reset password if forgotten
-20. Allow a user to request their privileges to be changed
-21. Create style for radio buttons
+20. Create style for radio buttons
 
 Completed
 ----
@@ -49,3 +48,4 @@ Completed
 19. ~~Display current user privileges under preferences~~
 20. ~~Make the sass switch an on/off button~~
 21. ~~Allow for inputs to contain single or double quotation marks and other common characters~~
+22. ~~Allow a user to request their privileges to be changed~~
