@@ -41,7 +41,7 @@ if($_POST['submit']=='Login')
 	
 	if($err) 
     {
-	   $_SESSION['msg']['login-err'] = implode('<br />',$err);
+	   $_SESSION['msg']['err'] = implode('<br />',$err);
        header("Location: sign_in");
 	   exit;
     }
@@ -79,16 +79,6 @@ if($_POST['submit']=='Login')
             <!-- Login Form -->
             <form class="clearfix" action="" method="post">
                 <h1>Member Login</h1>
-
-                <?php
-
-                    if($_SESSION['msg']['login-err'])
-                    {
-                        echo '<div class="err">'.$_SESSION['msg']['login-err'].'</div>';
-                        unset($_SESSION['msg']['login-err']);
-                    }
-                ?>
-
                 <label class="grey" for="username">Username:</label>
                 <input class="field" type="text" name="username" id="username" value="" size="23" />
                 <label class="grey" for="password">Password:</label>
@@ -108,5 +98,7 @@ if($_POST['submit']=='Login')
     </div>
 </div>
 
+    <?php require 'templates/jsload.php'; ?>
+    
 </body>
 </html>

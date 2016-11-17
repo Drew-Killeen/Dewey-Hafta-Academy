@@ -67,6 +67,7 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
     </div>
 </div>
 
+<?php require 'templates/jsload.php'; ?>
 
 </body>
 </html>

@@ -126,6 +126,7 @@ if($_POST['submit']=='Submit')
     </div>
 </div>
 
-
+<?php require '../templates/jsload.php'; ?>
+    
 </body>
 </html>

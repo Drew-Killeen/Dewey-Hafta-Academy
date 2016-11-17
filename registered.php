@@ -1,5 +1,6 @@
 <?php
 require 'templates/header.php';
+require 'templates/functions.php';
 
 $userInfo = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE id='{$_SESSION['id']}'"));
 
@@ -42,13 +43,12 @@ if($_POST['submit']=='Update')
         $_SESSION = array();
 	    session_destroy();
         
-        $_SESSION['msg']['update-success']='Password successfully updated. You may now login again.';
+        $_SESSION['msg']['success']='Password successfully updated. You may now login again.';
     }
-    else $err[]='Error updating password.';
     
     if(count($err))
 	{
-		$_SESSION['msg']['update-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
 	}
 }
 
@@ -84,25 +84,27 @@ if($_POST['submit']=='Add')
         
         mysql_query("UPDATE dewey_members SET supervisor='".$_POST['supervisor']."' WHERE id='".$_SESSION['id']."'");
         
-        $_SESSION['msg']['supervisor-success']='Supervisor successfully updated.';
+        $_SESSION['msg']['success']='Supervisor successfully updated.';
     }
-    else $err[]='Error updating supervisor.';
     
     if(count($err))
 	{
-		$_SESSION['msg']['supervisor-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
 	}
 }
 
 if($_POST['submit']=='Remove Supervisor')
 {
     mysql_query("UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
+    $_SESSION['msg']['success']='Supervisor removed.';
 }
 
 if($_POST['submit']=='Update Info')
 {
     // Checking whether the Supervisor form has been submitted
-	
+    
+	$_POST['name'] = mysql_real_escape_string($_POST['name']);
+    $_POST['grade'] = mysql_real_escape_string($_POST['grade']);
     $grade = preg_replace("/[^0-9]/", "", $_POST['grade']);
 	$err = array();
 	// Will hold our errors
@@ -113,16 +115,48 @@ if($_POST['submit']=='Update Info')
 	}
     
     if(!count($err))
-	{        
+	{
         mysql_query("UPDATE dewey_members SET grade='".$grade."', name=".$_POST['name']." WHERE id='".$_SESSION['id']."'");
         
-        $_SESSION['msg']['info-success']='Supervisor successfully updated.';
+        $_SESSION['msg']['success']='Information successfully updated.';
     }
-    else $err[]='Error updating info.';
     
     if(count($err))
 	{
-		$_SESSION['msg']['info-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
+	}
+}
+
+if($_POST['request']=='Send Request')
+{
+
+	$err = array();
+	// Will hold our errors
+        
+    if(!$_POST['explain'])
+	{
+		$err[]='You must provide an explanation for this request.';
+	}
+    
+    if(!$_POST['privilege'])
+	{
+		$err[]='You must choose a privilege to request.';
+	}
+    
+    if(!count($err))
+	{        
+        send_mail('noreply@deweyhaftaacademy.x10host.com',
+              'admin@deweyhaftaacademy.x10host.com',
+              'User Management - Privilege Change Request',
+              $_SESSION['usr'].' has requested for their rights to be changed to '.$_POST['privilege'].'. Their reason for this request is "'.$_POST['explain'].'"'
+             );
+        
+        $_SESSION['msg']['success']='Supervisor successfully updated.';
+    }
+    
+    if(count($err))
+	{
+		$_SESSION['msg']['err'] = implode('<br />',$err);
 	}
 }
 ?>
@@ -160,6 +194,26 @@ if($_POST['submit']=='Update Info')
 
         <p>This page is for registered users only. Please, <a href="sign_in">login</a> and come back later.</p>
         
+    <?php elseif($_GET['requestchange']): ?>
+        <?php
+				if($_SESSION['msg']['request-err'])
+				{
+				    echo '<div class="err">'.$_SESSION['msg']['request-err'].'</div>';
+				    unset($_SESSION['msg']['request-err']);
+				}
+        ?>
+        
+        <p>Use this form to request a change to your user rights.</p>
+        
+        <form action="" method="post">
+            <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label><br>
+            <input type='radio' name='privilege' value='student'><label for='student'>Student</label><br>
+            <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label><br>
+            <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label><br>
+            <input type='text' name='explain' style="width:80%;" placeholder='Please provide a brief explanation as to why this should be changed.'><br>
+            <input type='submit' name='request' value='Send Request' />
+        </form>
+        
     <?php else: ?>
         <h1>Preferences</h1>
         <?php
@@ -171,7 +225,7 @@ if($_POST['submit']=='Update Info')
         ?>
         <h3>Current account status</h3>
         <i style="font-size:110%;">
-        <?php echo $userInfo['privilege']; ?></i> <input type="button" onclick="location.href='?requestchange';" value="Request Change" style="margin-left:20px;"/>
+        <?php echo $userInfo['privilege']; ?></i> <input type="button" onclick="location.href='?requestchange=1';" value="Request Change" style="margin-left:20px;"/>
         
         <h3>Update Password</h3>
         <form action="" method="post">               
@@ -236,6 +290,7 @@ if($_POST['submit']=='Update Info')
     </div>
 </div>
 
-
+<?php require 'templates/jsload.php'; ?>
+    
 </body>
 </html>

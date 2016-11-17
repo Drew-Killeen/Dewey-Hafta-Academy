@@ -35,7 +35,8 @@
     ?>
     </div>
 </div>
-
+    
+<?php require 'templates/jsload.php'; ?>
 
 </body>
 </html>

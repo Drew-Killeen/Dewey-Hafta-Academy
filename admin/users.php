@@ -146,6 +146,7 @@ if($_POST['update']=='Update')
     </div>
 </div>
 
-
+<?php require '../templates/jsload.php'; ?>
+    
 </body>
 </html>

@@ -56,12 +56,12 @@ if($_POST['submit']=='Register')
 						'Registration System - New Account',
 						"Your account has been successfully created. An administrator must approve your account before you have full access to the site. If you do not receive an email confirming your account's approval or denial, please contact admin@deweyhaftaacademy.x10host.com.");
 
-			$_SESSION['msg']['reg-success']='An administrator has been notified and will approve your account shortly.';
+			$_SESSION['msg']['success']='An administrator has been notified and will approve your account shortly.';
 	}
 
 	if(count($err))
 	{
-		$_SESSION['msg']['reg-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
         header("Location: sign_up");
 	    exit;
 	}	
@@ -95,21 +95,6 @@ if($_POST['submit']=='Register')
         <!-- Register Form -->
         <form action="" method="post">
             <h1>Not a member yet? Sign Up!</h1>		
-
-            <?php
-
-                if($_SESSION['msg']['reg-err'])
-                {
-                    echo '<div class="err">'.$_SESSION['msg']['reg-err'].'</div>';
-                    unset($_SESSION['msg']['reg-err']);
-                }
-
-                if($_SESSION['msg']['reg-success'])
-                {
-                    echo '<div class="success">'.$_SESSION['msg']['reg-success'].'</div>';
-                    unset($_SESSION['msg']['reg-success']);
-                }
-            ?>
             <input class="field" type="text" name="username" id="username" value="" size="23" placeholder="Username"/><br>
             <input class="field" type="text" name="email" id="email" size="23" placeholder="Email"/><br>
             <input class="field" type="password" name="pass" id="pass" size="23" placeholder="Password"/><br>
@@ -126,6 +111,8 @@ if($_POST['submit']=='Register')
     ?>
     </div>
 </div>
+
+<?php require 'templates/jsload.php'; ?>
 
 </body>
 </html>
