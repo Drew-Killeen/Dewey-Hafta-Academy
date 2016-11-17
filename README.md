@@ -4,10 +4,10 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. _Streamline error/success messages_
+1. Give admins the ability to send mail
 2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc)
 3. Implement confirm password feature on sign_up.php and registered.php
-4. _Add notifications_
+4. _Add notification system_
 5. Tweak minor CSS details to be more consistent across the site
 6. Implement administrator ability to send emails from the site
 7. Create new progress.php page
@@ -49,3 +49,4 @@ Completed
 20. ~~Make the sass switch an on/off button~~
 21. ~~Allow for inputs to contain single or double quotation marks and other common characters~~
 22. ~~Allow a user to request their privileges to be changed~~
+23. ~~Streamline error/success messages~~
