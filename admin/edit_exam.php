@@ -25,7 +25,7 @@ if($_POST['update']=='Update')
 if($_POST['updateExam']=='Update')
 {   
     mysql_query("UPDATE exams SET public=".$_POST['public']." WHERE id='".$_GET['exam']."'");
-    header("Location: edit_exam?exam=".$_GET['exam']);
+    $_SESSION['msg']['success']='Exam updated';
 }
 
 ?>
@@ -35,6 +35,18 @@ if($_POST['updateExam']=='Update')
 <head>
 
 <?php include_once("../templates/htmlHeader.php") ?>
+    
+<script>    
+    function deleteQuestion() {
+        $confirm = confirm("Are you sure you want to delete this question? This cannot be undone.");
+            if($confirm === true) {
+            var xhttp = new XMLHttpRequest();
+            <?php echo 'xhttp.open("GET", "../scripts/delete.php?question='.$_GET['question'].'", true);'; ?>
+            xhttp.send();
+            window.location.assign(<?php echo '"http://www.deweyhaftaacademy.x10host.com/admin/edit_exam?exam='.$_GET['exam'].'"'; ?>);
+        }
+    }
+</script>
 </head>
 <body>
     
@@ -83,7 +95,9 @@ if($_POST['updateExam']=='Update')
             } else if(!$_GET['question'])
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public FROM exams WHERE id='".$_GET['exam']."'"));
-                echo "<h2><a href='edit_exam' class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
+                if(!$_GET['source']) echo "<h2><a href='edit_exam' ";
+                else echo "<h2><a href='".$_GET['source']."?course=".$_GET['get']."' ";
+                echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
                 echo "<form action='' method='post'><b>Public</b> <input type='radio' name='public' value='1' ";
                 if($examName['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
@@ -106,7 +120,9 @@ if($_POST['updateExam']=='Update')
             } else
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
-                echo "<h2><a href='edit_exam?exam=".$_GET['exam']."' class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
+                if(!$_GET['source']) echo "<h2><a href='edit_exam?exam=".$_GET['exam']."' ";
+                else "<h2><a href='".$_GET['source']."' ";
+                echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
                 $examQuestions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id='".$_GET['question']."'"));
 
                 echo 
@@ -121,7 +137,7 @@ if($_POST['updateExam']=='Update')
                 if($examQuestions['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examQuestions['public'] == 0) {echo "checked ";} 
-                echo "><label>No</label></input><br></p><p><input type='submit' name='update' value='Update' /> <input type='submit' name='delete' value='Delete' /></p>
+                echo "><label>No</label></input><br></p><p><input type='submit' name='update' value='Update' /> <input type='button' onclick='deleteQuestion();' name='delete' value='Delete' /></p>
                     </form>";
             }
             ?>
