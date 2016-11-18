@@ -23,8 +23,9 @@ $(document).ready(function() {
 
 });
 
+
 /* ==================================== */
-/*		         Classie		
+/*		        Classie		
 /* ==================================== */
 
 /*!
@@ -107,3 +108,4 @@ if ( typeof define === 'function' && define.amd ) {
 }
 
 })( window );
+
