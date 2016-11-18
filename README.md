@@ -27,6 +27,7 @@ TODO
 21. Create ability to view past enrollments
 22. Create about pages just becuz
 23. Update course column of exam table to be course id rather than course title
+24. Add ability for teachers to create exams/questions
 
 Completed
 ----
