@@ -21,3 +21,4 @@
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML"></script>
 <script src="http://deweyhaftaacademy.x10host.com/templates/script.js"></script>
 <script src="templates/modernizr.custom.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>

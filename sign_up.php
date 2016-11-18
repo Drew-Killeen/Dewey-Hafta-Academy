@@ -8,26 +8,46 @@ if($_POST['submit']=='Register')
 	// If the Register form has been submitted
 	
 	$err = array();
-	
-	if(strlen($_POST['username'])<4 || strlen($_POST['username'])>32)
-	{
-		$err[]='Your username must be between 3 and 32 characters.';
-	}
-	
-	if(preg_match('/[^a-z0-9\-\_\.]+/i',$_POST['username']))
-	{
-		$err[]='Your username contains invalid characters.';
-	}
-	
-	if(!checkEmail($_POST['email']))
-	{
-		$err[]='Your email is not valid.';
-	}
-	
-    /*if($_POST['pass'] != $_POST['pass_again'])
+    
+    if(!$_POST['username'] || !$_POST['email'] || !$_POST['pass'] || !$_POST['pass_again']) 
     {
-        $err[]='Passwords do not match.';
-    }*/
+        $err[]='All fields must be filled in.';
+    }
+	else {
+        if(strlen($_POST['username'])<4 || strlen($_POST['username'])>32)
+        {
+            $err[]='Your username must be between 3 and 32 characters.';
+        }
+
+        if(preg_match('/[^a-z0-9\-\_\.]+/i',$_POST['username']))
+        {
+            $err[]='Your username contains invalid characters.';
+        }
+
+        if(!checkEmail($_POST['email']))
+        {
+            $err[]='Your email is not valid.';
+        }
+
+        if($_POST['pass'] != $_POST['pass_again'])
+        {
+            $err[]='Passwords do not match.';
+        }
+        
+        if(!$_POST['g-recaptcha-response'])
+        {
+            $err[]='Please check the captcha form.';
+        }
+        else {
+            $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LcoYwoUAAAAAJs-KgcBmMX4RLT3LJllpnax6U9K&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
+            $responseKeys = json_decode($response,true);
+
+            if(intval($responseKeys["success"]) !== 1) 
+            {
+                $err[]='CAPTCHA cannot be verified. Please try again later.';
+            }
+        }
+    }
     
 	if(!count($err))
 	{
@@ -54,9 +74,9 @@ if($_POST['submit']=='Register')
             send_mail(	'noreply@deweyhaftaacademy.x10host.com',
 						$_POST['email'],
 						'Registration System - New Account',
-						"Your account has been successfully created. An administrator must approve your account before you have full access to the site. If you do not receive an email confirming your account's approval or denial, please contact admin@deweyhaftaacademy.x10host.com.");
-
-			$_SESSION['msg']['success']='An administrator has been notified and will approve your account shortly.';
+						"Your account has been successfully created. An administrator must approve your account before you have full access to the site. If you do not receive an email confirming your account's approval or denial within 48 hours, please contact admin@deweyhaftaacademy.x10host.com.");
+            
+			$_SESSION['msg']['success']='Account successfully created. An administrator has been notified and will approve your account shortly.';
 	}
 
 	if(count($err))
@@ -98,7 +118,8 @@ if($_POST['submit']=='Register')
             <input class="field" type="text" name="username" id="username" value="" size="23" placeholder="Username"/><br>
             <input class="field" type="text" name="email" id="email" size="23" placeholder="Email"/><br>
             <input class="field" type="password" name="pass" id="pass" size="23" placeholder="Password"/><br>
-            <input class="field" type="password" name="pass_again" id="pass_again" size="23" placeholder="Confirm Password"/>
+            <input class="field" type="password" name="pass_again" id="pass_again" size="23" placeholder="Confirm Password"/><br><br>
+            <div class="g-recaptcha" data-sitekey="6LcoYwoUAAAAAPSXMPSxnKOx91BX26ByuDD1NMfA"></div>
             <p class="note">An administrator will be notified of your account and will respond within 48 hours.</p>
             <input type="submit" name="submit" value="Register" class="bt_register" />
         </form>
