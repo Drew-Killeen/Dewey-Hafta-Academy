@@ -50,3 +50,4 @@ Completed
 22. ~~Allow a user to request their privileges to be changed~~
 23. ~~Streamline error/success messages~~
 24. ~~Implement confirm password feature on sign_up.php and registered.php~~
+25. ~~Integrate reCAPTCHA~~
