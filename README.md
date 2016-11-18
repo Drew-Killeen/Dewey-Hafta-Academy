@@ -27,6 +27,7 @@ TODO
 21. Make the sass switch actually do something
 22. Create ability to view past enrollments
 23. Create about pages just becuz
+24. Update course column of exam table to be course id rather than course title
 
 Completed
 ----
