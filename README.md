@@ -5,25 +5,24 @@ TODO
 ----
 
 1. Give admins the ability to send mail
-2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc)
-3. Implement confirm password feature on sign_up.php and registered.php
-4. _Add notification system_
-5. Tweak minor CSS details to be more consistent across the site
-6. Implement administrator ability to send emails from the site
-7. Create new progress.php page
-8. Create new print.php page
-9. Update user management system so that admins cannot edit sysops
-10. Limit the number of questions an exam displays to the number of questions that exist
-11. Add ability for teachers to view and edit their students' progress
-12. Rename table dewey_members to members
-13. Add exam overview
-14. Optimize the excessive database queries
-15. Give admins the ability to edit courses
-16. _Give admins the ability to delete courses/exams/questions_
-17. Implement AJAX wherever possible
-18. Make grade.php prettier and more useful
-19. _Give option to reset password if forgotten_
-20. Create style for radio buttons
+2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc) 
+3. _Add notification system_
+4. Tweak minor CSS details to be more consistent across the site
+5. Implement administrator ability to send emails from the site
+6. Create new progress.php page
+7. Create new print.php page
+8. Update user management system so that admins cannot edit sysops
+9. Limit the number of questions an exam displays to the number of questions that exist
+10. Add ability for teachers to view and edit their students' progress
+11. Rename table dewey_members to members
+12. Add exam overview
+13. Optimize the excessive database queries
+14. Give admins the ability to edit courses
+15. _Give admins the ability to delete courses/exams/questions_
+16. Implement AJAX wherever possible
+17. Make grade.php prettier and more useful
+18. _Give option to reset password if forgotten_
+19. Create style for radio buttons
 
 Completed
 ----
@@ -50,3 +49,4 @@ Completed
 21. ~~Allow for inputs to contain single or double quotation marks and other common characters~~
 22. ~~Allow a user to request their privileges to be changed~~
 23. ~~Streamline error/success messages~~
+24. ~~Implement confirm password feature on sign_up.php and registered.php~~
