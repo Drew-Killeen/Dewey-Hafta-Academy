@@ -24,6 +24,7 @@ TODO
 18. _Give option to reset password if forgotten_
 19. Create style for radio buttons
 20. Add delete account option under preferences
+21. Make the sass switch actually do something
 
 Completed
 ----
