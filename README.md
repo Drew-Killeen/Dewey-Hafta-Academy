@@ -23,6 +23,7 @@ TODO
 17. Make grade.php prettier and more useful
 18. _Give option to reset password if forgotten_
 19. Create style for radio buttons
+20. Add delete account option under preferences
 
 Completed
 ----
