@@ -193,17 +193,9 @@ if($_POST['request']=='Send Request')
 
         <p>This page is for registered users only. Please, <a href="sign_in">login</a> and come back later.</p>
         
-    <?php elseif($_GET['requestchange']): ?>
-        <?php
-				if($_SESSION['msg']['request-err'])
-				{
-				    echo '<div class="err">'.$_SESSION['msg']['request-err'].'</div>';
-				    unset($_SESSION['msg']['request-err']);
-				}
-        ?>
+    <?php elseif($_GET['requestchange']): ?>  
         
         <p>Use this form to request a change to your user rights.</p>
-        
         <form action="" method="post">
             <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label><br>
             <input type='radio' name='privilege' value='student'><label for='student'>Student</label><br>
@@ -215,26 +207,12 @@ if($_POST['request']=='Send Request')
         
     <?php else: ?>
         <h1>Preferences</h1>
-        <?php
-            if($_SESSION['msg']['update-success'])
-            {
-                echo '<div class="success">'.$_SESSION['msg']['update-success'].'</div>';
-                unset($_SESSION['msg']['update-success']);
-            }
-        ?>
         <h3>Current account status</h3>
         <i style="font-size:110%;">
         <?php echo $userInfo['privilege']; ?></i> <input type="button" onclick="location.href='?requestchange=1';" value="Request Change" style="margin-left:20px;"/>
         
         <h3>Update Password</h3>
         <form action="" method="post">               
-            <?php
-				if($_SESSION['msg']['update-err'])
-				{
-				    echo '<div class="err">'.$_SESSION['msg']['update-err'].'</div>';
-				    unset($_SESSION['msg']['update-err']);
-				}
-            ?>
             <input class="field" type="password" name="oldpass" value="" size="23" placeholder="Old Password"/>
             <input class="field" type="password" name="newpass" value="" size="23" placeholder="New Password"/>
             <input class="field" type="password" name="newpass_confirm" value="" size="23" placeholder="Confirm New Password"/>
@@ -248,26 +226,12 @@ if($_POST['request']=='Send Request')
             echo $current_data['supervisor'];
             ?></i></p>
         <form action="" method="post">
-            <?php
-				if($_SESSION['msg']['supervisor-err'])
-				{
-				    echo '<div class="err">'.$_SESSION['msg']['supervisor-err'].'</div>';
-				    unset($_SESSION['msg']['supervisor-err']);
-				}
-            ?>
             <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" placeholder="Supervisor Username"/>
             <input type="submit" name="submit" value="Add" class="bt_add" />
             <input type="submit" name="submit" value="Remove Supervisor" />
         </form>
         
         <form action="" method="post">
-            <?php
-				if($_SESSION['msg']['info-err'])
-				{
-				    echo '<div class="err">'.$_SESSION['msg']['info-err'].'</div>';
-				    unset($_SESSION['msg']['info-err']);
-				}
-            ?>
             <h3>Personal Info</h3>
             <input class="field" type="text" name="name" value="" size="23" placeholder="Full Name" />
             <input class="field" type="text" name="grade" value="" size="23" placeholder="Grade"/>
