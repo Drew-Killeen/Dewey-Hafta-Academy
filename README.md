@@ -26,6 +26,7 @@ TODO
 20. Add delete account option under preferences
 21. Make the sass switch actually do something
 22. Create ability to view past enrollments
+23. Create about pages just becuz
 
 Completed
 ----
