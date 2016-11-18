@@ -170,7 +170,6 @@ if($_POST['request']=='Send Request')
         var xhttp = new XMLHttpRequest();
         <?php echo 'xhttp.open("GET", "scripts/update.php?usr='.$_SESSION['id'].'&sass=1", true);'; ?>
         xhttp.send();
-        console.log("sass1");
     }
 </script>
     
