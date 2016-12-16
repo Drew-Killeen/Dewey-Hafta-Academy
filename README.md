@@ -28,6 +28,9 @@ TODO
 22. Create about pages just becuz
 23. Update course column of exam table to be course id rather than course title
 24. Add ability for teachers to create exams/questions
+25. Fix error/success system
+26. Fix 404.php and other error pages
+27. Create and add favicon
 
 Completed
 ----
