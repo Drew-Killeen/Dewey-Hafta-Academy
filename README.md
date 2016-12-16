@@ -25,13 +25,14 @@ TODO
 19. Add delete account option under preferences
 20. Make the sass switch actually do something
 21. Create ability to view past enrollments
-22. Create about pages just becuz
+22. Give admins the ability to edit about pages on the front end
 23. Update course column of exam table to be course id rather than course title
 24. Add ability for teachers to create exams/questions
 25. Fix error/success system
 26. Fix 404.php and other error pages
 27. Create and add favicon
 28. Fix exam editing glitch
+29. Create user profiles
 
 Completed
 ----
