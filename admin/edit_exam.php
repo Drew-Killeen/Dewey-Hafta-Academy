@@ -1,6 +1,6 @@
 <?php require 
     
-    '../templates/header.php'; 
+    '../scripts/header.php'; 
 
 if($_POST['add']=='New')
 {   
@@ -12,13 +12,20 @@ if($_POST['add']=='New')
 
 if($_POST['update']=='Update')
 {   
+    mysql_query("UPDATE questions SET type='".$_POST['type']."' WHERE id='".$_GET['question']."'");
+    
     $_POST['question'] = mysql_real_escape_string($_POST['question']);
-    $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
-    $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
-    $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
-    $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
-    $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
-    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
+    
+    if($_POST['type']=0) {
+        $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
+        $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
+        $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
+        $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
+        $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
+        mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
+    }
+    
+    $_SESSION['msg']['success']='Question updated';
     header("Location: edit_exam?exam=".$_GET['exam']);
 }
 
@@ -92,6 +99,7 @@ if($_POST['updateExam']=='Update')
                 {
                     echo "0 results";
                 }
+                echo "<input type='button' onclick='location.href=\"create_exam\";' value='New'/>";
             } else if(!$_GET['question'])
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public FROM exams WHERE id='".$_GET['exam']."'"));
@@ -125,14 +133,22 @@ if($_POST['updateExam']=='Update')
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
                 $examQuestions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id='".$_GET['question']."'"));
 
-                echo 
-                    "<form action='' method='post'>
-                    <b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                echo "<form action='' method='post'><p><b>Question Type</b><br><input type='radio' name='type' value='0' ";
+                if($examQuestions['type'] == 0) echo "checked ";
+                echo "><label>Multiple Choice (one choice)</label></input><br><input type='radio' name='type' value='1' ";
+                if($examQuestions['type'] == 1) echo "checked ";
+                echo "><label>Multiple Choice (multiple choices)</label></input><br><input type='radio' name='type' value='2' ";
+                if($examQuestions['type'] == 2) echo "checked ";
+                echo "><label>True/False</label></input><br><input type='radio' name='type' value='3' ";
+                if($examQuestions['type'] == 3) echo "checked ";
+                echo "><label>Free Response</label></input><br>
+                    <br></p>
+                    <p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
                     <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/><br>
                     <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/><br>
                     <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
                     <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
-                    <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br>
+                    <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br></p>
                     <p><b>Public?</b> <input type='radio' name='public' value='1' ";
                 if($examQuestions['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
@@ -148,7 +164,7 @@ if($_POST['updateExam']=='Update')
     </div>
 </div>
 
-<?php require '../templates/jsload.php'; ?>
+<?php require '../scripts/jsload.php'; ?>
     
 </body>
 </html>
