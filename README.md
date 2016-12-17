@@ -30,9 +30,8 @@ TODO
 24. Add ability for teachers to create exams/questions
 25. Fix 404.php and other error pages
 26. Create and add favicon
-27. Fix exam editing glitch
-28. Create user profiles
-29. Update GET source on edit_exam.php to not require get field
+27. Create user profiles
+28. Update GET source on edit_exam.php to not require get field
 
 Completed
 ----
@@ -62,3 +61,4 @@ Completed
 24. ~~Implement confirm password feature on sign_up.php and registered.php~~
 25. ~~Integrate reCAPTCHA~~
 26. ~~Fix error/success system~~
+27. ~~Fix exam editing glitch~~
