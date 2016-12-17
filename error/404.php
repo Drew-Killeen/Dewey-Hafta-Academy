@@ -1,4 +1,4 @@
-<?php require '../templates/header.php'; ?>
+<?php require '../scripts/header.php'; ?>
 
 <!DOCTYPE html>
 <html>
