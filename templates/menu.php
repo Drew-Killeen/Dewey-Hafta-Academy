@@ -16,17 +16,16 @@
                 if($_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') {
                 echo '<li class="menu-item-has-children"><a href="admin/index">Admin</a> <span class="sidebar-menu-arrow"></span>
                     <ul class="sub-menu">
-                        <li><a href="admin/create_course">Create course</a></li>
-                        <li><a href="admin/edit_course">Edit course</a></li>
-                        <li><a href="admin/create_exam">Create exam</a></li>
-                        <li><a href="admin/edit_exam">Edit exam</a></li>
+                        <li><a href="admin/edit_course">Courses</a></li>
+                        <li><a href="admin/edit_exam">Exams</a></li>
                         <li><a href="admin/users">Manage users</a></li>
                         <li><a href="admin/mail">Send mail</a></li>
                     </ul>
                 </li>';
                 }
                 echo 
-                '</ul>
+                '<li><a href="about">About</a></li>
+                </ul>
             </div>
         </div>
     </header>';
