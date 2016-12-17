@@ -1,6 +1,6 @@
 <?php
-require 'templates/header.php';
-require 'templates/functions.php';
+require 'scripts/header.php';
+require 'scripts/functions.php';
 
 $userInfo = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE id='{$_SESSION['id']}'"));
 
@@ -253,7 +253,7 @@ if($_POST['request']=='Send Request')
     </div>
 </div>
 
-<?php require 'templates/jsload.php'; ?>
+<?php require 'scripts/jsload.php'; ?>
     
 </body>
 </html>

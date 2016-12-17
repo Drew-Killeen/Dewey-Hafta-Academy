@@ -1,6 +1,6 @@
 <?php require 
     
-    '../templates/header.php'; 
+    '../scripts/header.php'; 
 
 if($_POST['update']=='Update')
 {   
@@ -64,7 +64,7 @@ if($_POST['update']=='Update')
                     {
                         echo "<li>0 results</li>";
                     }
-                    echo "</ul>";
+                    echo "</ul><br><input type='button' onclick='location.href=\"create_course\";' value='New'/>";
                 } else
                 {
                     $courseData = mysql_fetch_assoc(mysql_query("SELECT * FROM courses WHERE id='".$_GET['course']."'"));
@@ -92,7 +92,7 @@ if($_POST['update']=='Update')
     </div>
 </div>
 
-<?php require '../templates/jsload.php'; ?>
+<?php require '../scripts/jsload.php'; ?>
     
 </body>
 </html>

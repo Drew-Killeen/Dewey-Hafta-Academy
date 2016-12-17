@@ -1,7 +1,7 @@
 <?php 
 
-require '../templates/header.php'; 
-require '../templates/functions.php';
+require '../scripts/header.php'; 
+require '../scripts/functions.php';
 
 if($_POST['update']=='Update')
 {
@@ -146,7 +146,7 @@ if($_POST['update']=='Update')
     </div>
 </div>
 
-<?php require '../templates/jsload.php'; ?>
+<?php require '../scripts/jsload.php'; ?>
     
 </body>
 </html>

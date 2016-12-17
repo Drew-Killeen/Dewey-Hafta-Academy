@@ -1,7 +1,7 @@
 <?php
 
-require 'templates/header.php';
-require 'templates/functions.php';
+require 'scripts/header.php';
+require 'scripts/functions.php';
 
 if($_POST['submit']=='Register')
 {
@@ -39,7 +39,7 @@ if($_POST['submit']=='Register')
             $err[]='Please check the captcha form.';
         }
         else {
-            $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LcoYwoUAAAAAJs-KgcBmMX4RLT3LJllpnax6U9K&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
+            $response=file_get_contents();
             $responseKeys = json_decode($response,true);
 
             if(intval($responseKeys["success"]) !== 1) 
@@ -119,7 +119,7 @@ if($_POST['submit']=='Register')
             <input class="field" type="text" name="email" id="email" size="23" placeholder="Email"/><br>
             <input class="field" type="password" name="pass" id="pass" size="23" placeholder="Password"/><br>
             <input class="field" type="password" name="pass_again" id="pass_again" size="23" placeholder="Confirm Password"/><br><br>
-            <div class="g-recaptcha" data-sitekey="6LcoYwoUAAAAAPSXMPSxnKOx91BX26ByuDD1NMfA"></div>
+            <div class="g-recaptcha" data-sitekey="6Lf2VQwUAAAAAB6g1e1p0DrjETPHCcrGGfCUe7I2"></div>
             <p class="note">An administrator will be notified of your account and will respond within 48 hours.</p>
             <input type="submit" name="submit" value="Register" class="bt_register" />
         </form>
@@ -133,7 +133,7 @@ if($_POST['submit']=='Register')
     </div>
 </div>
 
-<?php require 'templates/jsload.php'; ?>
+<?php require 'scripts/jsload.php'; ?>
 
 </body>
 </html>

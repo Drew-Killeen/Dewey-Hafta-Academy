@@ -1,6 +1,6 @@
 <?php 
 
-require '../templates/header.php'; 
+require '../scripts/header.php'; 
 
 if($_POST['submit']=='Submit')
 {
@@ -126,7 +126,7 @@ if($_POST['submit']=='Submit')
     </div>
 </div>
 
-<?php require '../templates/jsload.php'; ?>
+<?php require '../scripts/jsload.php'; ?>
     
 </body>
 </html>
