@@ -1,8 +1,9 @@
 <?php 
 
-require 'templates/header.php'; 
+require 'scripts/header.php'; 
 
-$course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$enrollment['enrollment']));
 
 ?>
 
@@ -40,9 +41,9 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
         <!--Authorized-->
         <?php
         
-        echo "<h3>Exams available for ".$course['enrollment']."</h3>";
+        echo "<h3>Exams available for ".$course['course']."</h3>";
 
-        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
+        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$course['course']."' ORDER BY  `exams`.`module` ASC ");
         if (mysql_num_rows($exams) > 0) 
         {
             echo "<ul>";
@@ -50,7 +51,7 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
             while($row = mysql_fetch_assoc($exams)) {
                 $score = mysql_fetch_assoc(mysql_query ("SELECT id,score FROM attempts WHERE examNum='".$row['id']."' AND usr='".$_SESSION['id']."' ORDER BY score DESC LIMIT 1;"));
                 echo "<li><a href='exam?exam=".$row['id']."'>Module ".$row['module'].": ".$row['title']."</a>";
-                if($score) echo " - <a href='grade?attempt=".$score['id']."' class='whiteLink'>".$score['score']."%</a>";
+                if($score && $score['score'] >= 0) echo " - <a href='grade?attempt=".$score['id']."' class='whiteLink'>".$score['score']."%</a>";
                 echo "</li>";
             }
             echo "</ul>";
@@ -67,7 +68,7 @@ $course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members W
     </div>
 </div>
 
-<?php require 'templates/jsload.php'; ?>
+<?php require 'scripts/jsload.php'; ?>
 
 </body>
 </html>
