@@ -4,6 +4,7 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
+<<<<<<< HEAD
 1. Give admins the ability to send mail
 2. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc) 
 3. _Add notification system_
@@ -28,6 +29,37 @@ TODO
 22. Create ability to view past enrollments
 23. Create about pages just becuz
 24. Update course column of exam table to be course id rather than course title
+=======
+1. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc) 
+2. _Add notification system_
+3. Tweak minor CSS details to be more consistent across the site
+4. Implement administrator ability to send emails from the site
+5. Create new progress.php page
+6. Create new print.php page
+7. Update user management system so that admins cannot edit sysops
+8. Limit the number of questions an exam displays to the number of questions that exist
+9. Add ability for teachers to view and edit their students' progress
+10. Rename table dewey_members to members
+11. Add exam overview
+12. Optimize the excessive database queries
+13. Give admins the ability to edit courses
+14. _Give admins the ability to delete courses/exams/questions_
+15. Implement AJAX wherever possible
+16. Make grade.php prettier and more useful
+17. _Give option to reset password if forgotten_
+18. Create style for radio buttons
+19. Add delete account option under preferences
+20. Make the sass switch actually do something
+21. Create ability to view past enrollments
+22. Give admins the ability to edit about pages on the front end
+23. Update course column of exam table to be course id rather than course title
+24. Add ability for teachers to create exams/questions
+25. Fix 404.php and other error pages
+26. Create and add favicon
+27. Create user profiles
+28. Update GET source on edit_exam.php to not require get field
+29. Separate admin and teacher menus
+>>>>>>> origin/master
 
 Completed
 ----
@@ -56,3 +88,5 @@ Completed
 23. ~~Streamline error/success messages~~
 24. ~~Implement confirm password feature on sign_up.php and registered.php~~
 25. ~~Integrate reCAPTCHA~~
+26. ~~Fix error/success system~~
+27. ~~Fix exam editing glitch~~
