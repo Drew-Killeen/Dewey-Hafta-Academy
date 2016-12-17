@@ -1,6 +1,6 @@
 <?php 
 
-require 'templates/header.php'; 
+require 'scripts/header.php'; 
 
 if(!$_GET['exam']) {
     header("Location: course");
@@ -11,10 +11,9 @@ else if($_SESSION['numQuestions']) {
     }
 }
 
-$course =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-$temp = mysql_fetch_assoc(mysql_query("SELECT title,module FROM exams WHERE course='".$course['enrollment']."' AND id='".$_GET['exam']."'"));
-$examModule = $temp['module'];
-$examTitle = $temp["title"];
+$enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$enrollment['enrollment']));
+$examData = mysql_fetch_assoc(mysql_query("SELECT title,module,time_limit,attempts FROM exams WHERE course='".$course['course']."' AND id='".$_GET['exam']."'"));
 
 $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
     
@@ -35,12 +34,12 @@ if($_POST['continue'] == 'Continue') {
 
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
-    mysql_query("INSERT INTO attempts (examNum,usr,score) VALUES (".$_GET['exam'].", '".$_SESSION['id']."', -1)");
+    mysql_query("INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['course'].", ".$_SESSION['id'].", -1)");
     $_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-    $examData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
+    $questionData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
     $i = 1;
     // output data of each row
-    while($row = mysql_fetch_assoc($examData)) {
+    while($row = mysql_fetch_assoc($questionData)) {
         $attemptNum = $attempt['id'] + 1;
         mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['id']."')");
         $_SESSION['options'][$i] = array();
@@ -62,10 +61,10 @@ if($_POST['continue_attempt'] == "Continue") {
     $currentAttempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     if($_SESSION['attemptNum'] != $currentAttempt) {
         $_SESSION['attemptNum'] = $currentAttempt;
-        $examData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
+        $questionData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
         $i = 1;
         // output data of each row
-        while($row = mysql_fetch_assoc($examData)) {
+        while($row = mysql_fetch_assoc($questionData)) {
             $attemptNum = $attempt['id'] + 1;
             mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['id']."')");
             $_SESSION['options'][$i] = array();
@@ -111,11 +110,31 @@ if($_POST['submit'] == 'Submit') {
         if($row['correct'] == 1) $finalScore++;
     }
     $finalScore = round(($finalScore/mysql_num_rows($answersData)) * 100);
-    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
+    $previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
+    if($previousBest['score'] >= $finalScore) $bestScore = 0;
+    else $bestScore = 1;
+    mysql_query("UPDATE attempts SET score=".$finalScore.", primary=".$bestScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
     unset($_SESSION['questions']);
     unset($_SESSION['question']);
     unset($_SESSION['options']);
     header("Location: grade?attempt=".$attempt['id']);
+}
+
+// FUNCTION NOT YET FUNCTIONAL
+function updateCourse() {
+    $courseScore = mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$_GET['exam']);
+    $scoreTotal;
+    while($row = mysql_fetch_assoc($courseScore)) 
+    {
+        $scoreTotal += $row['score'];
+    }
+    $scoreTotal = $scoreTotal/(100 * mysql_num_rows($courseScore));
+    if(mysql_query("SELECT * FROM scores WHERE course=".$course['course'])) {
+        mysql_query("UPDATE scores SET score=".$scoreTotal." WHERE usr=".$_SESSION['id']." AND course=".$course['course']);
+    }
+    else {
+        mysql_query("INSERT INTO scores (course,usr,score) VALUES (".$course['course'].", ".$_SESSION['id'].", ".$scoreTotal.")");
+    }
 }
 ?>
 
@@ -151,11 +170,11 @@ if($_POST['submit'] == 'Submit') {
         else:
     ?>
         <!--Authorized-->
-        <?php echo "<h2>Module ".$examModule.": ".$examTitle."</h2>"; ?>
+        <?php echo "<h2>Module ".$examData['module'].": ".$examData['title']."</h2>"; ?>
         <form action="" method="post">
         <?php
             if($_GET['question']) {
-                echo "<b>".$_SESSION['questions'][$_GET['question']]."</b><br>";
+                echo "<p>".$_SESSION['questions'][$_GET['question']]."</p><p>";
                 if($_SESSION['options'][$_GET['question']][0]) { 
                     echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][0]."' "; 
                     if($_SESSION['question'][$_GET['question']] == $_SESSION['options'][$_GET['question']][0]) {
@@ -190,6 +209,7 @@ if($_POST['submit'] == 'Submit') {
                     } 
                     echo "/><label for='".$_SESSION['options'][$_GET['question']][4]."'>".$_SESSION['options'][$_GET['question']][4]."</label><br>";
                 }
+                echo "</p>";
             } 
             else if($_GET['review'] == 1) 
             {
@@ -201,7 +221,11 @@ if($_POST['submit'] == 'Submit') {
             } 
             else 
             {
-                echo "<p>You are about to begin an exam. You have 0 attempts remaining. If there is a time limit, the countdown will begin as soon as your press continue. Blah, blah, blah.</p> <br> <input type='submit' name='begin' value='Begin' />";
+                echo "<p>You are about to begin an exam.</p>";
+                if($examData['attempts'] != 0) echo $examData['attempts']." attempts remaining.<br>";
+                if($examData['time_limit'] != 0) echo "Time limit: ".$examData['time_limit']." minutes.<br>";
+                else echo "No time limit.<br>";
+                echo "<br><input type='submit' name='begin' value='Begin' />";
             }
         ?>
             <?php if($_GET['question']) echo '<input type="submit" name="continue" value="Continue" /> <input type="submit" name="submit" value="Submit" />'; ?>
@@ -213,7 +237,7 @@ if($_POST['submit'] == 'Submit') {
     </div>
 </div>
 
-<?php require 'templates/jsload.php'; ?>
+<?php require 'scripts/jsload.php'; ?>
     
 </body>
 </html>
