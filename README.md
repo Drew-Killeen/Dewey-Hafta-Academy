@@ -28,11 +28,10 @@ TODO
 22. Give admins the ability to edit about pages on the front end
 23. Update course column of exam table to be course id rather than course title
 24. Add ability for teachers to create exams/questions
-25. Fix 404.php and other error pages
-26. Create and add favicon
-27. Create user profiles
-28. Update GET source on edit_exam.php to not require get field
-29. Separate admin and teacher menus
+25. Create and add favicon
+26. Create user profiles
+27. Update GET source on edit_exam.php to not require get field
+28. Separate admin and teacher menus
 
 Completed
 ----
@@ -63,3 +62,4 @@ Completed
 25. ~~Integrate reCAPTCHA~~
 26. ~~Fix error/success system~~
 27. ~~Fix exam editing glitch~~
+28. ~~Fix 404.php and other error pages~~
