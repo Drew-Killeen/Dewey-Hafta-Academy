@@ -1,6 +1,6 @@
 <?php 
 
-require 'templates/header.php'; 
+require 'scripts/header.php'; 
 
 if($_POST['submit']=='Submit')
 {
@@ -44,49 +44,57 @@ if($_POST['submit']=='Submit')
         else:            
     ?>
         <!--Authorized-->
-        <h2>Course Enrollment</h2>
-        <?php
-            $current_data = mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-            if(empty($current_data))
-            {
-                echo "<p>You are not currently enrolled in any courses. Select one below.</p>";
-            } else 
-            {
-               echo "<p>You are currently enrolled in ".$current_data['enrollment'].".</p>";
-            }
-        ?>
-        
-        <p>Choose a course to update your enrollment. You can only be enrolled in one course at a time. To see past enrollments, click <a href=''>here</a>.</p>
-        <?php
-            if($_SESSION['msg']['update-success'])
-            {
-                echo '<div class="success">'.$_SESSION['msg']['update-success'].'</div>';
-                unset($_SESSION['msg']['update-success']);
-            }
-        ?>
-        <form action="" method="post">
-            <?php                    
-                $courses = mysql_query ("SELECT course FROM courses WHERE public=1");
-                if (mysql_num_rows($courses) > 0) 
+        <?php if($_GET['past_enroll'] != 1): ?>
+            <h2>Course Enrollment</h2>
+            <?php
+                $current_data = mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+                if(empty($current_data))
                 {
-                    // output data of each row
-                    while($row = mysql_fetch_assoc($courses)) {
-                       echo "<input class='field' type='radio' name='course' value='".$row["course"]."'/><label class='grey' for='".$row["course"]."'>".$row["course"]."</label><br>";
-                }
+                    echo "<p>You are not currently enrolled in any courses. Select one below.</p>";
                 } else 
                 {
-                    echo "0 results";
+                    $enrollmentName = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$current_data['enrollment']));
+                    echo "<p>You are currently enrolled in ".$enrollmentName['course'].".</p>";
                 }
             ?>
-            <input type="submit" name="submit" value="Submit"/>
-        </form>
+
+            <p>Choose a course to update your enrollment. You can only be enrolled in one course at a time. To see past enrollments, click <a href='?past_enroll=1'>here</a>.</p>
+            <form action="" method="post">
+                <?php                    
+                    $courses = mysql_query ("SELECT id,course FROM courses WHERE public=1");
+                    if (mysql_num_rows($courses) > 0) 
+                    {
+                        // output data of each row
+                        while($row = mysql_fetch_assoc($courses)) {
+                           echo "<input class='field' type='radio' name='course' value='".$row['id']."'/><label class='grey' for='".$row["course"]."'>".$row["course"]."</label><br>";
+                    }
+                    } else 
+                    {
+                        echo "0 results";
+                    }
+                ?>
+                <input type="submit" name="submit" value="Submit"/>
+            </form>
+        
+        <?php 
+            else: 
+        ?>
+        
+            <h2>Past Enrollments</h2>
+            <?php 
+                $pastCourses = mysql_query("SELECT course FROM scores WHERE usr=".$_SESSION['id']);
+            ?>
+        
+        <?php 
+            endif; 
+        ?>
     <?php
 	   endif;
     ?>
     </div>
 </div>
 
-    <?php require 'templates/jsload.php'; ?>
+    <?php require 'scripts/jsload.php'; ?>
 
 </body>
 </html>
