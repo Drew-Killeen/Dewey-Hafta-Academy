@@ -28,12 +28,11 @@ TODO
 22. Give admins the ability to edit about pages on the front end
 23. Update course column of exam table to be course id rather than course title
 24. Add ability for teachers to create exams/questions
-25. Fix error/success system
-26. Fix 404.php and other error pages
-27. Create and add favicon
-28. Fix exam editing glitch
-29. Create user profiles
-30. Update GET source on edit_exam.php to not require get field
+25. Fix 404.php and other error pages
+26. Create and add favicon
+27. Fix exam editing glitch
+28. Create user profiles
+29. Update GET source on edit_exam.php to not require get field
 
 Completed
 ----
@@ -62,3 +61,4 @@ Completed
 23. ~~Streamline error/success messages~~
 24. ~~Implement confirm password feature on sign_up.php and registered.php~~
 25. ~~Integrate reCAPTCHA~~
+26. ~~Fix error/success system~~
