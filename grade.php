@@ -1,6 +1,6 @@
 <?php
 
-require 'templates/header.php'; 
+require 'scripts/header.php'; 
 
 ?>
 
@@ -47,7 +47,13 @@ require 'templates/header.php';
                     if (mysql_num_rows($attempts) > 0) {
                         echo "<ul>";
                         for($i = 1; $row2 = mysql_fetch_assoc($attempts); $i++) {
-                            echo "<li>Attempt ".$i.": ".$row2['score']."% (<a href='grade?attempt=".$row2['id']."'>review</a>)</li>";
+                            echo "<li>Attempt ".$i.": ";
+                            if($row2['score'] != -1) {
+                                echo $row2['score']."% (<a href='grade?attempt=".$row2['id']."'>review</a>)</li>";
+                            }
+                            else {
+                                echo "<i>incomplete</i>";
+                            }
                         }
                         echo "</ul>";
                     }
@@ -79,7 +85,7 @@ require 'templates/header.php';
     </div>
 </div>
 
-<?php require 'templates/jsload.php'; ?>
+<?php require 'scripts/jsload.php'; ?>
     
 </body>
 </html>
