@@ -1,7 +1,9 @@
+<!--I'm here-->
 <?php if($_SESSION['msg']['err']): ?>
 
-<script src="../templates/notificationFx.js"></script>
+<script src="../scripts/notificationFx.js"></script>
 <script>
+    console.log('error');
     // create the notification
     var notification = new NotificationFx({
         message : <?php echo "'".$_SESSION['msg']['err']."'"; ?>,
@@ -18,8 +20,9 @@
 <?php   unset($_SESSION['msg']['err']);
         elseif($_SESSION['msg']['success']): ?>
 
-<script src="../templates/notificationFx.js"></script>
+<script src="../scripts/notificationFx.js"></script>
 <script>
+    console.log('success');
     var notification = new NotificationFx({
                 message : <?php echo "'".$_SESSION['msg']['success']."'"; ?>,
                 layout : 'attached',
