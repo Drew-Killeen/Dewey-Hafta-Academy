@@ -34,7 +34,7 @@ if($_POST['update']=='Update')
     <?php include_once("../templates/login.php"); ?>
 </div>
     
-<?php include_once("../templates/subfolder_menu.php"); ?>
+<?php include_once("../templates/menu.php"); ?>
     
 <div id="main">
     <div class="container">
