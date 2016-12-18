@@ -64,3 +64,4 @@ Completed
 26. ~~Fix error/success system~~
 27. ~~Fix exam editing glitch~~
 28. ~~Fix 404.php and other error pages~~
+29. ~~Update user menu~~
