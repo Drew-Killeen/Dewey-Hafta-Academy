@@ -9,9 +9,17 @@
     <?php
         else:
     ?>
-    
-    <a href="../registered">Preferences</a> - 
-    <a href="?logoff">Logout</a>
+
+        <div class="menu-dropdown">
+            <ul class="menu">
+                <li class="menu-item-has-children" style="text-align:right;"><a href="profile">Profile</a> <span class="sidebar-menu-arrow"></span>
+                    <ul class="sub-menu-dropdown">
+                        <li><a href="../registered">Preferences</a></li>
+                        <li><a href="?logoff">Logout</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </div>
     
     <?php
         endif;
