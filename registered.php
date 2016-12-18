@@ -99,34 +99,6 @@ if($_POST['submit']=='Remove Supervisor')
     $_SESSION['msg']['success']='Supervisor removed.';
 }
 
-if($_POST['submit']=='Update Info')
-{
-    // Checking whether the Supervisor form has been submitted
-    
-	$_POST['name'] = mysql_real_escape_string($_POST['name']);
-    $_POST['grade'] = mysql_real_escape_string($_POST['grade']);
-    $grade = preg_replace("/[^0-9]/", "", $_POST['grade']);
-	$err = array();
-	// Will hold our errors
-        
-    if($grade < 1 || $grade > 12)
-	{
-		$err[]='You can only be in grades 1-12.';
-	}
-    
-    if(!count($err))
-	{
-        mysql_query("UPDATE dewey_members SET grade='".$grade."', name=".$_POST['name']." WHERE id='".$_SESSION['id']."'");
-        
-        $_SESSION['msg']['success']='Information successfully updated.';
-    }
-    
-    if(count($err))
-	{
-		$_SESSION['msg']['err'] = implode('<br />',$err);
-	}
-}
-
 if($_POST['request']=='Send Request')
 {
 
@@ -229,13 +201,6 @@ if($_POST['request']=='Send Request')
             <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" placeholder="Supervisor Username"/>
             <input type="submit" name="submit" value="Add" class="bt_add" />
             <input type="submit" name="submit" value="Remove Supervisor" />
-        </form>
-        
-        <form action="" method="post">
-            <h3>Personal Info</h3>
-            <input class="field" type="text" name="name" value="" size="23" placeholder="Full Name" />
-            <input class="field" type="text" name="grade" value="" size="23" placeholder="Grade"/>
-            <input type="submit" name="submit" value="Update Info" />
         </form>
         
         <h3>Sass</h3>    
