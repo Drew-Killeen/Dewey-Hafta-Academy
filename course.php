@@ -2,8 +2,10 @@
 
 require 'scripts/header.php'; 
 
-$enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-$course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$enrollment['enrollment']));
+if($_SESSION['id'] && !$_SESSION['privilege'] == 'unapproved') {
+    $enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+    $course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$enrollment['enrollment']));
+}
 
 ?>
 
@@ -26,21 +28,16 @@ $course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$
     
 <div id="main">
     <div class="container">
-    <?php
-        if(!$_SESSION['id']):
-    ?>
+    <?php if(!$_SESSION['id']): ?>
         <!--Unauthorized-->
         <p>This site is for members only. Click <a href="sign_in">here</a> to login. To apply for a membership, please visit the <a href="sign_up">sign up</a> page.</p>
-    <?php
-        elseif($_SESSION['privilege'] == 'unapproved'):
-    ?>
+   <?php elseif($_SESSION['privilege'] == 'unapproved'): ?>
         <p>Your account must be approved before you can enroll in a course.</p>
     <?php
         else:
     ?>
         <!--Authorized-->
         <?php
-        
         echo "<h3>Exams available for ".$course['course']."</h3>";
 
         $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$course['course']."' ORDER BY  `exams`.`module` ASC ");
