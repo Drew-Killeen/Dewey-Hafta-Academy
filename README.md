@@ -32,6 +32,7 @@ TODO
 26. Create user profiles
 27. Update GET source on edit_exam.php to not require get field
 28. Separate admin and teacher menus
+29. Integrate Gravatar
 
 Completed
 ----
