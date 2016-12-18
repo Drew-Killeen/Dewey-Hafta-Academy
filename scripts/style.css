@@ -157,8 +157,8 @@ input[type="password"]:focus {
     transition: opacity 0.3s;
 }
 
-.editExam:hover,
-a.whiteLink:hover {
+.editExam:focus,
+a.whiteLink:focus {
     opacity: 1;
 }
 
@@ -304,8 +304,11 @@ button:active {
 
 .menu-sidebar li > a, .menu-dropdown li > a {
     color: #f3f3f3;
-    font-size: 1.18em;
     position: relative;
+}
+
+.menu-sidebar li > a {
+    font-size: 1.18em;
 }
 
 .menu-sidebar li > a::after, .menu-dropdown li > a::after {
@@ -365,7 +368,7 @@ ul.sub-menu-dropdown {
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
     position: relative;
-    top: 14px;
+    top: 18px;
     line-height: 1.5;
     box-shadow: 0px 6px 12px 1px #B9ADAD;
 }
