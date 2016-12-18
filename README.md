@@ -65,3 +65,4 @@ Completed
 27. ~~Fix exam editing glitch~~
 28. ~~Fix 404.php and other error pages~~
 29. ~~Update user menu~~
+30. ~~Merge subfolder-menu.php into menu.php~~
