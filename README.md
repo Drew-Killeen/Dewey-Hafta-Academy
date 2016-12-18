@@ -34,6 +34,7 @@ TODO
 28. Separate admin and teacher menus
 29. Integrate Gravatar
 30. Require new accounts to confirm email
+31. Create new statistics page for admins
 
 Completed
 ----
