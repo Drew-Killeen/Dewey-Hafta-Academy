@@ -17,24 +17,23 @@ TODO
 11. Add exam overview
 12. Optimize the excessive database queries
 13. Give admins the ability to edit courses
-14. _Give admins the ability to delete courses/exams/questions_
-15. Implement AJAX wherever possible
-16. Make grade.php prettier and more useful
-17. _Give option to reset password if forgotten_
-18. Create style for radio buttons
-19. Add delete account option under preferences
-20. Make the sass switch actually do something
-21. Create ability to view past enrollments
-22. Give admins the ability to edit about pages on the front end
-23. Update course column of exam table to be course id rather than course title
-24. Add ability for teachers to create exams/questions
-25. Create and add favicon
-26. Create user profiles
-27. Update GET source on edit_exam.php to not require get field
-28. Separate admin and teacher menus
-29. Integrate Gravatar
-30. Require new accounts to confirm email
-31. Create new statistics page for admins
+14. Implement AJAX wherever possible
+15. Make grade.php prettier and more useful
+16. _Give option to reset password if forgotten_
+17. Create style for radio buttons
+18. Add delete account option under preferences
+19. Make the sass switch actually do something
+20. Create ability to view past enrollments
+21. Give admins the ability to edit about pages on the front end
+22. Update course column of exam table to be course id rather than course title
+23. Add ability for teachers to create exams/questions
+24. Create and add favicon
+25. Create user profiles
+26. Update GET source on edit_exam.php to not require get field
+27. Separate admin and teacher menus
+28. Integrate Gravatar
+29. Require new accounts to confirm email
+30. Create new statistics page for admins
 
 Completed
 ----
@@ -68,3 +67,4 @@ Completed
 28. ~~Fix 404.php and other error pages~~
 29. ~~Update user menu~~
 30. ~~Merge subfolder-menu.php into menu.php~~
+31. ~~Give admins the ability to delete courses/exams/questions~~
