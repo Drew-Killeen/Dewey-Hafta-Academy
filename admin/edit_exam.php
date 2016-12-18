@@ -132,7 +132,7 @@ if($_POST['updateExam']=='Update')
                 {
                     echo "0 results";
                 }
-                echo "<br><input type='submit' name='add' value='New' /></form>";
+                echo "<br><input type='submit' name='add' value='New' /> <input type='button' onclick='deleteExam();' name='delete' value='Delete' /></form>";
             } else
             {
                 $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
