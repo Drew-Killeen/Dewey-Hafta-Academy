@@ -123,7 +123,7 @@ if($_POST['request']=='Send Request')
               $_SESSION['usr'].' has requested for their rights to be changed to '.$_POST['privilege'].'. Their reason for this request is "'.$_POST['explain'].'"'
              );
         
-        $_SESSION['msg']['success']='Supervisor successfully updated.';
+        $_SESSION['msg']['success']='Request sent.';
     }
     
     if(count($err))
@@ -191,7 +191,7 @@ if($_POST['request']=='Send Request')
             <input type="submit" name="submit" value="Update" />
         </form>
         
-        <h3>Add Supervisor</h3>
+        <h3>Supervisor</h3>
         <p>Current supervisor: <i>
         <?php 
             $current_data = mysql_fetch_assoc(mysql_query("SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
