@@ -33,6 +33,7 @@ TODO
 27. Update GET source on edit_exam.php to not require get field
 28. Separate admin and teacher menus
 29. Integrate Gravatar
+30. Require new accounts to confirm email
 
 Completed
 ----
