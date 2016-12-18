@@ -83,7 +83,7 @@ if($_POST['update']=='Update')
                         echo "</li>";
                     }
                     
-                    echo "</ul></p><p><input type='submit' name='update' value='Update' /> <input type='submit' onclick='deleteCourse();' name='delete' value='Delete' /></p></form>";
+                    echo "</ul></p><p><input type='submit' name='update' value='Update' /> <input type='button' onclick='deleteCourse();' name='delete' value='Delete' /></p></form>";
                 }
             ?>
     <?php
