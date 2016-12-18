@@ -59,7 +59,7 @@ if($_POST['updateExam']=='Update')
     <?php include_once("../templates/login.php"); ?>
 </div>
     
-<?php include_once("../templates/subfolder_menu.php"); ?>
+<?php include_once("../templates/menu.php"); ?>
     
 <div id="main">
     <div class="container">
@@ -103,11 +103,11 @@ if($_POST['updateExam']=='Update')
                 if(!$_GET['source']) echo "<h2><a href='edit_exam' ";
                 else echo "<h2><a href='".$_GET['source']."?course=".$_GET['get']."' ";
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
-                echo "<form action='' method='post'><b>Public</b> <input type='radio' name='public' value='1' ";
+                echo "<form action='' method='post'><p><b>Public</b> <input type='radio' name='public' value='1' ";
                 if($examName['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examName['public'] == 0) {echo "checked ";} 
-                echo "><label>No</label></input><br><input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";
+                echo "><label>No</label></input></p><input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";
                 $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum='".$_GET['exam']."'");
                 if (mysql_num_rows($examQuestions) > 0) 
                 {
