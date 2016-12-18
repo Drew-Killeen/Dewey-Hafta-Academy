@@ -50,6 +50,17 @@ if($_POST['updateExam']=='Update')
             window.location.assign(<?php echo '"http://www.deweyhaftaacademy.x10host.com/admin/edit_exam?exam='.$_GET['exam'].'"'; ?>);
         }
     }
+    
+    function deleteExam() {
+        $confirm = confirm("Are you sure you want to delete this exam? This cannot be undone.");
+            if($confirm === true) {
+            var xhttp = new XMLHttpRequest();
+            <?php echo 'xhttp.open("GET", "../scripts/delete.php?exam='.$_GET['exam'].'", true);'; ?>
+            xhttp.send();
+            window.location.assign('http://www.deweyhaftaacademy.x10host.com/admin/edit_exam');
+        }
+    }
+
 </script>
 </head>
 <body>
