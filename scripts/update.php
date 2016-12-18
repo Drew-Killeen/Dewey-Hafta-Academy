@@ -1,5 +1,5 @@
 <?php
-    require '../templates/header.php';
+    require '../scripts/header.php';
 
     if($_GET['usr'] && $_GET['sass']) 
     {

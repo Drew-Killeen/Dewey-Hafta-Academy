@@ -1,5 +1,5 @@
 <?php
-    require '../templates/header.php';
+    require '../scripts/header.php';
 
     if(($_GET['question'] && $_GET['exam']) || ($_GET['question'] && $_GET['course']) || ($_GET['exam'] && $_GET['course']))
     {
