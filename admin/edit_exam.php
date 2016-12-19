@@ -15,13 +15,16 @@ if($_POST['update']=='Update')
     mysql_query("UPDATE questions SET type='".$_POST['type']."' WHERE id='".$_GET['question']."'");
     
     $_POST['question'] = mysql_real_escape_string($_POST['question']);
-    $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
-    $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
-    $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
-    $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
-    $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
-    mysql_query("UPDATE questions SET question='".$_POST['question']."', option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
+    mysql_query("UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public']." WHERE id='".$_GET['question']."'");
     
+    if($_POST['option1']) {
+        $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
+        $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
+        $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
+        $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
+        $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
+        mysql_query("UPDATE questions SET option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
+    }
     $_SESSION['msg']['success']='Question updated';
     //header("Location: edit_exam?exam=".$_GET['exam']);
 }
@@ -87,13 +90,13 @@ if($_POST['updateExam']=='Update')
             <?php
             if(!$_GET['exam']) {
                 echo "<h2>Current Exams</h2>";
-                $courses = mysql_query("SELECT course FROM courses ORDER BY course ASC");
+                $courses = mysql_query("SELECT id,course FROM courses ORDER BY course ASC");
                 if (mysql_num_rows($courses) > 0) 
                 {
                     // output data of each row
                     while($rowCourse = mysql_fetch_assoc($courses)) {
                         echo "<h4>".$rowCourse['course']."</h4><ul>";
-                        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$rowCourse['course']."' ORDER BY module ASC");
+                        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$rowCourse['id']."' ORDER BY module ASC");
                         while($rowExam = mysql_fetch_assoc($exams)) {
                             $questionsNum = mysql_query("SELECT id FROM questions WHERE examNum=".$rowExam['id']);
                             echo "<li><a href='?exam=".$rowExam['id']."'>Module ".$rowExam['module'].": ".$rowExam['title']."</a>";
@@ -150,14 +153,24 @@ if($_POST['updateExam']=='Update')
                 echo "><label>True/False</label></input><br><input type='radio' name='type' value='3' ";
                 if($examQuestions['type'] == 3) echo "checked ";
                 echo "><label>Free Response</label></input><br>
-                    <br></p>
-                    <p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
-                    <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/><br>
-                    <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/><br>
-                    <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
-                    <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
-                    <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br></p>
-                    <p><b>Public?</b> <input type='radio' name='public' value='1' ";
+                    <br></p>";
+                    if($examQuestions['type'] == 0 || $examQuestions['type'] == 1) {
+                        echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                        <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/><br>
+                        <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/><br>
+                        <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
+                        <b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/><br>
+                        <b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/><br></p>";
+                    }
+                    else if($examQuestions['type'] == 2) {
+                        echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                        <b>Option 1:</b> <span class='editExam' type='field' name='option1'>True</span><br>
+                        <b>Option 2:</b> <span class='editExam' type='field' name='option2'>False</span><br></p>";  
+                    }
+                    else if($examQuestions['type'] == 3) {
+                        echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br><span style='font-size:86%;'>Question will be graded by supervisor.</span><br></p>";
+                    }
+                    echo "<p><b>Public?</b> <input type='radio' name='public' value='1' ";
                 if($examQuestions['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examQuestions['public'] == 0) {echo "checked ";} 
