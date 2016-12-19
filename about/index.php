@@ -1,4 +1,4 @@
-<?php require '../templates/header.php'; ?>
+<?php require '../scripts/header.php'; ?>
 
 <!DOCTYPE html>
 <html>
@@ -39,7 +39,7 @@
     </div>
 </div>
     
-<?php require '../templates/jsload.php'; ?>
+<?php require '../scripts/jsload.php'; ?>
 
 </body>
 </html>
