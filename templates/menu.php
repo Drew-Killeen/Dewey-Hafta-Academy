@@ -8,14 +8,14 @@
         </span>
     <div class="menu-wrap">
         <div class="menu-sidebar">
-            <ul class="menu">
+            <ul class="menu nolist">
                 <li><a href="../main">Home</a></li>
                 <li><a href="../enroll">Enroll</a></li>
                 <li><a href="../course">View course</a></li>
-                <li><a href="../progress">Progress</a></li>';
+                <li><a href="../grade">Progress</a></li>';
                 if($_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') {
                 echo '<li class="menu-item-has-children"><a href="../admin/index">Admin</a> <span class="sidebar-menu-arrow"></span>
-                    <ul class="sub-menu">
+                    <ul class="sub-menu nolist">
                         <li><a href="../admin/edit_course">Courses</a></li>
                         <li><a href="../admin/edit_exam">Exams</a></li>
                         <li><a href="../admin/users">Manage users</a></li>

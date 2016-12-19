@@ -106,17 +106,21 @@ a {
     text-decoration: none;
 }
 
-ul {
+ul.nolist {
     padding-left: 0;
 }
 
-ul > li {
+ul.nolist > li {
     list-style: none;
 }
 
 p.note {
     font-size: 85%;
     opacity: 0.8;
+}
+
+label {
+    margin-left: 10px;
 }
 
 

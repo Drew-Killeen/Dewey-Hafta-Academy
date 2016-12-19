@@ -11,9 +11,9 @@
     ?>
 
         <div class="menu-dropdown">
-            <ul class="menu">
+            <ul class="menu nolist">
                 <li class="menu-item-has-children" style="text-align:right;"><a href="../profile"><?php echo $_SESSION['usr']; ?></a> <span class="sidebar-menu-arrow"></span>
-                    <ul class="sub-menu-dropdown" style="display:none;">
+                    <ul class="sub-menu-dropdown nolist" style="display:none;">
                         <li><a href="../registered">Preferences</a></li>
                         <li><a href="?logoff">Logout</a></li>
                     </ul>
