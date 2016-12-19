@@ -155,7 +155,7 @@ if($_POST['updateExam']=='Update')
                 echo "><label>Free Response</label></input><br>
                     <br></p>";
                     if($examQuestions['type'] == 0 || $examQuestions['type'] == 1) {
-                        echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                        echo "<p style='font-size:86%;'>The first option should always be the correct answer</p><p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
                         <b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/><br>
                         <b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/><br>
                         <b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/><br>
