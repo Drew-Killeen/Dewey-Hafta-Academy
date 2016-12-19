@@ -34,6 +34,7 @@ TODO
 28. Integrate Gravatar
 29. Require new accounts to confirm email
 30. Create new statistics page for admins
+31. Fix glitch where user is logged out upon deleting content
 
 Completed
 ----
