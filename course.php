@@ -2,9 +2,9 @@
 
 require 'scripts/header.php'; 
 
-if($_SESSION['id'] && !$_SESSION['privilege'] == 'unapproved') {
+if($_SESSION['id'] && $_SESSION['privilege'] != 'unapproved') {
     $enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-    $course = mysql_fetch_assoc(mysql_query("SELECT course FROM courses WHERE id=".$enrollment['enrollment']));
+    $course = mysql_fetch_assoc(mysql_query("SELECT id,course FROM courses WHERE id=".$enrollment['enrollment']));
 }
 
 ?>
@@ -40,7 +40,7 @@ if($_SESSION['id'] && !$_SESSION['privilege'] == 'unapproved') {
         <?php
         echo "<h3>Exams available for ".$course['course']."</h3>";
 
-        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$course['course']."' ORDER BY  `exams`.`module` ASC ");
+        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$course['id']."' ORDER BY  `exams`.`module` ASC ");
         if (mysql_num_rows($exams) > 0) 
         {
             echo "<ul>";

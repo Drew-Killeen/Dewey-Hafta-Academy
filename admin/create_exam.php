@@ -101,13 +101,13 @@ if($_POST['submit']=='Submit')
         <form action="" method="post">
             <label class="grey" for="course">Select Course</label><br>
             <?php
-            $courses = mysql_query ("SELECT course FROM courses");
+            $courses = mysql_query ("SELECT id,course FROM courses");
             if (mysql_num_rows($courses) > 0) 
             {
                 // output data of each row
                 while($row = mysql_fetch_assoc($courses)) {
-                    if(isset($_GET[$row['course']])) echo "<input class='field' type='radio' name='course' value='".$row["course"]."' checked/><label class='grey' for='".$row["course"]."'>".$row["course"]."</label><br>";
-                    else echo "<input class='field' type='radio' name='course' value='".$row["course"]."'/><label class='grey' for='".$row["course"]."'>".$row["course"]."</label><br>";
+                    if(isset($_GET[$row['course']])) echo "<input class='field' type='radio' name='course' value='".$row['id']."' checked/><label class='grey' for='".$row['id']."'>".$row["course"]."</label><br>";
+                    else echo "<input class='field' type='radio' name='course' value='".$row['id']."'/><label class='grey' for='".$row['id']."'>".$row['course']."</label><br>";
             }
             } else 
             {
