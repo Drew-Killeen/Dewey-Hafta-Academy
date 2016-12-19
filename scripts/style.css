@@ -119,10 +119,6 @@ p.note {
     opacity: 0.8;
 }
 
-label {
-    margin-left: 10px;
-}
-
 
 /* ==================================== */
 /*		  	Buttons & Inputs		
@@ -271,6 +267,13 @@ button:active {
     background-color: #6dabad;
 }
 
+input[type="radio"] {
+    margin-left: 8px;
+}
+
+label {
+    margin-left: 5px;
+}
 
 /* ==================================== */
 /*		  	  Navigaton Menu		
