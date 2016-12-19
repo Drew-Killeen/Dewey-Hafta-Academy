@@ -53,7 +53,7 @@ if($_POST['update']=='Update')
             <?php
                 if(!$_GET['course']) {
                     echo "<ul>";
-                    $courses = mysql_query ("SELECT id,course FROM courses");
+                    $courses = mysql_query("SELECT id,course FROM courses");
                     if (mysql_num_rows($courses) > 0) 
                     {
                         // output data of each row
@@ -75,7 +75,7 @@ if($_POST['update']=='Update')
                     if($courseData['public'] == 0) {echo "checked ";} 
                     echo "><label>No</label></input><br><h3>Exams available</h3><ul>";
                         
-                    $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$courseData['course']."' ORDER BY module ASC");
+                    $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$courseData['id']."' ORDER BY module ASC");
                     while($row = mysql_fetch_assoc($exams)) {
                         $questionsNum = mysql_query("SELECT id FROM questions WHERE examNum=".$row['id']);
                         echo "<li><a href='edit_exam?exam=".$row['id']."&source=edit_course&get=".$_GET['course']."'>Module ".$row['module'].": ".$row['title']."</a>";
