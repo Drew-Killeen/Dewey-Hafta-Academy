@@ -59,7 +59,7 @@ if($_POST['submit']=='Submit')
             ?>
 
             <p>Choose a course to update your enrollment. You can only be enrolled in one course at a time. To see past enrollments, click <a href='?past_enroll=1'>here</a>.</p>
-            <form action="" method="post">
+            <form action="" method="post"><p>
                 <?php                    
                     $courses = mysql_query ("SELECT id,course FROM courses WHERE public=1");
                     if (mysql_num_rows($courses) > 0) 
@@ -73,7 +73,7 @@ if($_POST['submit']=='Submit')
                         echo "0 results";
                     }
                 ?>
-                <input type="submit" name="submit" value="Submit"/>
+                </p><input type="submit" name="submit" value="Submit"/>
             </form>
         
         <?php 
