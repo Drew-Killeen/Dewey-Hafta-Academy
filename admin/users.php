@@ -54,10 +54,12 @@ if($_POST['update']=='Update')
         $unapproved_users = mysql_query("SELECT id,usr FROM dewey_members WHERE privilege='unapproved'");
         if (mysql_num_rows($unapproved_users) > 0) 
         {
+            echo "<ul>";
             // output data of each row
             while($row = mysql_fetch_assoc($unapproved_users)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
+            echo "</ul>";
         } else 
         {
             echo "0 results";
