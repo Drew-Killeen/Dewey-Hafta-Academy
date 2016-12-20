@@ -20,6 +20,15 @@
         mysql_query("DELETE FROM courses WHERE id=".$_GET['course']);
         $_SESSION['msg']['success']='Course successfully deleted.';
     }
+    else if($_GET['user'] && ($_SESSION['id'] == $_GET['user'] || $_SESSION['privilege'] == "sysop" || $_SESSION['privilege'] == "administrator")) 
+    {
+        if($_SESSION['id'] == $_GET['user']) {
+            $_SESSION = array();
+            session_destroy();
+        }
+        mysql_query("DELETE FROM dewey_members WHERE id=".$_GET['user']);
+        $_SESSION['msg']['success']='Account successfully deleted.';
+    }
     else 
     {
         $_SESSION['msg']['err'] = "Error: Deletion failed.";

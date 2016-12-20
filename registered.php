@@ -142,6 +142,15 @@ if($_POST['request']=='Send Request')
         var xhttp = new XMLHttpRequest();
         <?php echo 'xhttp.open("GET", "scripts/update.php?usr='.$_SESSION['id'].'&sass=1", true);'; ?>
         xhttp.send();
+    } 
+    function deleteAccount() {
+        $confirm = confirm("Are you sure you want to delete your account? This cannot be undone.");
+            if($confirm === true) {
+            var xhttp = new XMLHttpRequest();
+            <?php echo 'xhttp.open("GET", "../scripts/delete.php?user='.$_SESSION['id'].'", true);'; ?>
+            xhttp.send();
+            window.location.assign(<?php echo '"http://www.deweyhaftaacademy.x10host.com/main"'; ?>);
+        }
     }
 </script>
     
@@ -223,7 +232,10 @@ if($_POST['request']=='Send Request')
                 <span class="onoffswitch-switch"></span>
             </label>
         </div>
-
+        
+        <h3>Delete Account</h3>
+        <p>Do not delete your account unless necessary. It cannot be undone.</p>
+        <input type='button' class='warning' onclick='deleteAccount();' name='delete' value='Delete' />
         
     <?php endif; ?>
         

@@ -275,6 +275,15 @@ label {
     margin-left: 5px;
 }
 
+input.warning {
+    background-color: #cc0000;
+    border: 1px solid #4a0000;
+}
+
+input.warning:hover {
+    background-color: #c74747;
+}
+
 /* ==================================== */
 /*		  	  Navigaton Menu		
 /* ==================================== */
