@@ -13,22 +13,21 @@ TODO
 7. Rename table dewey_members to members
 8. Add exam overview
 9. Optimize the excessive database queries
-10. Implement AJAX wherever possible
+10. Allow teachers to view and grade students' progress
 11. Make grade.php prettier and more useful
 12. _Give option to reset password if forgotten_
 13. Create style for radio buttons
 14. Make the sass switch actually do something
 15. Create ability to view past enrollments
 16. Give admins the ability to edit about pages on the front end
-17. Add ability for teachers to create exams/questions
-18. Create and add favicon
-19. Create user profiles
-20. Update GET source on edit_exam.php to not require get field
-21. Separate admin and teacher menus
-22. Integrate Gravatar
-23. Require new accounts to confirm email
-24. Create new statistics page for admins
-25. Fix glitch where user is logged out upon deleting content
+17. Create and add favicon
+18. Create user profiles
+19. Update GET source on edit_exam.php to not require get field
+20. Separate admin and teacher menus
+21. Integrate Gravatar
+22. Require new accounts to confirm email
+23. Create new statistics page for admins
+24. Fix glitch where user is logged out upon deleting content
 
 Completed
 ----
@@ -68,3 +67,4 @@ Completed
 34. ~~Give admins the ability to edit courses~~
 35. ~~Update course column of exam table to be course id rather than course title~~
 36. ~~Add delete account option under preferences~~
+37. ~~Implement AJAX for exams~~
