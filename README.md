@@ -4,7 +4,7 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. Improve exam creation system to where it can accept different formats (i.e. images, time limits, multiple attempts, etc) 
+1. Limit the number of attempts per exam
 2. _Add notification system_
 3. Implement administrator ability to send emails from the site
 4. Create new print.php page
@@ -28,6 +28,9 @@ TODO
 22. Require new accounts to confirm email
 23. Create new statistics page for admins
 24. Fix glitch where user is logged out upon deleting content
+25. Calculate course grade after submitting an exam
+26. Allow exam to accept images
+27. Create time limits for exams
 
 Completed
 ----
