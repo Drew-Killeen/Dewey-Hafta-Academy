@@ -5,7 +5,7 @@ TODO
 ----
 
 1. Limit the number of attempts per exam
-2. _Add notification system_
+2. Add notification system
 3. Implement administrator ability to send emails from the site
 4. Create new print.php page
 5. Update user management system so that admins cannot edit sysops
