@@ -12,26 +12,25 @@ TODO
 6. Add ability for teachers to view and edit their students' progress
 7. Rename table dewey_members to members
 8. Add exam overview
-9. Optimize the excessive database queries
-10. Allow teachers to view and grade students' progress
-11. Make grade.php prettier and more useful
-12. _Give option to reset password if forgotten_
-13. Create style for radio buttons
-14. Make the sass switch actually do something
-15. Create ability to view past enrollments
-16. Give admins the ability to edit about pages on the front end
-17. Create and add favicon
-18. Create user profiles
-19. Update GET source on edit_exam.php to not require get field
-20. Separate admin and teacher menus
-21. Integrate Gravatar
-22. Require new accounts to confirm email
-23. Create new statistics page for admins
-24. Fix glitch where user is logged out upon deleting content
-25. Calculate course grade after submitting an exam
-26. Allow exam to accept images
-27. Create time limits for exams
-28. Integrate Quill for help pages
+9. Allow teachers to view and grade students' progress
+10. Make grade.php prettier and more useful
+11. _Give option to reset password if forgotten_
+12. Create style for radio buttons
+13. Make the sass switch actually do something
+14. Create ability to view past enrollments
+15. Give admins the ability to edit about pages on the front end
+16. Create and add favicon
+17. Create user profiles
+18. Update GET source on edit_exam.php to not require get field
+19. Separate admin and teacher menus
+20. Integrate Gravatar
+21. Require new accounts to confirm email
+22. Create new statistics page for admins
+23. Fix glitch where user is logged out upon deleting content
+24. Calculate course grade after submitting an exam
+25. Allow exam to accept images
+26. Create time limits for exams
+27. Integrate Quill for help pages
 
 Completed
 ----
