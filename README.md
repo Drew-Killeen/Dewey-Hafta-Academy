@@ -32,6 +32,7 @@ TODO
 26. Create time limits for exams
 27. Integrate Quill for help pages
 28. Update exam.php so it automatically selects the user's previously selected answer
+29. Redesign the exam system so that it works better
 
 Completed
 ----
