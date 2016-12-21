@@ -31,6 +31,7 @@ TODO
 25. Calculate course grade after submitting an exam
 26. Allow exam to accept images
 27. Create time limits for exams
+28. Integrate Quill for help pages
 
 Completed
 ----
