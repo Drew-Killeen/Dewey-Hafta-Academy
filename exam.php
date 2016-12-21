@@ -4,10 +4,12 @@ require 'scripts/header.php';
 
 if(!$_GET['exam']) {
     header("Location: course");
+    exit();
 }
 else if($_SESSION['numQuestions']) {
     if($_GET['question'] >= $_SESSION['numQuestions']) {
         header("Location: exam?exam=".$_GET['exam']."&review=1");
+        exit();
     }
 }
 
@@ -20,78 +22,48 @@ else $questionNum = 1;
 
 if($_POST['continue'] == 'Continue') {
     /* When continue button is pressed */
-    if($_GET['question'] == $_SESSION['numQuestions']-1) header("Location: exam?exam=".$_GET['exam']."&review=1");
-    else header("Location: exam?exam=".$_GET['exam']."&question=".$questionNum);
+    if($_GET['question'] == $_SESSION['numQuestions']-1) {
+        header("Location: exam?exam=".$_GET['exam']."&review=1");
+        exit();
+    }
+    else {
+        header("Location: exam?exam=".$_GET['exam']."&question=".$questionNum);
+        exit();
+    }
 }
 
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
     mysql_query("INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['id'].", ".$_SESSION['id'].", -1)");
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
-    $_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-    $questionData = mysql_query("SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=1 ORDER BY RAND()");
-    $i = 1;
-    // output data of each row
-    while($row = mysql_fetch_assoc($questionData)) {
-        $questionNum=$row['id'] + 1;
+    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+    $_SESSION['attemptNum'] = $attempt['id'];
+    $questionData = mysql_query("SELECT id,question FROM questions WHERE examNum=".$_GET['exam']." AND public=1 ORDER BY RAND()");
+    
+    for($i = 1; $row = mysql_fetch_assoc($questionData); $i++) {
         mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
-        $_SESSION['options'][$i] = array();
-        $_SESSION['questions'][$i] = $row['question'];
-        if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
-        if($row['option2']) array_push($_SESSION['options'][$i], $row['option2']);
-        if($row['option3']) array_push($_SESSION['options'][$i], $row['option3']);
-        if($row['option4']) array_push($_SESSION['options'][$i], $row['option4']);
-        if($row['option5']) array_push($_SESSION['options'][$i], $row['option5']);
-        shuffle($_SESSION['options'][$i]);
-        $i++;
-    }
-    $_SESSION['numQuestions'] = $i;
-    header("Location: exam?exam=".$_GET['exam']."&question=1");
-}
-
-if($_POST['continue_attempt'] == "Continue") {
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
-    $currentAttempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-    if($_SESSION['attemptNum'] != $currentAttempt) {
-        $_SESSION['attemptNum'] = $currentAttempt;
-        $questionData = mysql_query("SELECT * FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
-        $i = 1;
-        // output data of each row
-        while($row = mysql_fetch_assoc($questionData)) {
-            $attemptNum = $attempt['id'] + 1;
-            mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attemptNum.", 2, '".$_SESSION['id']."')");
-            $_SESSION['options'][$i] = array();
-            $_SESSION['questions'][$i] = $row['question'];
-            if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
-            if($row['option2']) array_push($_SESSION['options'][$i], $row['option2']);
-            if($row['option3']) array_push($_SESSION['options'][$i], $row['option3']);
-            if($row['option4']) array_push($_SESSION['options'][$i], $row['option4']);
-            if($row['option5']) array_push($_SESSION['options'][$i], $row['option5']);
-            shuffle($_SESSION['options'][$i]);
-            $i++;
-        }
-        $_SESSION['numQuestions'] = $i;
-    }
-    header("Location: exam?exam=".$_GET['exam']."&question=1");
-
-    /*$_SESSION['attemptNum'] = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-    $prevAnswerData = mysql_query("SELECT questionNum FROM answers WHERE examNum='".$_GET['exam']."' AND usr=".$_SESSION['id']);
-    // output data of each row
-    for($i = 1; $i < mysql_num_rows($prevAnswerData); $i++) {
-        $row = mysql_fetch_assoc($prevAnswerData);
-        $row = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id=".$row['questionNum']));
-        $_SESSION['options'][$i] = array();
-        $_SESSION['questions'][$i] = $row['question'];
-        if($row['option1']) array_push($_SESSION['options'][$i], $row['option1']);
-        if($row['option2']) array_push($_SESSION['options'][$i], $row['option2']);
-        if($row['option3']) array_push($_SESSION['options'][$i], $row['option3']);
-        if($row['option4']) array_push($_SESSION['options'][$i], $row['option4']);
-        if($row['option5']) array_push($_SESSION['options'][$i], $row['option5']);
-        shuffle($_SESSION['options'][$i]);
+        $_SESSION['questionsID'][$i] = $row['id'];
     }
     
     $_SESSION['numQuestions'] = $i;
-    header("Location: exam?exam=".$_GET['exam']."&question=1");*/
+    
+    header("Location: exam?exam=".$_GET['exam']."&question=1");
+    exit();
+}
+
+if($_POST['continue_attempt'] == "Continue") {
+    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+    $_SESSION['attemptNum'] = $attempt['id'];
+
+    $questionData = mysql_query("SELECT id,question FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
+
+    for($i = 1; $row = mysql_fetch_assoc($questionData); $i++) {
+        mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
+        $_SESSION['questionsID'][$i] = $row['id'];
+    }
+
+    $_SESSION['numQuestions'] = $i;
+    header("Location: exam?exam=".$_GET['exam']."&question=1");
+    exit();
 }
 
 if($_POST['submit'] == 'Submit') {
@@ -108,10 +80,9 @@ if($_POST['submit'] == 'Submit') {
     if($previousBest['score'] >= $finalScore) $bestScore = 0;
     else $bestScore = 1;
     mysql_query("UPDATE attempts SET score=".$finalScore.", primary=".$bestScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
-    unset($_SESSION['questions']);
-    unset($_SESSION['answers']);
-    unset($_SESSION['options']);
+    unset($_SESSION['questionsID']);
     header("Location: grade?attempt=".$attempt['id']);
+    exit();
 }
 
 // FUNCTION NOT YET FUNCTIONAL
@@ -169,40 +140,44 @@ function updateCourse() {
         <form action="" method="post">
         <?php
             if($_GET['question']) {
-                echo "<p>".$_SESSION['questions'][$_GET['question']]."</p><p><span id='option'>";
-                if($_SESSION['options'][$_GET['question']][0]) { 
-                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][0]."' "; 
-                    if($_SESSION['answers'][$_GET['question']] == $_SESSION['options'][$_GET['question']][0]) {
+                
+                $questionData = mysql_fetch_assoc(mysql_query("SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE examNum=".$_GET['exam']." AND id=".$_SESSION['questionsID'][$_GET['question']]." AND public=1 ORDER BY RAND()"));
+                $optionNum = mysql_fetch_assoc(mysql_query("SELECT option FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
+                
+                echo "<p>".$questionData['question']."</p><p><span id='option'>";
+                if($questionData['option1']) { 
+                    echo "<input type='radio' name='option' value='".$questionData['option1']."' "; 
+                    if($optionNum['option'] == 1) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$_SESSION['options'][$_GET['question']][0]."'>".$_SESSION['options'][$_GET['question']][0]."</label><br>";
+                    echo "/><label for='".$questionData['option1']."'>".$questionData['option1']."</label><br>";
                 }
-                if($_SESSION['options'][$_GET['question']][1]) { 
-                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][1]."' "; 
-                    if($_SESSION['answers'][$_GET['question']] == $_SESSION['options'][$_GET['question']][1]) {
+                if($questionData['option2']) { 
+                    echo "<input type='radio' name='option' value='".$questionData['option2']."' "; 
+                    if($optionNum['option'] == 2) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$_SESSION['options'][$_GET['question']][1]."'>".$_SESSION['options'][$_GET['question']][1]."</label><br>";
+                    echo "/><label for='".$questionData['option2']."'>".$questionData['option2']."</label><br>";
                 }
-                if($_SESSION['options'][$_GET['question']][2]) { 
-                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][2]."' "; 
-                    if($_SESSION['answers'][$_GET['question']] == $_SESSION['options'][$_GET['question']][2]) {
+                if($questionData['option3']) { 
+                    echo "<input type='radio' name='option' value='".$questionData['option3']."' "; 
+                    if($optionNum['option'] == 3) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$_SESSION['options'][$_GET['question']][2]."'>".$_SESSION['options'][$_GET['question']][2]."</label><br>";
+                    echo "/><label for='".$questionData['option3']."'>".$questionData['option3']."</label><br>";
                 }
-                if($_SESSION['options'][$_GET['question']][3]) { 
-                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][3]."' "; 
-                    if($_SESSION['answers'][$_GET['question']] == $_SESSION['options'][$_GET['question']][3]) {
+                if($questionData['option4']) { 
+                    echo "<input type='radio' name='option' value='".$questionData['option4']."' "; 
+                    if($optionNum['option'] == 4) {
                         echo 'checked';
-                    } echo "/><label for='".$_SESSION['options'][$_GET['question']][3]."'>".$_SESSION['options'][$_GET['question']][3]."</label><br>";
+                    } echo "/><label for='".$questionData['option4']."'>".$questionData['option4']."</label><br>";
                 }
-                if($_SESSION['options'][$_GET['question']][4]) { 
-                    echo "<input type='radio' name='option' value='".$_SESSION['options'][$_GET['question']][4]."' "; 
-                    if($_SESSION['answers'][$_GET['question']] == $_SESSION['options'][$_GET['question']][4]) {
+                if($questionData['option5']) { 
+                    echo "<input type='radio' name='option' value='".$questionData['option5']."' "; 
+                    if($optionNum['option'] == 5) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$_SESSION['options'][$_GET['question']][4]."'>".$_SESSION['options'][$_GET['question']][4]."</label><br>";
+                    echo "/><label for='".$questionData['option5']."'>".$questionData['option5']."</label><br>";
                 }
                 echo "</span></p>";
             } 
@@ -237,7 +212,8 @@ function updateCourse() {
 <script>
     document.getElementById("option").addEventListener("click", function() {
         var xhttp = new XMLHttpRequest();
-        <?php echo 'xhttp.open("GET", "../scripts/update.php?usr='.$_SESSION['id'].'&exam='.$_GET['exam'].'&question='.$_SESSION['questions'][$_GET['question']].'&answer="+$(\'input[name="option"]:checked\').val(), true);'; ?>
+        <?php echo 'xhttp.open("GET", "../scripts/update.php?usr='.$_SESSION['id'].'&exam='.$_GET['exam'].'&question='.
+        $_SESSION['questionsID'][$_GET['question']].'&answer="+$(\'input[name="option"]:checked\').val(), true);'; ?>
         xhttp.send();
     });
 </script>

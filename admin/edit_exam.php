@@ -48,6 +48,17 @@ if($_POST['updateExam']=='Update')
     $_SESSION['msg']['success']='Exam updated';
 }
 
+if($_POST['shuffle']=='Shuffle') {
+     $questionData = mysql_fetch_assoc(mysql_query("SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE examNum=".$_GET['exam']." AND id=".$_SESSION['questionsID'][$_GET['question']]." AND public=1 ORDER BY RAND()"));
+                $optionList = array();
+                if($questionData['option1']) array_push($optionList, $questionData['option1']);
+                if($questionData['option2']) array_push($optionList, $questionData['option2']);
+                if($questionData['option3']) array_push($optionList, $questionData['option3']);
+                if($questionData['option4']) array_push($optionList, $questionData['option4']);
+                if($questionData['option5']) array_push($optionList, $questionData['option5']);
+                shuffle($optionList);
+                $optionNum = mysql_fetch_assoc(mysql_query("SELECT option FROM answers WHERE id=".$_SESSION['questionsID'][$_GET['question']]));
+}
 ?>
 
 <!DOCTYPE html>

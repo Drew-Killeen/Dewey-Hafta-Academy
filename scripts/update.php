@@ -10,9 +10,26 @@
     }
     else if($_GET['usr'] && $_GET['exam'] && $_GET['question'] && $_GET['answer']) {
         $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr=".$_GET['usr']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
-        $questionCorrect = mysql_fetch_assoc(mysql_query("SELECT id,option1 FROM questions WHERE question='".$_GET['question']."'"));
-        if($_GET['answer'] == $questionCorrect['option1']) $correct = 1;
-        else $correct = 0;
-        mysql_query("UPDATE answers SET correct=".$correct." WHERE questionNum=".$questionCorrect['id']." AND attemptNum=".$attempt['id']);
+        $questionCorrect = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id='".$_GET['question']."'"));
+        if($_GET['answer'] == $questionCorrect['option1']) {
+            $correct = 1;
+            $answerNum = 1;
+        }
+        else {
+            $correct = 0;
+        }
+        if($_GET['answer'] == $questionCorrect['option2']) {
+            $answerNum = 2;
+        }
+        else if($_GET['answer'] == $questionCorrect['option3']) {
+            $answerNum = 3;
+        }
+        else if($_GET['answer'] == $questionCorrect['option4']) {
+            $answerNum = 4;
+        }
+        else if($_GET['answer'] == $questionCorrect['option5']) {
+            $answerNum = 5;
+        }
+        mysql_query("UPDATE answers SET correct=".$correct.", option=".$answerNum." WHERE questionNum=".$questionCorrect['id']." AND attemptNum=".$attempt['id']);
     }
 ?>
