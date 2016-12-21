@@ -113,15 +113,18 @@ if($_POST['updateExam']=='Update')
                 echo "<input type='button' onclick='location.href=\"create_exam\";' value='New'/>";
             } else if(!$_GET['question'])
             {
-                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public FROM exams WHERE id='".$_GET['exam']."'"));
+                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public,time_limit,attempts FROM exams WHERE id='".$_GET['exam']."'"));
                 if(!$_GET['source']) echo "<h2><a href='edit_exam' ";
                 else echo "<h2><a href='".$_GET['source']."?course=".$_GET['get']."' ";
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
-                echo "<form action='' method='post'><p><b>Public</b> <input type='radio' name='public' value='1' ";
+                echo "<form action='' method='post'><p style='line-height:1.8;'><b>Public</b> <input type='radio' name='public' value='1' ";
                 if($examName['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examName['public'] == 0) {echo "checked ";} 
-                echo "><label>No</label></input></p><input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";
+                echo "><label>No</label></input><br>
+                    <b>Time limit:</b> <input class='editExam num' type='number' name='time_limit' value='".$examName['time_limit']."'/><br>
+                    <b>Attempts:</b> <input class='editExam num' type='number' name='attempts' value='".$examName['attempts']."'/></p>
+                    <input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";                
                 $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum='".$_GET['exam']."'");
                 if (mysql_num_rows($examQuestions) > 0) 
                 {
