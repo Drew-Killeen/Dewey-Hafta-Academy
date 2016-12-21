@@ -26,12 +26,25 @@ if($_POST['update']=='Update')
         mysql_query("UPDATE questions SET option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
     }
     $_SESSION['msg']['success']='Question updated';
-    //header("Location: edit_exam?exam=".$_GET['exam']);
+    header("Location: edit_exam?exam=".$_GET['exam']);
+    exit();
 }
 
 if($_POST['updateExam']=='Update')
 {   
-    mysql_query("UPDATE exams SET public=".$_POST['public']." WHERE id='".$_GET['exam']."'");
+    if($_POST['time_limit']) {
+        $time_limit = mysql_real_escape_string($_POST['time_limit']);
+    } else {
+        $time_limit = 60;
+    }
+    
+    if($_POST['attempts']) {
+        $attempts = mysql_real_escape_string($_POST['attempts']);
+    } else {
+        $attempts = 1;
+    }
+    
+    mysql_query("UPDATE exams SET public=".$_POST['public'].", time_limit=".$time_limit.", attempts=".$attempts." WHERE id='".$_GET['exam']."'");
     $_SESSION['msg']['success']='Exam updated';
 }
 
@@ -117,13 +130,13 @@ if($_POST['updateExam']=='Update')
                 if(!$_GET['source']) echo "<h2><a href='edit_exam' ";
                 else echo "<h2><a href='".$_GET['source']."?course=".$_GET['get']."' ";
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
-                echo "<form action='' method='post'><p style='line-height:1.8;'><b>Public</b> <input type='radio' name='public' value='1' ";
+                echo "<form action='' method='post'><p style='line-height:1.8;'><table class='examInput'><tr><td><b>Public:</b></td><td><input type='radio' name='public' value='1' ";
                 if($examName['public'] == 1) {echo "checked ";} 
                 echo "><label>Yes</label></input> <input type='radio' name='public' value='0' ";
                 if($examName['public'] == 0) {echo "checked ";} 
-                echo "><label>No</label></input><br>
-                    <b>Time limit:</b> <input class='editExam num' type='number' name='time_limit' value='".$examName['time_limit']."'/><br>
-                    <b>Attempts:</b> <input class='editExam num' type='number' name='attempts' value='".$examName['attempts']."'/></p>
+                echo "><label>No</label></input></td></tr>
+                    <tr><td><b>Time limit:</b></td> <td><input class='editExam num' type='number' name='time_limit' value='".$examName['time_limit']."'/></td></tr>
+                    <tr><td><b>Attempts:</b></td> <td><input class='editExam num' type='number' name='attempts' value='".$examName['attempts']."'/></td></tr></table></p>
                     <input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";                
                 $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum='".$_GET['exam']."'");
                 if (mysql_num_rows($examQuestions) > 0) 
