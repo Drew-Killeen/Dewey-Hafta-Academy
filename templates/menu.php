@@ -23,7 +23,7 @@
                 </li>';
                 }
                 echo 
-                '<li><a href="../about/"><img src="../images/info-56.png" alt="View course" class="menu-icon"></a> <a href="../about/" class="line">About</a></li>
+                '<li><a href="../about"><img src="../images/info-56.png" alt="View course" class="menu-icon"></a> <a href="../about" class="line">About</a></li>
                 </ul>
             </div>
         </div>

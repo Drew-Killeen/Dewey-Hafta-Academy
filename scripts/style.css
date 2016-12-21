@@ -119,6 +119,15 @@ p.note {
     opacity: 0.8;
 }
 
+td {
+    padding-right:5px;
+}
+
+.helpEdit {
+    float: right;
+    margin-bottom:-21px;
+}
+
 
 /* ==================================== */
 /*		  	Buttons & Inputs		
@@ -399,7 +408,7 @@ ul.sub-menu-dropdown {
     width:35px;
     margin-right:15px;
     position:relative;
-    top:9px;
+    top:8px;
 }
 
 /*Hamburger Button*/
