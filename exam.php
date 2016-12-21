@@ -6,11 +6,9 @@ if(!$_GET['exam']) {
     header("Location: course");
     exit();
 }
-else if($_SESSION['numQuestions']) {
-    if($_GET['question'] >= $_SESSION['numQuestions']) {
-        header("Location: exam?exam=".$_GET['exam']."&review=1");
-        exit();
-    }
+else if($_SESSION['numQuestions'] && ($_GET['question'] >= $_SESSION['numQuestions'])) {
+    header("Location: exam?exam=".$_GET['exam']."&review=1");
+    exit();
 }
 
 $enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
@@ -183,7 +181,7 @@ function updateCourse() {
             } 
             else if($_GET['review'] == 1) 
             {
-                echo "<p>This is a review.</p>";
+                echo "<p>This is a review.</p><input type='submit' name='submit' value='Submit' />";
             } 
             else if($attempt['score'] == -1) 
             {
