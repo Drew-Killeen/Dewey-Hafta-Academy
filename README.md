@@ -71,3 +71,4 @@ Completed
 35. ~~Update course column of exam table to be course id rather than course title~~
 36. ~~Add delete account option under preferences~~
 37. ~~Implement AJAX for exams~~
+38. ~~Create icons for sidebar menu~~
