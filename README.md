@@ -31,8 +31,7 @@ TODO
 25. Allow exam to accept images
 26. Create time limits for exams
 27. Integrate Quill for help pages
-28. Update exam.php so it automatically selects the user's previously selected answer
-29. Redesign the exam system so that it works better
+28. Create shuffle button on edit_exam.php
 
 Completed
 ----
@@ -74,3 +73,5 @@ Completed
 36. ~~Add delete account option under preferences~~
 37. ~~Implement AJAX for exams~~
 38. ~~Create icons for sidebar menu~~
+39. ~~Update exam.php so it automatically selects the user's previously selected answer~~
+40. ~~Redesign the exam system so that it works better~~
