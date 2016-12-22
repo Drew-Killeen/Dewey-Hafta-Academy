@@ -19,18 +19,17 @@ TODO
 13. Make the sass switch actually do something
 14. Create ability to view past enrollments
 15. Give admins the ability to edit about pages on the front end
-16. Create and add favicon
-17. Create user profiles
-18. Update GET source on edit_exam.php to not require get field
-19. Separate admin and teacher menus
-20. Integrate Gravatar
-21. Require new accounts to confirm email
-22. Create new statistics page for admins
-23. Fix glitch where user is logged out upon deleting content
-24. Calculate course grade after submitting an exam
-25. Allow exam to accept images
-26. Create time limits for exams
-28. Create logo
+16. Create user profiles
+17. Update GET source on edit_exam.php to not require get field
+18. Separate admin and teacher menus
+19. Integrate Gravatar
+20. Require new accounts to confirm email
+21. Create new statistics page for admins
+22. Fix glitch where user is logged out upon deleting content
+23. Calculate course grade after submitting an exam
+24. Allow exam to accept images
+25. Create time limits for exams
+26. Create logo
 
 Completed
 ----
@@ -80,3 +79,4 @@ Completed
 44. ~~Make a flag for questions~~
 45. ~~Create exam overview~~
 46. ~~Integrate rich text editor for help pages~~
+47. ~~Create and add favicon~~
