@@ -74,10 +74,10 @@ if($_POST['submit'] == 'Submit') {
         if($row['correct'] == 1) $finalScore++;
     }
     $finalScore = round(($finalScore/mysql_num_rows($answersData)) * 100);
-    $previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
+    /*$previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
     if($previousBest['score'] >= $finalScore) $bestScore = 0;
-    else $bestScore = 1;
-    mysql_query("UPDATE attempts SET score=".$finalScore.", primary=".$bestScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
+    else $bestScore = 1;*/
+    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
     unset($_SESSION['questionsID']);
     header("Location: grade?attempt=".$attempt['id']);
     exit();
@@ -143,35 +143,35 @@ function updateCourse() {
                 $optionNum = mysql_fetch_assoc(mysql_query("SELECT option FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
                 
                 echo "<p>".$questionData['question']."</p><p><span id='option'>";
-                if($questionData['option1']) { 
-                    echo "<input type='radio' name='option' value='".$questionData['option1']."' "; 
+                if($questionData['option1']) {
+                    echo "<input type='radio' name='option' value='1' "; 
                     if($optionNum['option'] == 1) {
                         echo 'checked';
                     } 
                     echo "/><label for='".$questionData['option1']."'>".$questionData['option1']."</label><br>";
                 }
-                if($questionData['option2']) { 
-                    echo "<input type='radio' name='option' value='".$questionData['option2']."' "; 
+                if($questionData['option2']) {
+                    echo "<input type='radio' name='option' value='2' "; 
                     if($optionNum['option'] == 2) {
                         echo 'checked';
                     } 
                     echo "/><label for='".$questionData['option2']."'>".$questionData['option2']."</label><br>";
                 }
-                if($questionData['option3']) { 
-                    echo "<input type='radio' name='option' value='".$questionData['option3']."' "; 
+                if($questionData['option3']) {
+                    echo "<input type='radio' name='option' value='3' "; 
                     if($optionNum['option'] == 3) {
                         echo 'checked';
                     } 
                     echo "/><label for='".$questionData['option3']."'>".$questionData['option3']."</label><br>";
                 }
-                if($questionData['option4']) { 
-                    echo "<input type='radio' name='option' value='".$questionData['option4']."' "; 
+                if($questionData['option4']) {
+                    echo "<input type='radio' name='option' value='4' "; 
                     if($optionNum['option'] == 4) {
                         echo 'checked';
                     } echo "/><label for='".$questionData['option4']."'>".$questionData['option4']."</label><br>";
                 }
-                if($questionData['option5']) { 
-                    echo "<input type='radio' name='option' value='".$questionData['option5']."' "; 
+                if($questionData['option5']) {
+                    echo "<input type='radio' name='option' value='5' "; 
                     if($optionNum['option'] == 5) {
                         echo 'checked';
                     } 
