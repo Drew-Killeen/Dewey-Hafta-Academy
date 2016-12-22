@@ -15,7 +15,7 @@ TODO
 9. Allow teachers to view and grade students' progress
 10. Make grade.php prettier and more useful
 11. _Give option to reset password if forgotten_
-12. Create style for radio buttons
+12. Allow for a limit on the number of questions on an exam
 13. Make the sass switch actually do something
 14. Create ability to view past enrollments
 15. Give admins the ability to edit about pages on the front end
@@ -31,7 +31,6 @@ TODO
 25. Allow exam to accept images
 26. Create time limits for exams
 27. Integrate Quill for help pages
-28. Create shuffle button on edit_exam.php
 
 Completed
 ----
@@ -75,3 +74,5 @@ Completed
 38. ~~Create icons for sidebar menu~~
 39. ~~Update exam.php so it automatically selects the user's previously selected answer~~
 40. ~~Redesign the exam system so that it works better~~
+41. ~~Create style for radio buttons~~
+42. ~~Create shuffle button on edit_exam.php~~
