@@ -97,14 +97,11 @@ function updateCourse() {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-    
-<div id="header">
-    <a href="main" id="title">Dewey Hafta Academy</a>
-    
-    <?php include_once("templates/login.php"); ?>
-</div>
-    
-<?php include_once("templates/menu.php"); ?>
+
+<?php 
+    include_once("templates/login.php"); 
+    include_once("templates/menu.php"); 
+?>
     
 <div id="main">
     <div class="container">
@@ -129,17 +126,20 @@ function updateCourse() {
                 
                 echo "<p>";
                 for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
-                    echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>: ";
-                    if($row['option'] != 0) echo " answered";
-                    else echo "<span style='color:#f95555;'>unanswered</span>";
+                    if($row['option'] != 0) echo "<span style='color:#498e49;'>&#10003; </span>";
+                    else echo "<span style='color:#f95555;'>&#10007; </span>";
+                    echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
+                    if($row['flag'] == 1) echo "<span id='small-flag'></span>";
                     echo "<br>";
                 }
                 echo "</p>";
                 echo '</div><div class="question-container"><form action="" method="post">';
                 $questionData = mysql_fetch_assoc(mysql_query("SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE examNum=".$_GET['exam']." AND id=".$_SESSION['questionsID'][$_GET['question']]." AND public=1 ORDER BY RAND()"));
-                $optionNum = mysql_fetch_assoc(mysql_query("SELECT option FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
+                $optionNum = mysql_fetch_assoc(mysql_query("SELECT option,flag FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
                 
-                echo "<span id='flag'></span><p>".$questionData['question']."</p><p><span id='option'>";
+                echo "<span id='flag'";
+                if($optionNum['flag'] == 1) echo " class='red-flag'";
+                echo "></span><p>".$questionData['question']."</p><p><span id='option'>";
                 if($questionData['option1']) {
                     echo "<input type='radio' name='option' value='1' "; 
                     if($optionNum['option'] == 1) {
@@ -182,9 +182,9 @@ function updateCourse() {
                 
                 echo "<p>";
                 for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
-                    echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>: ";
-                    if($row['option'] != 0) echo " answered";
-                    else echo "<span style='color:#f95555;'>unanswered</span>";
+                    if($row['option'] != 0) echo "<span style='color:#498e49;'>&#10003; </span>";
+                    else echo "<span style='color:#f95555;'>&#10007; </span>";
+                    echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
                     echo "<br>";
                 }
                 echo "</p>";
@@ -206,14 +206,14 @@ function updateCourse() {
             }
         ?>
             <?php 
-                echo "<div style='float:right;'>";
+                echo "<div class='float-right;'>";
                 if($_GET['question'] || $_GET['review']) {
-                    echo ' <input type="submit" name="submit" value="Submit" style="float:right;"/> '; 
+                    echo ' <input type="submit" name="submit" value="Submit" class="float-right"/> '; 
                 }
                 if($_GET['question'] && !$_GET['review']) {
                     echo ' <input type="button" name="review" onclick="window.location.assign(\'?exam='.$_GET['exam'].'&review=1\');" value="Review"    style="float:right;margin-right:4px;"/> '; 
                 }
-                echo "</div><div style='width:70%;'>";
+                echo "</div><div class='exam-buttons-container'>";
                 if($_GET['question'] > 1 || $_GET['review']) {
                     if($_GET['review']) {
                         echo '<input type="button" name="back" onclick="window.history.back()"; value="Back" />'; 
@@ -251,9 +251,19 @@ function updateCourse() {
     document.getElementById("flag").addEventListener("click", function() {
         if($(".red-flag").length > 0) {
             $("#flag").removeClass("red-flag");
+            
+            var xhttp0 = new XMLHttpRequest();
+            <?php echo 'xhttp0.open("GET", "../scripts/update.php?usr='.$_SESSION['id'].'&exam='.$_GET['exam'].'&question='.
+            $_SESSION['questionsID'][$_GET['question']].'&flag=1", true);'; ?>
+            xhttp0.send();
         }
         else {
             $("#flag").addClass("red-flag");
+            
+            var xhttp1 = new XMLHttpRequest();
+            <?php echo 'xhttp1.open("GET", "../scripts/update.php?usr='.$_SESSION['id'].'&exam='.$_GET['exam'].'&question='.
+            $_SESSION['questionsID'][$_GET['question']].'&flag=2", true);'; ?>
+            xhttp1.send();
         }
     });
 </script>

@@ -124,13 +124,17 @@ td {
     padding-right:5px;
 }
 
+.float-right {
+    float:right;
+}
+
 .helpEdit {
     float: right;
     margin-bottom:-21px;
 }
 
 .review-container {
-    width: 25%;
+    width: 20%;
     padding: 15px;
     margin-bottom: 15px;
     float: right;
@@ -142,12 +146,17 @@ td {
 
 .question-container {
     border: 1px solid #d0d0d0;
-    width: 70%;
+    width: 78%;
     padding: 15px;
     margin-bottom: 15px;
     background-color:#e5e5e5;
     border-radius:3px;
     min-height:200px;
+    line-height:1.9;
+}
+
+.exam-buttons-container {
+    width:78%;
 }
 
 #flag {
@@ -186,6 +195,33 @@ td {
 
 .red-flag:hover {
     background:#ff6b6b !important;
+}
+
+#small-flag {
+    width: 10px;
+    height: 15px;
+    padding-top: 15px;
+    position: relative;
+    background: #ff6b6b;
+    color: #ff6b6b;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-align: center;
+    text-transform: uppercase;
+    float:right;
+    margin-top:5px;
+}
+
+#small-flag:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 4px solid whitesmoke;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
 }
 
 /* ==================================== */
