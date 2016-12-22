@@ -18,18 +18,6 @@ $examData = mysql_fetch_assoc(mysql_query("SELECT title,module,time_limit,attemp
 if($_GET['question']) $questionNum = $_GET['question']+1;
 else $questionNum = 1;
 
-if($_POST['continue'] == 'Continue') {
-    /* When continue button is pressed */
-    if($_GET['question'] == $_SESSION['numQuestions']-1) {
-        header("Location: exam?exam=".$_GET['exam']."&review=1");
-        exit();
-    }
-    else {
-        header("Location: exam?exam=".$_GET['exam']."&question=".$questionNum);
-        exit();
-    }
-}
-
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
     mysql_query("INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['id'].", ".$_SESSION['id'].", -1)");
@@ -181,22 +169,57 @@ function updateCourse() {
             } 
             else if($_GET['review'] == 1) 
             {
-                echo "<p>This is a review.</p><input type='submit' name='submit' value='Submit' />";
+                $answerData = mysql_query("SELECT option FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
+                
+                echo "<p>";
+                for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
+                    echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>: ";
+                    if($row['option'] != 0) echo " answered";
+                    else echo "<span style='color:red;'>unanswered</span>";
+                    echo "<br>";
+                }
+                echo "</p>";
             } 
-            else if($attempt['score'] == -1) 
-            {
-                echo "<p>Your previous attempt on this exam is incomplete. Click below to continue your current attempt.</p> <br> <input type='submit' name='continue_attempt' value='Continue' />";
-            } 
-            else 
-            {
-                echo "<p>You are about to begin an exam.</p>";
-                if($examData['attempts'] != 0) echo $examData['attempts']." attempts remaining.<br>";
-                if($examData['time_limit'] != 0) echo "Time limit: ".$examData['time_limit']." minutes.<br>";
-                else echo "No time limit.<br>";
-                echo "<br><input type='submit' name='begin' value='Begin' />";
+            else {
+                $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+                if($attempt['score'] == -1) 
+                {
+                    echo "<p>Your previous attempt on this exam is incomplete. Click below to continue your current attempt.</p> <br> <input type='submit' name='continue_attempt' value='Continue' />";
+                } 
+                else 
+                {
+                    echo "<p>You are about to begin an exam.</p>";
+                    if($examData['attempts'] != 0) echo $examData['attempts']." attempts remaining.<br>";
+                    if($examData['time_limit'] != 0) echo "Time limit: ".$examData['time_limit']." minutes.<br>";
+                    else echo "No time limit.<br>";
+                    echo "<br><input type='submit' name='begin' value='Begin' />";
+                }
             }
         ?>
-            <?php if($_GET['question']) echo '<input type="submit" name="continue" value="Continue" /> <input type="submit" name="submit" value="Submit" />'; ?>
+            <?php 
+            if($_GET['question'] > 1 || $_GET['review']) {
+                
+                if($_GET['review']) { 
+                    echo '<input type="button" name="back" onclick="window.history.back()"; value="Back" />'; 
+                } 
+                else { 
+                    $newQuestionNum = $_GET['question'] - 1; 
+                    echo '<input type="button" name="back" onclick="window.location.assign(\'?exam='.$_GET['exam'].'&question='.$newQuestionNum.'\');" value="Back" /> ';
+                }
+            }
+            if(!$_GET['review'] && $_GET['question']) {
+                echo '<input type="button" name="next" onclick="window.location.assign(\'?exam='.$_GET['exam'];
+                if($_GET['question'] == $_SESSION['numQuestions']-1) { echo '&review=1'; } 
+                else { $newQuestionNum = $_GET['question'] + 1; echo '&question='.$newQuestionNum; }
+                echo '\');" value="Next" /> ';
+            }
+            if($_GET['question'] || $_GET['review']) {
+                echo ' <input type="submit" name="submit" value="Submit" style="float:right;"/> '; 
+            }
+            if($_GET['question'] && !$_GET['review']) {
+                echo ' <input type="button" name="review" onclick="window.location.assign(\'?exam='.$_GET['exam'].'&review=1\');" value="Review" style="float:right;margin-right:4px;"/> '; 
+            }
+            ?>
         </form>
         
     <?php
