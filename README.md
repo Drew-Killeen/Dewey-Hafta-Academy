@@ -30,7 +30,6 @@ TODO
 24. Calculate course grade after submitting an exam
 25. Allow exam to accept images
 26. Create time limits for exams
-27. Integrate Quill for help pages
 28. Create logo
 
 Completed
@@ -80,3 +79,4 @@ Completed
 43. ~~Create a style for the exams~~
 44. ~~Make a flag for questions~~
 45. ~~Create exam overview~~
+46. ~~Integrate rich text editor for help pages~~
