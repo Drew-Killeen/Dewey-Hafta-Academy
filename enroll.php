@@ -21,13 +21,10 @@ if($_POST['submit']=='Submit')
 </head>
 <body>
     
-<div id="header">
-    <a href="main" id="title">Dewey Hafta Academy</a>
-    
-    <?php include_once("templates/login.php"); ?>
-</div>
-    
-<?php include_once("templates/menu.php"); ?>
+<?php 
+    include_once("templates/login.php"); 
+    include_once("templates/menu.php"); 
+?>
     
 <div id="main">
     <div class="container">
