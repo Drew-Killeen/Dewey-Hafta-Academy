@@ -77,3 +77,6 @@ Completed
 40. ~~Redesign the exam system so that it works better~~
 41. ~~Create style for radio buttons~~
 42. ~~Create shuffle button on edit_exam.php~~
+43. ~~Create a style for the exams~~
+44. ~~Make a flag for questions~~
+45. ~~Create exam overview~~
