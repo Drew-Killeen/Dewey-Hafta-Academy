@@ -31,6 +31,7 @@ TODO
 25. Allow exam to accept images
 26. Create time limits for exams
 27. Integrate Quill for help pages
+28. Create logo
 
 Completed
 ----
