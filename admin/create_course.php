@@ -18,7 +18,7 @@ if(isset($_POST['submit']))
 		$err[]='The course name contains invalid characters.';
 	}
     
-    $current_courses = mysql_fetch_assoc(mysql_query("SELECT id,course FROM courses WHERE course='".$_POST['course']."'"));
+    $current_courses = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,course FROM courses WHERE course='".$_POST['course']."'"));
     
     if(!empty($current_courses))
     {
@@ -27,8 +27,8 @@ if(isset($_POST['submit']))
     
     if(!count($err))
 	{
-        $_POST['course'] = mysql_real_escape_string($_POST['course']);
-        mysql_query("INSERT INTO courses(course,createdby,dt)
+        $_POST['course'] = mysqli_real_escape_string($_POST['course']);
+        mysqli_query($link, "INSERT INTO courses(course,createdby,dt)
         VALUES(
         '".$_POST['course']."',
         '".$_SESSION['usr']."',

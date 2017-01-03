@@ -2,7 +2,7 @@
 require 'scripts/header.php';
 require 'scripts/functions.php';
 
-$userInfo = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$userInfo = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE id='{$_SESSION['id']}'"));
 
 if($_POST['submit']=='Update')
 {
@@ -26,7 +26,7 @@ if($_POST['submit']=='Update')
         $err[]='The passwords do not match.';
     }
     
-    $row = mysql_fetch_assoc(mysql_query("SELECT id,usr,pass FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+    $row = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,usr,pass FROM dewey_members WHERE id='{$_SESSION['id']}'"));
     
     if($row['pass'] != md5($_POST['oldpass'])) {
         $err[]='Your old password is incorrect.';
@@ -34,11 +34,11 @@ if($_POST['submit']=='Update')
     
     if(!count($err))
 	{
-        $_POST['oldpass'] = mysql_real_escape_string($_POST['oldpass']);
-        $_POST['newpass'] = mysql_real_escape_string($_POST['newpass']);
+        $_POST['oldpass'] = mysqli_real_escape_string($_POST['oldpass']);
+        $_POST['newpass'] = mysqli_real_escape_string($_POST['newpass']);
         // Escaping all input data
         
-        mysql_query("UPDATE dewey_members SET pass='".md5($_POST['newpass'])."' WHERE id='".$_SESSION['id']."'");
+        mysqli_query($link, "UPDATE dewey_members SET pass='".md5($_POST['newpass'])."' WHERE id='".$_SESSION['id']."'");
         
         $_SESSION = array();
 	    session_destroy();
@@ -69,7 +69,7 @@ if($_POST['submit']=='Add')
 		$err[]='The Supervisor username must be between 3 and 32 characters.';
 	} 
     
-    else if(empty(mysql_fetch_assoc(mysql_query("SELECT id,usr FROM dewey_members WHERE usr='{$_POST['supervisor']}'")))) {
+    else if(empty(mysqli_fetch_assoc(mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE usr='{$_POST['supervisor']}'")))) {
         $err[]='There is no user with the name '.$_POST['supervisor'].'.';
     }
     
@@ -79,10 +79,10 @@ if($_POST['submit']=='Add')
     
     if(!count($err))
 	{
-        $_POST['supervisor'] = mysql_real_escape_string($_POST['supervisor']);
+        $_POST['supervisor'] = mysqli_real_escape_string($_POST['supervisor']);
         // Escaping all input data
         
-        mysql_query("UPDATE dewey_members SET supervisor='".$_POST['supervisor']."' WHERE id='".$_SESSION['id']."'");
+        mysqli_query("UPDATE dewey_members SET supervisor='".$_POST['supervisor']."' WHERE id='".$_SESSION['id']."'");
         
         $_SESSION['msg']['success']='Supervisor successfully updated.';
     }
@@ -95,7 +95,7 @@ if($_POST['submit']=='Add')
 
 if($_POST['submit']=='Remove Supervisor')
 {
-    mysql_query("UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
+    mysqli_query("UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
     $_SESSION['msg']['success']='Supervisor removed.';
 }
 
@@ -124,6 +124,8 @@ if($_POST['request']=='Send Request')
              );
         
         $_SESSION['msg']['success']='Request sent.';
+        header('Location: ../registered');
+        exit();
     }
     
     if(count($err))
@@ -215,7 +217,7 @@ if($_POST['request']=='Send Request')
         <h3>Supervisor</h3>
         <p>Current supervisor: <i>
         <?php 
-            $current_data = mysql_fetch_assoc(mysql_query("SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+            $current_data = mysqli_fetch_assoc(mysqli_query($link, "SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
             echo $current_data['supervisor'];
             ?></i></p>
         <form action="" method="post">

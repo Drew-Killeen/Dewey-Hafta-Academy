@@ -4,7 +4,7 @@
 
 if($_POST['update']=='Update')
 {   
-    mysql_query("UPDATE courses SET public=".$_POST['public']." WHERE id='".$_GET['course']."'");
+    mysqli_query($link, "UPDATE courses SET public=".$_POST['public']." WHERE id='".$_GET['course']."'");
     $_SESSION['msg']['success']='Course updated';
 }
 
@@ -51,11 +51,11 @@ if($_POST['update']=='Update')
             <?php
                 if(!$_GET['course']) {
                     echo "<ul>";
-                    $courses = mysql_query("SELECT id,course FROM courses");
-                    if (mysql_num_rows($courses) > 0) 
+                    $courses = mysqli_query($link, "SELECT id,course FROM courses");
+                    if (mysqli_num_rows($courses) > 0) 
                     {
                         // output data of each row
-                        while($row = mysql_fetch_assoc($courses)) {
+                        while($row = mysqli_fetch_assoc($courses)) {
                            echo "<li><a href='edit_course?course=".$row['id']."'>".$row['course']."</a></li>";
                     }
                     } else 
@@ -65,7 +65,7 @@ if($_POST['update']=='Update')
                     echo "</ul><br><input type='button' onclick='location.href=\"create_course\";' value='New'/>";
                 } else
                 {
-                    $courseData = mysql_fetch_assoc(mysql_query("SELECT * FROM courses WHERE id='".$_GET['course']."'"));
+                    $courseData = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM courses WHERE id='".$_GET['course']."'"));
                     echo "<h3><a href='edit_course'>&larr;</a> Editing ".$courseData['course']."</h3>
                     <form action='' method='post'><p><b>Public?</b> <input type='radio' name='public' value='1' ";
                     if($courseData['public'] == 1) {echo "checked ";} 
@@ -73,11 +73,11 @@ if($_POST['update']=='Update')
                     if($courseData['public'] == 0) {echo "checked ";} 
                     echo "><label>No</label></input><br><h3>Exams available</h3><ul>";
                         
-                    $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$courseData['id']."' ORDER BY module ASC");
-                    while($row = mysql_fetch_assoc($exams)) {
-                        $questionsNum = mysql_query("SELECT id FROM questions WHERE examNum=".$row['id']);
+                    $exams = mysqli_query($link, "SELECT id,module,title FROM exams WHERE course='".$courseData['id']."' ORDER BY module ASC");
+                    while($row = mysqli_fetch_assoc($exams)) {
+                        $questionsNum = mysqli_query($link, "SELECT id FROM questions WHERE examNum=".$row['id']);
                         echo "<li><a href='edit_exam?exam=".$row['id']."&source=edit_course&get=".$_GET['course']."'>Module ".$row['module'].": ".$row['title']."</a>";
-                        if(mysql_num_rows($questionsNum) > 0) echo "<i> - ".mysql_num_rows($questionsNum)." questions</i>";
+                        if(mysqli_num_rows($questionsNum) > 0) echo "<i> - ".mysqli_num_rows($questionsNum)." questions</i>";
                         echo "</li>";
                     }
                     

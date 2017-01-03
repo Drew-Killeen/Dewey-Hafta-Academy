@@ -4,15 +4,15 @@
 
 if($_POST['add']=='New')
 {   
-    mysql_query("INSERT INTO questions( examNum, question, option1, option2, option3, option4, option5, createdby ) 
+    mysqli_query($link, "INSERT INTO questions( examNum, question, option1, option2, option3, option4, option5, createdby ) 
                 VALUES ( ".$_GET['exam'].", '',  '',  '',  '',  '',  '',  '".$_SESSION['usr']."' )");
-    $newQuestion = mysql_fetch_assoc(mysql_query("SELECT id FROM questions ORDER BY id DESC LIMIT 1;"));
+    $newQuestion = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM questions ORDER BY id DESC LIMIT 1;"));
     header("Location: edit_exam?exam=".$_GET['exam']."&question=".$newQuestion['id']);
 }
 
 if($_POST['update']=='Update')
 {       
-    $_POST['question'] = mysql_real_escape_string($_POST['question']);
+    $_POST['question'] = mysqli_real_escape_string($_POST['question']);
     
     if($_POST['answer'] == 'option1') $answer = 1;
     else if($_POST['answer'] == 'option2') $answer = 2;
@@ -21,18 +21,18 @@ if($_POST['update']=='Update')
     else if($_POST['answer'] == 'option5') $answer = 5;
     else $answer = 0;
     
-    mysql_query("UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=".$answer." WHERE id='".$_GET['question']."'");
+    mysqli_query($link, "UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=".$answer." WHERE id='".$_GET['question']."'");
     
     if($_POST['type'] == 2) {
-        mysql_query("UPDATE questions SET option1='True', option2='False' WHERE id='".$_GET['question']."'");
+        mysqli_query($link, "UPDATE questions SET option1='True', option2='False' WHERE id='".$_GET['question']."'");
     }
     else if($_POST['option1']) {
-        $option1 = mysql_real_escape_string($_POST['option1']);
-        $option2 = mysql_real_escape_string($_POST['option2']);
-        $option3 = mysql_real_escape_string($_POST['option3']);
-        $option4 = mysql_real_escape_string($_POST['option4']);
-        $option5 = mysql_real_escape_string($_POST['option5']);
-        mysql_query("UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
+        $option1 = mysqli_real_escape_string($_POST['option1']);
+        $option2 = mysqli_real_escape_string($_POST['option2']);
+        $option3 = mysqli_real_escape_string($_POST['option3']);
+        $option4 = mysqli_real_escape_string($_POST['option4']);
+        $option5 = mysqli_real_escape_string($_POST['option5']);
+        mysqli_query($link, "UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
     }
     $_SESSION['msg']['success']='Question updated';
 }
@@ -40,31 +40,31 @@ if($_POST['update']=='Update')
 if($_POST['updateExam']=='Update')
 {   
     if($_POST['time_limit']) {
-        $time_limit = mysql_real_escape_string($_POST['time_limit']);
+        $time_limit = mysqli_real_escape_string($_POST['time_limit']);
     } else {
         $time_limit = 60;
     }
     
     if($_POST['attempts']) {
-        $attempts = mysql_real_escape_string($_POST['attempts']);
+        $attempts = mysqli_real_escape_string($_POST['attempts']);
     } else {
         $attempts = 1;
     }
     
-    mysql_query("UPDATE exams SET public=".$_POST['public'].", time_limit=".$time_limit.", attempts=".$attempts." WHERE id='".$_GET['exam']."'");
+    mysqli_query($link, "UPDATE exams SET public=".$_POST['public'].", time_limit=".$time_limit.", attempts=".$attempts." WHERE id='".$_GET['exam']."'");
     $_SESSION['msg']['success']='Exam updated';
 }
 
 if($_POST['shuffle']=='Shuffle') {    
-    $_POST['question'] = mysql_real_escape_string($_POST['question']);
-    mysql_query("UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=0 WHERE id='".$_GET['question']."'");
+    $_POST['question'] = mysqli_real_escape_string($_POST['question']);
+    mysqli_query($link, "UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=0 WHERE id='".$_GET['question']."'");
     
     if($_POST['option1']) {
-        $option1 = mysql_real_escape_string($_POST['option1']);
-        $option2 = mysql_real_escape_string($_POST['option2']);
-        $option3 = mysql_real_escape_string($_POST['option3']);
-        $option4 = mysql_real_escape_string($_POST['option4']);
-        $option5 = mysql_real_escape_string($_POST['option5']);
+        $option1 = mysqli_real_escape_string($_POST['option1']);
+        $option2 = mysqli_real_escape_string($_POST['option2']);
+        $option3 = mysqli_real_escape_string($_POST['option3']);
+        $option4 = mysqli_real_escape_string($_POST['option4']);
+        $option5 = mysqli_real_escape_string($_POST['option5']);
         
         $optionList = array();
         if($_POST['option1']) array_push($optionList, $option1);
@@ -80,7 +80,7 @@ if($_POST['shuffle']=='Shuffle') {
         if($optionList[3]) $option4 = $optionList[3];
         if($optionList[4]) $option5 = $optionList[4];
         
-        mysql_query("UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
+        mysqli_query($link, "UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
     }
 }
 ?>
@@ -136,17 +136,17 @@ if($_POST['shuffle']=='Shuffle') {
             <?php
             if(!$_GET['exam']) {
                 echo "<h2>Current Exams</h2>";
-                $courses = mysql_query("SELECT id,course FROM courses ORDER BY course ASC");
-                if (mysql_num_rows($courses) > 0) 
+                $courses = mysqli_query($link, "SELECT id,course FROM courses ORDER BY course ASC");
+                if (mysqli_num_rows($courses) > 0) 
                 {
                     // output data of each row
-                    while($rowCourse = mysql_fetch_assoc($courses)) {
+                    while($rowCourse = mysqli_fetch_assoc($courses)) {
                         echo "<h4>".$rowCourse['course']."</h4><ul>";
-                        $exams = mysql_query("SELECT id,module,title FROM exams WHERE course='".$rowCourse['id']."' ORDER BY module ASC");
-                        while($rowExam = mysql_fetch_assoc($exams)) {
-                            $questionsNum = mysql_query("SELECT id FROM questions WHERE examNum=".$rowExam['id']);
+                        $exams = mysqli_query($link, "SELECT id,module,title FROM exams WHERE course='".$rowCourse['id']."' ORDER BY module ASC");
+                        while($rowExam = mysqli_fetch_assoc($exams)) {
+                            $questionsNum = mysqli_query($link, "SELECT id FROM questions WHERE examNum=".$rowExam['id']);
                             echo "<li><a href='?exam=".$rowExam['id']."'>Module ".$rowExam['module'].": ".$rowExam['title']."</a>";
-                            if(mysql_num_rows($questionsNum) > 0) echo "<i> - ".mysql_num_rows($questionsNum)." questions</i>";
+                            if(mysqli_num_rows($questionsNum) > 0) echo "<i> - ".mysqli_num_rows($questionsNum)." questions</i>";
                             echo "</li>";
                         }
                         echo "</ul>";
@@ -159,7 +159,7 @@ if($_POST['shuffle']=='Shuffle') {
                 echo "<input type='button' onclick='location.href=\"create_exam\";' value='New'/>";
             } else if(!$_GET['question'])
             {
-                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title,public,time_limit,attempts FROM exams WHERE id='".$_GET['exam']."'"));
+                $examName = mysqli_fetch_assoc(mysqli_query($link, "SELECT module,title,public,time_limit,attempts FROM exams WHERE id='".$_GET['exam']."'"));
                 if(!$_GET['source']) echo "<h2><a href='edit_exam' ";
                 else echo "<h2><a href='".$_GET['source']."?course=".$_GET['get']."' ";
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
@@ -171,13 +171,13 @@ if($_POST['shuffle']=='Shuffle') {
                     <tr><td><b>Time limit:</b></td> <td><input class='editExam num' type='number' name='time_limit' value='".$examName['time_limit']."'/></td></tr>
                     <tr><td><b>Attempts:</b></td> <td><input class='editExam num' type='number' name='attempts' value='".$examName['attempts']."'/></td></tr></table></p>
                     <input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";                
-                $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum=".$_GET['exam']);
-                $publicQuestions = mysql_num_rows(mysql_query("SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=1"));
-                $notPublicQuestions = mysql_num_rows(mysql_query("SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=0"));
-                if (mysql_num_rows($examQuestions) > 0) 
+                $examQuestions = mysqli_query($link, "SELECT id,question,public FROM questions WHERE examNum=".$_GET['exam']);
+                $publicQuestions = mysqli_num_rows(mysqli_query($link, "SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=1"));
+                $notPublicQuestions = mysqli_num_rows(mysqli_query($link, "SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=0"));
+                if (mysqli_num_rows($examQuestions) > 0) 
                 {
                     echo "<i>".$publicQuestions." public questions, ".$notPublicQuestions." not public</i><br><br>";
-                    while($row = mysql_fetch_assoc($examQuestions)) {
+                    while($row = mysqli_fetch_assoc($examQuestions)) {
                         echo "<b>Question:</b> ".$row['question']." (<a href='?exam=".$_GET['exam']."&question=".$row['id']."'>edit</a>)";
                         if($row['public'] == 0) echo " <i>... not public</i>";
                         echo "<br>";
@@ -189,11 +189,11 @@ if($_POST['shuffle']=='Shuffle') {
                 echo "<br><input type='submit' name='add' value='New' /> <input type='button' onclick='deleteExam();' name='delete' value='Delete' /></form>";
             } else
             {
-                $examName = mysql_fetch_assoc(mysql_query("SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
+                $examName = mysqli_fetch_assoc(mysqli_query($link, "SELECT module,title FROM exams WHERE id='".$_GET['exam']."'"));
                 if(!$_GET['source']) echo "<h2><a href='edit_exam?exam=".$_GET['exam']."' ";
                 else "<h2><a href='".$_GET['source']."' ";
                 echo "class='black'>&larr;</a> Module ".$examName['module'].": ".$examName['title']."</h2>";
-                $examQuestions = mysql_fetch_assoc(mysql_query("SELECT * FROM questions WHERE id='".$_GET['question']."'"));
+                $examQuestions = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM questions WHERE id='".$_GET['question']."'"));
 
                 echo "<form action='' method='post'><p><b>Question Type</b><br><input type='radio' name='type' value='0' ";
                 if($examQuestions['type'] == 0) echo "checked ";

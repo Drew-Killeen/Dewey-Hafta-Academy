@@ -23,7 +23,7 @@ if($_POST['submit']=='Submit')
 		$err[]='The exam title contains invalid characters.';
 	}
     
-    $current_courses = mysql_fetch_assoc(mysql_query("SELECT id,module FROM exams WHERE course='".$_POST['course']."' AND module='".$_POST['module']."'"));
+    $current_courses = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,module FROM exams WHERE course='".$_POST['course']."' AND module='".$_POST['module']."'"));
     
     if(!empty($current_courses))
     {
@@ -32,9 +32,9 @@ if($_POST['submit']=='Submit')
     
     if(!count($err))
 	{
-        $_POST['module'] = mysql_real_escape_string($_POST['module']);
-        $_POST['title'] = mysql_real_escape_string($_POST['title']);
-        mysql_query("INSERT INTO exams(course,module,title,createdby,dt)
+        $_POST['module'] = mysqli_real_escape_string($_POST['module']);
+        $_POST['title'] = mysqli_real_escape_string($_POST['title']);
+        mysqli_query($link, "INSERT INTO exams(course,module,title,createdby,dt)
             VALUES(
             '".$_POST['course']."',
             '".$_POST['module']."',
@@ -43,7 +43,7 @@ if($_POST['submit']=='Submit')
             NOW()
         )");
         $_SESSION['msg']['create-success']='Exam successfully created.';
-        $examNum = mysql_fetch_assoc(mysql_query("SELECT id FROM exams ORDER BY id DESC LIMIT 1;"));
+        $examNum = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM exams ORDER BY id DESC LIMIT 1;"));
         header("Location: edit_exam?exam=".$examNum['id']);
     }
     else $err[]='Error creating exam.';
@@ -99,11 +99,11 @@ if($_POST['submit']=='Submit')
         <form action="" method="post">
             <label class="grey" for="course">Select Course</label><br>
             <?php
-            $courses = mysql_query ("SELECT id,course FROM courses");
-            if (mysql_num_rows($courses) > 0) 
+            $courses = mysqli_query($link, "SELECT id,course FROM courses");
+            if (mysqli_num_rows($courses) > 0) 
             {
                 // output data of each row
-                while($row = mysql_fetch_assoc($courses)) {
+                while($row = mysqli_fetch_assoc($courses)) {
                     if(isset($_GET[$row['course']])) echo "<input class='field' type='radio' name='course' value='".$row['id']."' checked/><label class='grey' for='".$row['id']."'>".$row["course"]."</label><br>";
                     else echo "<input class='field' type='radio' name='course' value='".$row['id']."'/><label class='grey' for='".$row['id']."'>".$row['course']."</label><br>";
             }

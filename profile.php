@@ -6,8 +6,8 @@ if($_POST['submit']=='Update Info')
 {
     // Checking whether the Supervisor form has been submitted
     
-	$_POST['name'] = mysql_real_escape_string($_POST['name']);
-    $_POST['grade'] = mysql_real_escape_string($_POST['grade']);
+	$_POST['name'] = mysqli_real_escape_string($_POST['name']);
+    $_POST['grade'] = mysqli_real_escape_string($_POST['grade']);
     $grade = preg_replace("/[^0-9]/", "", $_POST['grade']);
 	$err = array();
 	// Will hold our errors

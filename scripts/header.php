@@ -9,10 +9,14 @@ $db_user		= 'deweyhaf_admin';
 $db_pass		= 'rJv&?yF#+%eT';
 $db_database	= 'deweyhaf_maindata'; 
 
-$link = @mysql_connect($db_host,$db_user,$db_pass) or die('Unable to establish a DB connection');
+$link = mysqli_connect($db_host,$db_user,$db_pass);
 
-mysql_select_db($db_database,$link);
-mysql_query("SET names UTF8");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
+mysqli_select_db($link,$db_database);
+mysqli_query($link, "SET names UTF8");
 
 session_name('deweyLogin');
 session_set_cookie_params(2*7*24*60*60);

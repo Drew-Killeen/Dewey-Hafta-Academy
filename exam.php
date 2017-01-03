@@ -11,22 +11,22 @@ else if($_SESSION['numQuestions'] && ($_GET['question'] >= $_SESSION['numQuestio
     exit();
 }
 
-$enrollment =  mysql_fetch_assoc(mysql_query("SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-$course = mysql_fetch_assoc(mysql_query("SELECT id,course FROM courses WHERE id=".$enrollment['enrollment']));
-$examData = mysql_fetch_assoc(mysql_query("SELECT title,module,time_limit,attempts FROM exams WHERE course='".$course['id']."' AND id='".$_GET['exam']."'"));
+$enrollment =  mysqli_fetch_assoc(mysqli_query($link, "SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+$course = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,course FROM courses WHERE id=".$enrollment['enrollment']));
+$examData = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,module,time_limit,attempts FROM exams WHERE course='".$course['id']."' AND id='".$_GET['exam']."'"));
     
 if($_GET['question']) $questionNum = $_GET['question']+1;
 else $questionNum = 1;
 
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
-    mysql_query("INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['id'].", ".$_SESSION['id'].", -1)");
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    mysqli_query($link, "INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['id'].", ".$_SESSION['id'].", -1)");
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
-    $questionData = mysql_query("SELECT id,question FROM questions WHERE examNum=".$_GET['exam']." AND public=1 ORDER BY RAND()");
+    $questionData = mysqli_query($link, "SELECT id,question FROM questions WHERE examNum=".$_GET['exam']." AND public=1 ORDER BY RAND()");
     
-    for($i = 1; $row = mysql_fetch_assoc($questionData); $i++) {
-        mysql_query("INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
+    for($i = 1; $row = mysqli_fetch_assoc($questionData); $i++) {
+        mysqli_query($link, "INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
         $_SESSION['questionsID'][$i] = $row['id'];
     }
     
@@ -37,13 +37,13 @@ if($_POST['begin'] == 'Begin') {
 }
 
 if($_POST['continue_attempt'] == "Continue") {
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
     
-    $tempAnswers = mysql_query("SELECT * FROM answers WHERE attemptNum=".$attempt['id']." ORDER BY id ASC");
+    $tempAnswers = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$attempt['id']." ORDER BY id ASC");
 
-    for($i = 1; $row = mysql_fetch_assoc($tempAnswers); $i++) {
-        $tempQuestion = mysql_fetch_assoc(mysql_query("SELECT id FROM questions WHERE examNum=".$_GET['exam']." AND id=".$row['questionNum']));
+    for($i = 1; $row = mysqli_fetch_assoc($tempAnswers); $i++) {
+        $tempQuestion = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM questions WHERE examNum=".$_GET['exam']." AND id=".$row['questionNum']));
         $_SESSION['questionsID'][$i] = $tempQuestion['id'];
     }
 
@@ -54,18 +54,18 @@ if($_POST['continue_attempt'] == "Continue") {
 
 if($_POST['submit'] == 'Submit') {
     /* When exam is submitted */
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
-    $answersData = mysql_query("SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['id']."'");
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+    $answersData = mysqli_query($link, "SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['id']."'");
     $finalScore = 0;
-    while($row = mysql_fetch_assoc($answersData)) 
+    while($row = mysqli_fetch_assoc($answersData)) 
     {
         if($row['correct'] == 1) $finalScore++;
     }
-    $finalScore = round(($finalScore/mysql_num_rows($answersData)) * 100);
+    $finalScore = round(($finalScore/mysqli_num_rows($answersData)) * 100);
     /*$previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
     if($previousBest['score'] >= $finalScore) $bestScore = 0;
     else $bestScore = 1;*/
-    mysql_query("UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
+    mysqli_query($link, "UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
     unset($_SESSION['questionsID']);
     header("Location: grade?attempt=".$attempt['id']);
     exit();
@@ -73,18 +73,18 @@ if($_POST['submit'] == 'Submit') {
 
 // FUNCTION NOT YET FUNCTIONAL
 function updateCourse() {
-    $courseScore = mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$_GET['exam']);
+    $courseScore = mysqli_query($link, "SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$_GET['exam']);
     $scoreTotal;
-    while($row = mysql_fetch_assoc($courseScore)) 
+    while($row = mysqli_fetch_assoc($courseScore)) 
     {
         $scoreTotal += $row['score'];
     }
-    $scoreTotal = $scoreTotal/(100 * mysql_num_rows($courseScore));
-    if(mysql_query("SELECT * FROM scores WHERE course=".$course['course'])) {
-        mysql_query("UPDATE scores SET score=".$scoreTotal." WHERE usr=".$_SESSION['id']." AND course=".$course['course']);
+    $scoreTotal = $scoreTotal/(100 * mysqli_num_rows($courseScore));
+    if(mysqli_query($link, "SELECT * FROM scores WHERE course=".$course['course'])) {
+        mysqli_query($link, "UPDATE scores SET score=".$scoreTotal." WHERE usr=".$_SESSION['id']." AND course=".$course['course']);
     }
     else {
-        mysql_query("INSERT INTO scores (course,usr,score) VALUES (".$course['course'].", ".$_SESSION['id'].", ".$scoreTotal.")");
+        mysqli_query($link, "INSERT INTO scores (course,usr,score) VALUES (".$course['course'].", ".$_SESSION['id'].", ".$scoreTotal.")");
     }
 }
 ?>
@@ -123,10 +123,10 @@ function updateCourse() {
         <?php
             if($_GET['question']) {
                 echo '<div class="exam-container"><div class="review-container">';
-                $answerData = mysql_query("SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
+                $answerData = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
                 
                 echo "<p>";
-                for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
+                for($i = 1; $row = mysqli_fetch_assoc($answerData); $i++) {
                     if($row['option'] != 0) echo "<span class='check-mark'>&#10003;</span>";
                     else echo "<span class='question-mark'>?</span>";
                     echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
@@ -135,8 +135,8 @@ function updateCourse() {
                 }
                 echo "</p>";
                 echo '</div><div class="question-container"><form action="" method="post">';
-                $questionData = mysql_fetch_assoc(mysql_query("SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE examNum=".$_GET['exam']." AND id=".$_SESSION['questionsID'][$_GET['question']]." AND public=1 ORDER BY RAND()"));
-                $optionNum = mysql_fetch_assoc(mysql_query("SELECT option,flag FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
+                $questionData = mysqli_fetch_assoc(mysqli_query($link, "SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE examNum=".$_GET['exam']." AND id=".$_SESSION['questionsID'][$_GET['question']]." AND public=1 ORDER BY RAND()"));
+                $optionNum = mysqli_fetch_assoc(mysqli_query($link, "SELECT option,flag FROM answers WHERE usr=".$_SESSION['id']." AND questionNum=".$_SESSION['questionsID'][$_GET['question']]." AND attemptNum=".$_SESSION['attemptNum']));
                 
                 echo "<span id='flag'";
                 if($optionNum['flag'] == 1) echo " class='red-flag'";
@@ -179,10 +179,10 @@ function updateCourse() {
             } 
             else if($_GET['review'] == 1) 
             {
-                $answerData = mysql_query("SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
+                $answerData = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
                 
                 echo "<p>";
-                for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
+                for($i = 1; $row = mysqli_fetch_assoc($answerData); $i++) {
                     if($row['option'] != 0) echo "<span class='check-mark'>&#10003;</span>";
                     else echo "<span class='question-mark'>?</span>";
                     echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
@@ -191,7 +191,7 @@ function updateCourse() {
                 echo "</p>";
             }
             else {
-                $attempt = mysql_fetch_assoc(mysql_query("SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+                $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
                 if($attempt['score'] == -1) 
                 {
                     echo "<p>Your previous attempt on this exam is incomplete. Click below to continue your current attempt.</p> <br> <form method='post' action=''><input type='submit' name='continue_attempt' value='Continue' /></form>";

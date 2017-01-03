@@ -7,17 +7,17 @@
     }
     else if($_GET['question'] && ($_SESSION['privilege'] == "administrator" || $_SESSION['privilege'] == "sysop")) 
     {
-        mysql_query("DELETE FROM questions WHERE id=".$_GET['question']);
+        mysqli_query($link, "DELETE FROM questions WHERE id=".$_GET['question']);
         $_SESSION['msg']['success']='Question successfully deleted.';
     }
     else if($_GET['exam'] && ($_SESSION['privilege'] == "administrator" || $_SESSION['privilege'] == "sysop")) 
     {
-        mysql_query("DELETE FROM exams WHERE id=".$_GET['exam']);
+        mysqli_query($link, "DELETE FROM exams WHERE id=".$_GET['exam']);
         $_SESSION['msg']['success']='Exam successfully deleted.';
     }
     else if($_GET['course'] && ($_SESSION['privilege'] == "administrator" || $_SESSION['privilege'] == "sysop")) 
     {
-        mysql_query("DELETE FROM courses WHERE id=".$_GET['course']);
+        mysqli_query($link, "DELETE FROM courses WHERE id=".$_GET['course']);
         $_SESSION['msg']['success']='Course successfully deleted.';
     }
     else if($_GET['user'] && ($_SESSION['id'] == $_GET['user'] || $_SESSION['privilege'] == "sysop" || $_SESSION['privilege'] == "administrator")) 
@@ -26,7 +26,7 @@
             $_SESSION = array();
             session_destroy();
         }
-        mysql_query("DELETE FROM dewey_members WHERE id=".$_GET['user']);
+        mysqli_query($link, "DELETE FROM dewey_members WHERE id=".$_GET['user']);
         $_SESSION['msg']['success']='Account successfully deleted.';
     }
     else 

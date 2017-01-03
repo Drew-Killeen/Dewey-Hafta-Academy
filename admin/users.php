@@ -7,9 +7,9 @@ if($_POST['update']=='Update')
 {
     // If the form has been submitted
     
-    mysql_query("UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
+    mysqli_query($link, "UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE usr='".$_GET['user']."'");
     
-    $userData = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
+    $userData = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
     
     if($userData['privilege'] == 'unapproved') {    
     send_mail('noreply@deweyhaftaacademy.x10host.com',
@@ -49,12 +49,12 @@ if($_POST['update']=='Update')
         <!--Authorized-->
         <h3>Unapproved Users</h3>
         <?php
-        $unapproved_users = mysql_query("SELECT id,usr FROM dewey_members WHERE privilege='unapproved'");
-        if (mysql_num_rows($unapproved_users) > 0) 
+        $unapproved_users = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE privilege='unapproved'");
+        if (mysqli_num_rows($unapproved_users) > 0) 
         {
             echo "<ul>";
             // output data of each row
-            while($row = mysql_fetch_assoc($unapproved_users)) {
+            while($row = mysqli_fetch_assoc($unapproved_users)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
@@ -65,12 +65,12 @@ if($_POST['update']=='Update')
         ?>
         <h3>Students</h3>
         <?php
-        $students = mysql_query("SELECT usr FROM dewey_members WHERE privilege='student'");
-        if (mysql_num_rows($students) > 0) 
+        $students = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='student'");
+        if (mysqli_num_rows($students) > 0) 
         {
             echo "<ul>";
             // output data of each row
-            while($row = mysql_fetch_assoc($students)) {
+            while($row = mysqli_fetch_assoc($students)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
@@ -81,12 +81,12 @@ if($_POST['update']=='Update')
         ?>
         <h3>Teachers</h3>
         <?php
-        $teachers = mysql_query("SELECT usr FROM dewey_members WHERE privilege='teacher'");
-        if (mysql_num_rows($teachers) > 0) 
+        $teachers = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='teacher'");
+        if (mysqli_num_rows($teachers) > 0) 
         {
             echo "<ul>";
             // output data of each row
-            while($row = mysql_fetch_assoc($teachers)) {
+            while($row = mysqli_fetch_assoc($teachers)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
@@ -97,12 +97,12 @@ if($_POST['update']=='Update')
         ?>
         <h3>Administrators</h3>
         <?php
-        $admins = mysql_query("SELECT usr FROM dewey_members WHERE privilege='admin'");
-        if (mysql_num_rows($admins) > 0) 
+        $admins = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='admin'");
+        if (mysqli_num_rows($admins) > 0) 
         {
             echo "<ul>";
             // output data of each row
-            while($row = mysql_fetch_assoc($admins)) {
+            while($row = mysqli_fetch_assoc($admins)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
@@ -113,12 +113,12 @@ if($_POST['update']=='Update')
         ?>
         <h3>Sysops</h3>
         <?php
-        $sysops = mysql_query("SELECT usr FROM dewey_members WHERE privilege='sysop'");
-        if (mysql_num_rows($sysops) > 0) 
+        $sysops = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='sysop'");
+        if (mysqli_num_rows($sysops) > 0) 
         {
             echo "<ul>";
             // output data of each row
-            while($row = mysql_fetch_assoc($sysops)) {
+            while($row = mysqli_fetch_assoc($sysops)) {
                 echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
@@ -128,7 +128,7 @@ if($_POST['update']=='Update')
         }
         
             else:
-                $user = mysql_fetch_assoc(mysql_query("SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
+                $user = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
                 echo 
                     "<h3><a href='users'>&larr;</a> Editing user: ".$_GET['user']."</h3>
                     <p>Member since ".$user['dt'].", id # ".$user['id'].". Currently enrolled in ".$user['enrollment'].". Email address: ".$user['email'].".</p>

@@ -36,4 +36,7 @@
 </script>
 
 <?php unset($_SESSION['msg']['success']);
-      endif; ?>
+      endif; 
+
+    mysqli_close($link);
+?>

@@ -15,13 +15,13 @@ if($_POST['submit']=='Login')
 	
 	if(!count($err))
 	{
-		$_POST['username'] = mysql_real_escape_string($_POST['username']);
-		$_POST['password'] = mysql_real_escape_string($_POST['password']);
+		$_POST['username'] = mysqli_real_escape_string($_POST['username']);
+		$_POST['password'] = mysqli_real_escape_string($_POST['password']);
 		$_POST['rememberMe'] = (int)$_POST['rememberMe'];
 		
 		// Escaping all input data
 
-		$row = mysql_fetch_assoc(mysql_query("SELECT id,usr,privilege FROM dewey_members WHERE usr='{$_POST['username']}' AND pass='".md5($_POST['password'])."'"));
+		$row = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,usr,privilege FROM dewey_members WHERE usr='{$_POST['username']}' AND pass='".md5($_POST['password'])."'"));
 
 		if($row['usr'])
 		{

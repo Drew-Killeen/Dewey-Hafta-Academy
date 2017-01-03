@@ -6,7 +6,7 @@
         header('Location: ../about?article=1');
     }
     if($_POST['submit'] == 'Submit') {
-        mysql_query("UPDATE help SET content='".$_POST['textarea']."', public=".$_POST['public']." WHERE id=".$_GET['article']);
+        mysqli_query($link, "UPDATE help SET content='".$_POST['textarea']."', public=".$_POST['public']." WHERE id=".$_GET['article']);
         header('Location: ?article='.$_GET['article']);
         exit();
     }
@@ -55,18 +55,18 @@
             echo "<div class='helpEdit'><input type='button' value='Edit' onclick='window.location.assign(\"../about?article=".$_GET['article']."&action=edit\")'/> <input type='button' value='New' onclick='window.location.assign(\"../about?action=new\")'/></div>";
         }
         if($_GET['article'] == 1) {
-            $content = mysql_fetch_assoc(mysql_query("SELECT title,content FROM help WHERE id=1"));
+            $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content FROM help WHERE id=1"));
             echo "<p>".$content['content']."</p>";
         
-            $articles = mysql_query("SELECT id,title FROM help WHERE public=1");
+            $articles = mysqli_query($link, "SELECT id,title FROM help WHERE public=1");
             echo "<ul>";
-            while($row = mysql_fetch_assoc($articles)) {
+            while($row = mysqli_fetch_assoc($articles)) {
                 echo "<li><a href='?article=".$row['id']."'>".$row['title']."</a></li>";
             }
             echo "</ul>";
         }
         else {
-            $content = mysql_fetch_assoc(mysql_query("SELECT title,content FROM help WHERE id=".$_GET['article']));
+            $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content FROM help WHERE id=".$_GET['article']));
             echo "<p>".$content['content']."</p>";
         }
     ?>
@@ -98,7 +98,7 @@
 
         }
         else if($_GET['action'] == 'edit') {
-            $content = mysql_fetch_assoc(mysql_query("SELECT title,content,public FROM help WHERE id=".$_GET['article']));
+            $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content,public FROM help WHERE id=".$_GET['article']));
             echo 
                 "<form method='post'>
                     <textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea>
