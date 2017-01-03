@@ -23,13 +23,16 @@ if($_POST['update']=='Update')
     
     mysql_query("UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=".$answer." WHERE id='".$_GET['question']."'");
     
-    if($_POST['option1']) {
-        $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
-        $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
-        $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
-        $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
-        $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
-        mysql_query("UPDATE questions SET option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
+    if($_POST['type'] == 2) {
+        mysql_query("UPDATE questions SET option1='True', option2='False' WHERE id='".$_GET['question']."'");
+    }
+    else if($_POST['option1']) {
+        $option1 = mysql_real_escape_string($_POST['option1']);
+        $option2 = mysql_real_escape_string($_POST['option2']);
+        $option3 = mysql_real_escape_string($_POST['option3']);
+        $option4 = mysql_real_escape_string($_POST['option4']);
+        $option5 = mysql_real_escape_string($_POST['option5']);
+        mysql_query("UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
     }
     $_SESSION['msg']['success']='Question updated';
 }
@@ -57,27 +60,27 @@ if($_POST['shuffle']=='Shuffle') {
     mysql_query("UPDATE questions SET question='".$_POST['question']."', public=".$_POST['public'].", type='".$_POST['type']."', answer=0 WHERE id='".$_GET['question']."'");
     
     if($_POST['option1']) {
-        $_POST['option1'] = mysql_real_escape_string($_POST['option1']);
-        $_POST['option2'] = mysql_real_escape_string($_POST['option2']);
-        $_POST['option3'] = mysql_real_escape_string($_POST['option3']);
-        $_POST['option4'] = mysql_real_escape_string($_POST['option4']);
-        $_POST['option5'] = mysql_real_escape_string($_POST['option5']);
+        $option1 = mysql_real_escape_string($_POST['option1']);
+        $option2 = mysql_real_escape_string($_POST['option2']);
+        $option3 = mysql_real_escape_string($_POST['option3']);
+        $option4 = mysql_real_escape_string($_POST['option4']);
+        $option5 = mysql_real_escape_string($_POST['option5']);
         
         $optionList = array();
-        if($_POST['option1']) array_push($optionList, $_POST['option1']);
-        if($_POST['option2']) array_push($optionList, $_POST['option2']);
-        if($_POST['option3']) array_push($optionList, $_POST['option3']);
-        if($_POST['option4']) array_push($optionList, $_POST['option4']);
-        if($_POST['option5']) array_push($optionList, $_POST['option5']);
+        if($_POST['option1']) array_push($optionList, $option1);
+        if($_POST['option2']) array_push($optionList, $option2);
+        if($_POST['option3']) array_push($optionList, $option3);
+        if($_POST['option4']) array_push($optionList, $option4);
+        if($_POST['option5']) array_push($optionList, $option5);
         shuffle($optionList);
         
-        if($optionList[0]) $_POST['option1'] = $optionList[0];
-        if($optionList[1]) $_POST['option2'] = $optionList[1];
-        if($optionList[2]) $_POST['option3'] = $optionList[2];
-        if($optionList[3]) $_POST['option4'] = $optionList[3];
-        if($optionList[4]) $_POST['option5'] = $optionList[4];
+        if($optionList[0]) $option1 = $optionList[0];
+        if($optionList[1]) $option2 = $optionList[1];
+        if($optionList[2]) $option3 = $optionList[2];
+        if($optionList[3]) $option4 = $optionList[3];
+        if($optionList[4]) $option5 = $optionList[4];
         
-        mysql_query("UPDATE questions SET option1='".$_POST['option1']."', option2='".$_POST['option2']."', option3='".$_POST['option3']."', option4='".$_POST['option4']."', option5='".$_POST['option5']."' WHERE id='".$_GET['question']."'");
+        mysql_query("UPDATE questions SET option1='".$option1."', option2='".$option2."', option3='".$option3."', option4='".$option4."', option5='".$option5."' WHERE id='".$_GET['question']."'");
     }
 }
 ?>
@@ -168,10 +171,12 @@ if($_POST['shuffle']=='Shuffle') {
                     <tr><td><b>Time limit:</b></td> <td><input class='editExam num' type='number' name='time_limit' value='".$examName['time_limit']."'/></td></tr>
                     <tr><td><b>Attempts:</b></td> <td><input class='editExam num' type='number' name='attempts' value='".$examName['attempts']."'/></td></tr></table></p>
                     <input type='submit' name='updateExam' value='Update' /><h3>Questions</h3>";                
-                $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum='".$_GET['exam']."'");
+                $examQuestions = mysql_query("SELECT id,question,public FROM questions WHERE examNum=".$_GET['exam']);
+                $publicQuestions = mysql_num_rows(mysql_query("SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=1"));
+                $notPublicQuestions = mysql_num_rows(mysql_query("SELECT * FROM questions WHERE examNum=".$_GET['exam']." AND public=0"));
                 if (mysql_num_rows($examQuestions) > 0) 
                 {
-                    // output data of each row
+                    echo "<i>".$publicQuestions." public questions, ".$notPublicQuestions." not public</i><br><br>";
                     while($row = mysql_fetch_assoc($examQuestions)) {
                         echo "<b>Question:</b> ".$row['question']." (<a href='?exam=".$_GET['exam']."&question=".$row['id']."'>edit</a>)";
                         if($row['public'] == 0) echo " <i>... not public</i>";
@@ -201,33 +206,33 @@ if($_POST['shuffle']=='Shuffle') {
                 echo "><label>Free Response</label></input><br>
                     <br></p>";
                 if($examQuestions['type'] == 0) {
-                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".htmlspecialchars($examQuestions['question'], ENT_QUOTES)."'/><br>
                     <input type='radio' name='answer' value='option1'";
                     if($examQuestions['answer'] == 1) echo "checked";
-                    echo "/><label for='option1'><b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/></label><br>
+                    echo "/><label for='option1'><b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".htmlspecialchars($examQuestions['option1'], ENT_QUOTES)."'/></label><br>
                     <input type='radio' name='answer' value='option2'";
                     if($examQuestions['answer'] == 2) echo "checked";
-                    echo "/><label for='option2'><b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/></label><br>
+                    echo "/><label for='option2'><b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".htmlspecialchars($examQuestions['option2'], ENT_QUOTES)."'/></label><br>
                     <input type='radio' name='answer' value='option3'";
                     if($examQuestions['answer'] == 3) echo "checked";
-                    echo "/><label for='option3'><b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/></label><br>
+                    echo "/><label for='option3'><b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".htmlspecialchars($examQuestions['option3'], ENT_QUOTES)."'/></label><br>
                     <input type='radio' name='answer' value='option4'";
                     if($examQuestions['answer'] == 4) echo "checked";
-                    echo "/><label for='option4'><b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/></label><br>
+                    echo "/><label for='option4'><b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".htmlspecialchars($examQuestions['option4'], ENT_QUOTES)."'/></label><br>
                     <input type='radio' name='answer' value='option5'";
                     if($examQuestions['answer'] == 5) echo "checked";
-                    echo "/><label for='option5'><b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/></label><br></p>";
+                    echo "/><label for='option5'><b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".htmlspecialchars($examQuestions['option5'], ENT_QUOTES)."'/></label><br></p>";
                 }
                 else if($examQuestions['type'] == 1) {
-                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
-                    <input type='checkbox' name='answer' value='option1'/><label for='option1'><b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".$examQuestions['option1']."'/></label><br>
-                    <input type='checkbox' name='answer' value='option2'/><label for='option2'><b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".$examQuestions['option2']."'/></label><br>
-                    <input type='checkbox' name='answer' value='option3'/><label for='option3'><b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".$examQuestions['option3']."'/></label><br>
-                    <input type='checkbox' name='answer' value='option4'/><label for='option4'><b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".$examQuestions['option4']."'/></label><br>
-                    <input type='checkbox' name='answer' value='option5'/><label for='option5'><b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".$examQuestions['option5']."'/></label><br></p>";
+                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".htmlspecialchars($examQuestions['question'], ENT_QUOTES)."'/><br>
+                    <input type='checkbox' name='answer' value='option1'/><label for='option1'><b>Option 1:</b> <input class='editExam' type='field' name='option1' value='".htmlspecialchars($examQuestions['option1'], ENT_QUOTES)."'/></label><br>
+                    <input type='checkbox' name='answer' value='option2'/><label for='option2'><b>Option 2:</b> <input class='editExam' type='field' name='option2' value='".htmlspecialchars($examQuestions['option2'], ENT_QUOTES)."'/></label><br>
+                    <input type='checkbox' name='answer' value='option3'/><label for='option3'><b>Option 3:</b> <input class='editExam' type='field' name='option3' value='".htmlspecialchars($examQuestions['option3'], ENT_QUOTES)."'/></label><br>
+                    <input type='checkbox' name='answer' value='option4'/><label for='option4'><b>Option 4:</b> <input class='editExam' type='field' name='option4' value='".htmlspecialchars($examQuestions['option4'], ENT_QUOTES)."'/></label><br>
+                    <input type='checkbox' name='answer' value='option5'/><label for='option5'><b>Option 5:</b> <input class='editExam' type='field' name='option5' value='".htmlspecialchars($examQuestions['option5'], ENT_QUOTES)."'/></label><br></p>";
                 }
                 else if($examQuestions['type'] == 2) {
-                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br>
+                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".htmlspecialchars($examQuestions['question'], ENT_QUOTES)."'/><br>
                     <input type='radio' name='answer' value='option1'";
                     if($examQuestions['answer'] == 1) echo "checked";
                     echo "/><label for='option1'><b>Option 1:</b> <span class='editExam' type='field' name='option1'>True</span></label><br>
@@ -236,7 +241,7 @@ if($_POST['shuffle']=='Shuffle') {
                     echo "/><label for='option1'><b>Option 2:</b> <span class='editExam' type='field' name='option2'>False</span></label><br></p>";  
                 }
                 else if($examQuestions['type'] == 3) {
-                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".$examQuestions['question']."'/><br><span style='font-size:86%;'>Question will be graded by supervisor.</span><br></p>";
+                    echo "<p><b>Question:</b> <input class='editExam' type='field' name='question' value='".htmlspecialchars($examQuestions['question'], ENT_QUOTES)."'/><br><span style='font-size:86%;'>Question will be graded by supervisor.</span><br><span class='red'>Free response questions are not currently supported.</span><br></p>";
                 }
                 echo "<p><b>Public?</b> <input type='radio' name='public' value='1' ";
                 if($examQuestions['public'] == 1) {echo "checked ";} 
