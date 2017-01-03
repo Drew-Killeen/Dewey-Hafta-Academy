@@ -20,8 +20,8 @@
                             <li><a href="?logoff">Logout</a></li>
                         </ul>
                     </li>
-                    </ul>
-                </div>
+                </ul>
+            </div>
 
         <?php
             endif;
