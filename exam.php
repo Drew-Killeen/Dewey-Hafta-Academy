@@ -37,13 +37,14 @@ if($_POST['begin'] == 'Begin') {
 }
 
 if($_POST['continue_attempt'] == "Continue") {
-    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+    $attempt = mysql_fetch_assoc(mysql_query("SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
+    
+    $tempAnswers = mysql_query("SELECT * FROM answers WHERE attemptNum=".$attempt['id']." ORDER BY id ASC");
 
-    $questionData = mysql_query("SELECT id,question FROM questions WHERE examNum='".$_GET['exam']."' AND public=1 ORDER BY RAND()");
-
-    for($i = 1; $row = mysql_fetch_assoc($questionData); $i++) {
-        $_SESSION['questionsID'][$i] = $row['id'];
+    for($i = 1; $row = mysql_fetch_assoc($tempAnswers); $i++) {
+        $tempQuestion = mysql_fetch_assoc(mysql_query("SELECT id FROM questions WHERE examNum=".$_GET['exam']." AND id=".$row['questionNum']));
+        $_SESSION['questionsID'][$i] = $tempQuestion['id'];
     }
 
     $_SESSION['numQuestions'] = $i;
@@ -126,8 +127,8 @@ function updateCourse() {
                 
                 echo "<p>";
                 for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
-                    if($row['option'] != 0) echo "<span style='color:#498e49;'>&#10003; </span>";
-                    else echo "<span style='color:#f95555;'>&#10007; </span>";
+                    if($row['option'] != 0) echo "<span class='check-mark'>&#10003;</span>";
+                    else echo "<span class='question-mark'>?</span>";
                     echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
                     if($row['flag'] == 1) echo "<span id='small-flag'></span>";
                     echo "<br>";
@@ -182,8 +183,8 @@ function updateCourse() {
                 
                 echo "<p>";
                 for($i = 1; $row = mysql_fetch_assoc($answerData); $i++) {
-                    if($row['option'] != 0) echo "<span style='color:#498e49;'>&#10003; </span>";
-                    else echo "<span style='color:#f95555;'>&#10007; </span>";
+                    if($row['option'] != 0) echo "<span class='check-mark'>&#10003;</span>";
+                    else echo "<span class='question-mark'>?</span>";
                     echo "<a href='?exam=".$_GET['exam']."&question=".$i."' class='whiteLink'>Question ".$i."</a>";
                     echo "<br>";
                 }
@@ -208,7 +209,7 @@ function updateCourse() {
             <?php 
                 echo "<div class='float-right;'>";
                 if($_GET['question'] || $_GET['review']) {
-                    echo ' <input type="submit" name="submit" value="Submit" class="float-right"/> '; 
+                    echo ' <form action="" method="post"><input type="submit" name="submit" value="Submit" class="float-right"/></form> '; 
                 }
                 if($_GET['question'] && !$_GET['review']) {
                     echo ' <input type="button" name="review" onclick="window.location.assign(\'?exam='.$_GET['exam'].'&review=1\');" value="Review"    style="float:right;margin-right:4px;"/> '; 
