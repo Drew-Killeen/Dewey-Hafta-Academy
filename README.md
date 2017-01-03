@@ -26,6 +26,8 @@ TODO
 20. Allow exam to accept images
 21. Create time limits for exams
 22. Create logo
+23. Reply to emails to approve/deny users
+24. Add new user right "denied"
 
 Completed
 ----
@@ -79,3 +81,4 @@ Completed
 48. ~~Make grade.php prettier and more useful~~
 49. ~~Give admins the ability to edit about pages on the front end~~
 50. ~~Add exam overview~~
+51. ~~Update mysql to mysqli~~
