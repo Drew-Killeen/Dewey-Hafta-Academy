@@ -53,12 +53,12 @@ if($_POST['submit']=='Register')
 	{
 		// If there are no errors
 		
-		$_POST['email'] = mysql_real_escape_string($_POST['email']);
-		$_POST['username'] = mysql_real_escape_string($_POST['username']);
-        $_POST['pass'] = mysql_real_escape_string($_POST['pass']);
+		$_POST['email'] = mysqli_real_escape_string($_POST['email']);
+		$_POST['username'] = mysqli_real_escape_string($_POST['username']);
+        $_POST['pass'] = mysqli_real_escape_string($_POST['pass']);
 		// Escape the input data
 		
-		mysql_query("INSERT INTO dewey_members(usr,email,pass,regIP,dt)
+		mysqli_query($link, "INSERT INTO dewey_members(usr,email,pass,regIP,dt)
 				VALUES(
 				'".$_POST['username']."',
 				'".$_POST['email']."',
