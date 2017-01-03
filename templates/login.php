@@ -1,5 +1,5 @@
 <div id="header">
-    <a href="main" id="title">Dewey Hafta Academy</a>
+    <a href="../main" id="title">Dewey Hafta Academy</a>
     <span id="usrHeader">
         <?php
             if(!$_SESSION['id']):
