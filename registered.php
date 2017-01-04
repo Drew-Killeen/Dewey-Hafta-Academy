@@ -34,8 +34,8 @@ if($_POST['submit']=='Update')
     
     if(!count($err))
 	{
-        $_POST['oldpass'] = mysqli_real_escape_string($_POST['oldpass']);
-        $_POST['newpass'] = mysqli_real_escape_string($_POST['newpass']);
+        $_POST['oldpass'] = mysqli_real_escape_string($link, $_POST['oldpass']);
+        $_POST['newpass'] = mysqli_real_escape_string($link, $_POST['newpass']);
         // Escaping all input data
         
         mysqli_query($link, "UPDATE dewey_members SET pass='".md5($_POST['newpass'])."' WHERE id='".$_SESSION['id']."'");
@@ -79,7 +79,7 @@ if($_POST['submit']=='Add')
     
     if(!count($err))
 	{
-        $_POST['supervisor'] = mysqli_real_escape_string($_POST['supervisor']);
+        $_POST['supervisor'] = mysqli_real_escape_string($link, $_POST['supervisor']);
         // Escaping all input data
         
         mysqli_query("UPDATE dewey_members SET supervisor='".$_POST['supervisor']."' WHERE id='".$_SESSION['id']."'");
