@@ -12,8 +12,12 @@
                 <li><a href="../enroll/"><img src="../images/pencil-64.png" alt="Enroll" class="menu-icon"></a> <a href="../enroll" class="line">Enroll</a></li>
                 <li><a href="../course/"><img src="../images/notebook-56.png" alt="Course" class="menu-icon"></a> <a href="../course" class="line">Course</a></li>
                 <li><a href="../grade/"><img src="../images/checklist-56.png" alt="Progress" class="menu-icon"></a> <a href="../grade" class="line">Progress</a></li>';
+                if($_SESSION['privilege'] == 'teacher') {
+                    echo '<li><a href="../students/"><img src="../images/student-64.png" alt="Students" class="menu-icon"></a> <a href="../students" class="line">Students</a></li>';
+                }
                 if($_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') {
-                echo '<li class="menu-item-has-children"><a href="../admin/"><img src="../images/gear-64.png" alt="Admin" class="menu-icon"></a> <a href="../admin/index" class="line">Admin</a> <span class="sidebar-menu-arrow"></span>
+                echo '<li><a href="../students/"><img src="../images/student-64.png" alt="Students" class="menu-icon"></a> <a href="../students" class="line">Students</a></li>
+                    <li class="menu-item-has-children"><a href="../admin/"><img src="../images/gear-64.png" alt="Admin" class="menu-icon"></a> <a href="../admin/index" class="line">Admin</a> <span class="sidebar-menu-arrow"></span>
                     <ul class="sub-menu nolist" style="line-height:1.2;">
                         <li><a href="../admin/edit_course" class="line">Courses</a></li>
                         <li><a href="../admin/edit_exam" class="line">Exams</a></li>
