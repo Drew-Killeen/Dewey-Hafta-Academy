@@ -13,9 +13,14 @@ require 'scripts/header.php';
 </head>
 <body>
     
-<?php 
-    include_once("templates/login.php"); 
-    include_once("templates/menu.php"); 
+<?php
+    if($_GET['action'] != 'print') {
+        include_once("templates/login.php"); 
+        include_once("templates/menu.php"); 
+    }
+    else {
+        echo "<h1>Dewey Hafta Academy</h1>";
+    }
 ?>
     
 <div id="main">
@@ -105,7 +110,13 @@ require 'scripts/header.php';
     </div>
 </div>
 
-<?php require 'scripts/jsload.php'; ?>
+<?php 
+    require 'scripts/jsload.php'; 
+    
+    if($_GET['action'] == 'print') {
+        echo "<script>window.print();</script>";
+    }
+?>
     
 </body>
 </html>
