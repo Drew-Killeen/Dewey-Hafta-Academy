@@ -31,6 +31,7 @@ TODO
 25. Merge create_exam.php with edit_exam.php
 26. Provide more information when reviewing an exam on grade.php
 27. Add window.find() button on edit_exam.php
+28. Prevent users from viewing grades that do not belong to them or their students
 
 Completed
 ----
