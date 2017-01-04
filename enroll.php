@@ -45,7 +45,7 @@ if($_POST['submit']=='Submit')
             <h2>Course Enrollment</h2>
             <?php
                 $current_data = mysqli_fetch_assoc(mysqli_query($link, "SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-                if(empty($current_data))
+                if(empty($current_data['enrollment']))
                 {
                     echo "<p>You are not currently enrolled in any courses. Select one below.</p>";
                 } else 
