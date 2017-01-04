@@ -35,7 +35,7 @@ if(isset($_POST['submit']))
         NOW()							
         )");
         
-        $_SESSION['msg']['create-success']='Course successfully created.';
+        $_SESSION['msg']['success']='Course successfully created.';
         header("Location: create_exam?".$_POST['course']);
 	    exit;
     }
@@ -43,7 +43,7 @@ if(isset($_POST['submit']))
     
     if(count($err))
 	{
-		$_SESSION['msg']['create-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
         header("Location: create_course");
 	    exit;
 	}
@@ -77,20 +77,6 @@ if(isset($_POST['submit']))
         <h1>Administrator Control Panel</h1>
         <p>You can use this page to create a new course. Please only create the course if you intend to immediately begin creating exams. The less empty courses lying around the better.</p>
         <form action="" method="post">
-                <?php
-						
-                if($_SESSION['msg']['create-err'])
-				{
-				    echo '<div class="err">'.$_SESSION['msg']['create-err'].'</div>';
-				    unset($_SESSION['msg']['create-err']);
-				}
-						
-				if($_SESSION['msg']['create-success'])
-				{
-					echo '<div class="success">'.$_SESSION['msg']['create-success'].'</div>';
-					unset($_SESSION['msg']['create-success']);
-				}
-				?>
             <label class="grey" for="course">Course Name:</label>
             <input class="field" type="text" name="course" id="course" value="" size="23"/>
             <input type="submit" name="submit" value="&#10004;"/>
