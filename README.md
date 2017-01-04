@@ -30,6 +30,7 @@ TODO
 24. Merge create_course.php with edit_course.php
 25. Merge create_exam.php with edit_exam.php
 26. Provide more information when reviewing an exam on grade.php
+27. Add window.find() button on edit_exam.php
 
 Completed
 ----
