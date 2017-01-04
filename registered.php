@@ -58,33 +58,37 @@ if($_POST['submit']=='Add')
 	
 	$err = array();
 	// Will hold our errors
-    
-    if(!$_POST['supervisor']) 
-    {
+    $teacher = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,privilege FROM dewey_members WHERE usr='{$_POST['supervisor']}'"));
+        
+    if(!$_POST['supervisor']) {
 		$err[] = 'Field must be filled in.';
     }
-    
-    else if(strlen($_POST['supervisor']) < 4 || strlen($_POST['supervisor']) > 32)
-	{
-		$err[]='The Supervisor username must be between 3 and 32 characters.';
-	} 
-    
-    else if(empty(mysqli_fetch_assoc(mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE usr='{$_POST['supervisor']}'")))) {
-        $err[]='There is no user with the name '.$_POST['supervisor'].'.';
-    }
-    
-    if($_SESSION['usr'] == $_POST['supervisor']) {
+    else if($_SESSION['usr'] == $_POST['supervisor']) {
         $err[]='You cannot assign yourself as your own supervisor.';
     }
     
-    if(!count($err))
-	{
-        $_POST['supervisor'] = mysqli_real_escape_string($link, $_POST['supervisor']);
+    else if(strlen($_POST['supervisor']) < 4 || strlen($_POST['supervisor']) > 32) {
+		$err[]='The Supervisor username must be between 3 and 32 characters.';
+	} 
+    
+    else if(empty($teacher['id'])) {
+        $err[]='There is no user with the name '.$_POST['supervisor'].'.';
+    }
+    
+    else if($teacher['privilege'] != 'teacher' && $teacher['privilege'] != 'admin' && $teacher['privilege'] != 'sysop') {
+        $err[]=$_POST['supervisor'].' does not have sufficient privileges to be a supervisor.';
+    }
+    
+    if(!count($err)) {
+        $supervisor = mysqli_real_escape_string($link, $_POST['supervisor']);
         // Escaping all input data
         
-        mysqli_query("UPDATE dewey_members SET supervisor='".$_POST['supervisor']."' WHERE id='".$_SESSION['id']."'");
+        $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM dewey_members WHERE usr='".$supervisor."'"));
+        mysqli_query($link, "UPDATE dewey_members SET supervisor='".$supervisorID['id']."' WHERE id=".$_SESSION['id']);
         
         $_SESSION['msg']['success']='Supervisor successfully updated.';
+        header("Location: registered");
+        exit();
     }
     
     if(count($err))
@@ -95,8 +99,10 @@ if($_POST['submit']=='Add')
 
 if($_POST['submit']=='Remove Supervisor')
 {
-    mysqli_query("UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
+    mysqli_query($link, "UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
     $_SESSION['msg']['success']='Supervisor removed.';
+    header("Location: registered");
+    exit();
 }
 
 if($_POST['request']=='Send Request')
@@ -217,8 +223,14 @@ if($_POST['request']=='Send Request')
         <h3>Supervisor</h3>
         <p>Current supervisor: <i>
         <?php 
-            $current_data = mysqli_fetch_assoc(mysqli_query($link, "SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-            echo $current_data['supervisor'];
+            $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+            if($supervisorID['supervisor'] == 0) { 
+                echo 'none'; 
+            }
+            else {
+                $supervisorName = mysqli_fetch_assoc(mysqli_query($link, "SELECT usr FROM dewey_members WHERE id='{$supervisorID['supervisor']}'"));
+                echo $supervisorName['usr'];
+            }
             ?></i></p>
         <form action="" method="post">
             <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" placeholder="Supervisor Username"/>
