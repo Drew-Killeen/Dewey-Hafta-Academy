@@ -66,14 +66,14 @@
 <div id="main">
     <div class="container">
     <?php
-        if(($_SESSION['privilege'] == 'administrator' || $_SESSION['privilege'] == 'sysop') && $_GET['action'] != "edit") {
+        if(($_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') && $_GET['action'] != "edit") {
             echo "<div class='helpEdit'><input type='button' value='Edit' onclick='window.location.assign(\"../about?article=".$_GET['article']."&action=edit\")'/> <input type='button' value='New' onclick='window.location.assign(\"../about?action=new\")'/></div>";
         }
         if($_GET['article'] == 1) {
             $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content FROM help WHERE id=1"));
             echo "<p>".$content['content']."</p>";
         
-            if($_SESSION['privilege'] == 'administrator' || $_SESSION['privilege'] == 'sysop') $articles = mysqli_query($link, "SELECT id,title FROM help");
+            if($_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') $articles = mysqli_query($link, "SELECT id,title FROM help");
             else if($_SESSION['privilege'] == 'student' || $_SESSION['privilege'] == 'teacher') $articles = mysqli_query($link, "SELECT id,title FROM help WHERE public=1 OR public=2");
             else $articles = mysqli_query($link, "SELECT id,title FROM help WHERE public=1");
             
@@ -107,7 +107,7 @@
     
     <div class='editor-container'>
     <?php
-        if($_GET['action'] && ($_SESSION['privilege'] != "administrator" && $_SESSION['privilege'] != "sysop")) {
+        if($_GET['action'] && ($_SESSION['privilege'] != "admin" && $_SESSION['privilege'] != "sysop")) {
             $_SESSION['msg']['err'] = "You do not have sufficient privileges to perform this action.";
             header('Location: ../about?article=1');
             exit();
