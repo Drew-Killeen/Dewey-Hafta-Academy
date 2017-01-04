@@ -7,27 +7,29 @@ TODO
 1. Limit the number of attempts per exam
 2. Add notification system
 3. Implement administrator ability to send emails from the site
-4. Create new print.php page
-5. Update user management system so that admins cannot edit sysops
-6. Add ability for teachers to view and edit their students' progress
-7. Rename table dewey_members to members
-8. Allow teachers to view and grade students' progress
-9. _Give option to reset password if forgotten_
-10. Allow for a limit on the number of questions on an exam
-11. Make the sass switch actually do something
-12. Create ability to view past enrollments
-13. Create user profiles
-14. Update GET source on edit_exam.php to not require get field
-15. Separate admin and teacher menus
-16. Integrate Gravatar
-17. Require new accounts to confirm email
-18. Create new statistics page for admins
-19. Calculate course grade after submitting an exam
-20. Allow exam to accept images
-21. Create time limits for exams
-22. Create logo
-23. Reply to emails to approve/deny users
-24. Add new user right "denied"
+4. Update user management system so that admins cannot edit sysops
+5. Rename table dewey_members to members
+6. _Give option to reset password if forgotten_
+7. Allow for a limit on the number of questions on an exam
+8. Make the sass switch actually do something
+9. Create ability to view past enrollments
+10. Create user profiles
+11. Update GET source on edit_exam.php to not require get field
+12. Integrate Gravatar
+13. Require new accounts to confirm email
+14. Create new statistics page for admins
+15. Calculate course grade after submitting an exam
+16. Allow exam to accept images
+17. Create time limits for exams
+18. Create logo
+19. Reply to emails to approve/deny users
+20. Add new user right "denied"
+21. Create ability for teachers to edit/grade students' progress
+22. Update formatting for help pages
+23. Update users.php to present information in a more readable manner. 
+24. Merge create_course.php with edit_course.php
+25. Merge create_exam.php with edit_exam.php
+26. Provide more information when reviewing an exam on grade.php
 
 Completed
 ----
@@ -82,3 +84,7 @@ Completed
 49. ~~Give admins the ability to edit about pages on the front end~~
 50. ~~Add exam overview~~
 51. ~~Update mysql to mysqli~~
+52. ~~Create new print.php page~~
+53. ~~Add ability for teachers to view their students' progress~~
+54. ~~Separate admin and teacher menus~~
+55. ~~Organize questions into a table on edit_exam.php~~
