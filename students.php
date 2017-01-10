@@ -25,7 +25,7 @@
         else:
         
         if(!$_GET['id']) {
-            echo "<h2>Teacher Portal</h2>";
+            echo "<h1>Teacher Portal</h1>";
             $students = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE supervisor=".$_SESSION['id']);
 
             if(mysqli_num_rows($students) > 0) {
@@ -72,7 +72,14 @@
             }
         }
         else {
-            echo "--placeholder--";
+            $score = mysqli_fetch_assoc(mysqli_query($link, "SELECT usr,score FROM attempts WHERE id=".$_GET['attempt']));
+            $studentID = mysqli_query($link, "SELECT * FROM dewey_members WHERE id=".$_GET['id']." AND supervisor=".$_SESSION['id']);
+            if(mysqli_num_rows($studentID) < 1 && $_SESSION['privilege'] != 'admin' && $_SESSION['privilege'] != 'sysop') {
+                echo "You do not have permission to view this attempt.";
+            }
+            else {
+                echo "--placeholder--";
+            }
         }
         
 	   endif;
