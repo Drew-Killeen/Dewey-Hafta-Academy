@@ -115,7 +115,7 @@
         else if($_GET['action'] == 'edit') {
             $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content,public FROM help WHERE id=".$_GET['article']));
             echo 
-                "<form method='post'><label class='grey' for='title'>Title</label> <input type='text' name='title' value='".$content['title']."' size='23'/><br><br><textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea>";
+                "<form method='post'><label class='grey' for='title'>Title</label> <input type='text' name='title' value='".$content['title']."' size='23'/><br><br><textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea><p>";
             if($_GET['article'] != 1) {
                 echo "<b>Public:</b><input type='radio' name='public' value='1' ";
                 if($content['public'] == 1) echo "checked";
@@ -125,7 +125,7 @@
                 if($content['public'] == 2) echo "checked";
                 echo "/><label for='2'>Members only</label>";
             }
-            echo "<input type='submit' name='submit' class='editor-submit' value='Submit'/></form>";
+            echo "<input type='submit' name='submit' class='editor-submit' value='Submit'/></p></form>";
                 
         }
     ?>
