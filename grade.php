@@ -69,39 +69,44 @@ require 'scripts/header.php';
             }
         }
         else {
-            $answers = mysqli_query($link, "SELECT questionNum,correct,option FROM answers WHERE attemptNum=".$_GET['attempt']);
-            $score = mysqli_fetch_assoc(mysqli_query ($link, "SELECT score FROM attempts WHERE id=".$_GET['attempt']));
-            echo "<h4>Score: ".$score['score']."%</h4>";
-            echo "<div class='answers-list'>";
-            for($i = 1; $row = mysqli_fetch_assoc($answers); $i++) {
-                $questions = mysqli_fetch_assoc(mysqli_query($link, "SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE id=".$row['questionNum']));
-                if($row['correct'] == 1) $correct = "<span class='green'>correct</span>";
-                else if($row['correct'] == 2) $correct = "<span class='red'>unanswered</span>";
-                else $correct = "<span class='red'>incorrect</span>";
-                echo "<h3>Question ".$i.": ".$correct."</h3>
-                    <div class='answers-item'><b>".$questions['question']."</b><br><input type='radio' disabled ";
-                if($row['option'] == 1) echo "checked";
-                    echo "/>".$questions['option1']."<br><input type='radio' disabled ";
-                if($row['option'] == 2) echo "checked";
-                    echo "/>".$questions['option2']."<br>";
-                    if($questions['option3']) {
-                        echo "<input type='radio' disabled ";
-                        if($row['option'] == 3) echo "checked";
-                        echo "/>".$questions['option3']."<br>";
-                    }
-                    if($questions['option4']) {
-                        echo "<input type='radio' disabled ";
-                        if($row['option'] == 4) echo "checked";
-                        echo "/>".$questions['option4']."<br>";
-                    }
-                    if($questions['option5']) {
-                        echo "<input type='radio' disabled ";
-                        if($row['option'] == 5) echo "checked";
-                        echo "/>".$questions['option5']."<br>";
-                    }
+            $score = mysqli_fetch_assoc(mysqli_query ($link, "SELECT usr,score FROM attempts WHERE id=".$_GET['attempt']));
+            if($_SESSION['id'] != $score['usr'] && ($_SESSION['privilege'] != 'admin' && $_SESSION['privilege'] != 'sysop')) {
+                echo "You do not have permission to view this attempt.";
+            }
+            else {
+                $answers = mysqli_query($link, "SELECT questionNum,correct,option FROM answers WHERE attemptNum=".$_GET['attempt']);
+                echo "<h4>Score: ".$score['score']."%</h4>";
+                echo "<div class='answers-list'>";
+                for($i = 1; $row = mysqli_fetch_assoc($answers); $i++) {
+                    $questions = mysqli_fetch_assoc(mysqli_query($link, "SELECT question,option1,option2,option3,option4,option5 FROM questions WHERE id=".$row['questionNum']));
+                    if($row['correct'] == 1) $correct = "<span class='green'>correct</span>";
+                    else if($row['correct'] == 2) $correct = "<span class='red'>unanswered</span>";
+                    else $correct = "<span class='red'>incorrect</span>";
+                    echo "<h3>Question ".$i.": ".$correct."</h3>
+                        <div class='answers-item'><b>".$questions['question']."</b><br><input type='radio' disabled ";
+                    if($row['option'] == 1) echo "checked";
+                        echo "/>".$questions['option1']."<br><input type='radio' disabled ";
+                    if($row['option'] == 2) echo "checked";
+                        echo "/>".$questions['option2']."<br>";
+                        if($questions['option3']) {
+                            echo "<input type='radio' disabled ";
+                            if($row['option'] == 3) echo "checked";
+                            echo "/>".$questions['option3']."<br>";
+                        }
+                        if($questions['option4']) {
+                            echo "<input type='radio' disabled ";
+                            if($row['option'] == 4) echo "checked";
+                            echo "/>".$questions['option4']."<br>";
+                        }
+                        if($questions['option5']) {
+                            echo "<input type='radio' disabled ";
+                            if($row['option'] == 5) echo "checked";
+                            echo "/>".$questions['option5']."<br>";
+                        }
+                    echo "</div>";
+                }
                 echo "</div>";
             }
-            echo "</div>";
         }
         ?>
     <?php
