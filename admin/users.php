@@ -55,7 +55,7 @@ if($_POST['update']=='Update')
             echo "<ul>";
             // output data of each row
             while($row = mysqli_fetch_assoc($unapproved_users)) {
-                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
+                echo "<li><a href='users?user=".$row['id']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -65,13 +65,13 @@ if($_POST['update']=='Update')
         ?>
         <h3>Students</h3>
         <?php
-        $students = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='student'");
+        $students = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE privilege='student'");
         if (mysqli_num_rows($students) > 0) 
         {
             echo "<ul>";
             // output data of each row
             while($row = mysqli_fetch_assoc($students)) {
-                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
+                echo "<li><a href='users?user=".$row['id']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -81,13 +81,13 @@ if($_POST['update']=='Update')
         ?>
         <h3>Teachers</h3>
         <?php
-        $teachers = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='teacher'");
+        $teachers = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE privilege='teacher'");
         if (mysqli_num_rows($teachers) > 0) 
         {
             echo "<ul>";
             // output data of each row
             while($row = mysqli_fetch_assoc($teachers)) {
-                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
+                echo "<li><a href='users?user=".$row['id']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -97,13 +97,13 @@ if($_POST['update']=='Update')
         ?>
         <h3>Administrators</h3>
         <?php
-        $admins = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='admin'");
+        $admins = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE privilege='admin'");
         if (mysqli_num_rows($admins) > 0) 
         {
             echo "<ul>";
             // output data of each row
             while($row = mysqli_fetch_assoc($admins)) {
-                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
+                echo "<li><a href='users?user=".$row['id']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -113,13 +113,13 @@ if($_POST['update']=='Update')
         ?>
         <h3>Sysops</h3>
         <?php
-        $sysops = mysqli_query($link, "SELECT usr FROM dewey_members WHERE privilege='sysop'");
+        $sysops = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE privilege='sysop'");
         if (mysqli_num_rows($sysops) > 0) 
         {
             echo "<ul>";
             // output data of each row
             while($row = mysqli_fetch_assoc($sysops)) {
-                echo "<li><a href='users?user=".$row['usr']."'>".$row['usr']."</a></li>";
+                echo "<li><a href='users?user=".$row['id']."'>".$row['usr']."</a></li>";
             }
             echo "</ul>";
         } else 
@@ -128,16 +128,25 @@ if($_POST['update']=='Update')
         }
         
             else:
-                $user = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE usr='".$_GET['user']."'"));
+                $user = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE id=".$_GET['user']));
+                if($user['enrollment'] != 0) {$enrollment = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM courses WHERE id=".$user['enrollment']));}
                 echo 
-                    "<h3><a href='users'>&larr;</a> Editing user: ".$_GET['user']."</h3>
-                    <p>Member since ".$user['dt'].", id # ".$user['id'].". Currently enrolled in ".$user['enrollment'].". Email address: ".$user['email'].".</p>
+                    "<h3><a href='users'>&larr;</a> Editing user: ".$user['usr']."</h3>
+                    <ul>
+                        <li>Member since ".date("F jS, Y", strtotime($user['dt']))."</li>";
+                        if($user['enrollment'] != 0) {echo "<li>Currently enrolled in ".$enrollment['course']."</li>";}
+                        echo "<li>Email address: ".$user['email']."</li>
+                        <li><a href='../students?id=".$_GET['user']."'>View grades</a></li>
+                    </ul>
+                    <h4>Permissions</h4>
                     <form action='' method='post'>
-                        <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label></input><br>
-                        <input type='radio' name='privilege' value='student'><label for='student'>Student</label></input><br>
-                        <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label></input><br>
-                        <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label></input><br>
-                        <input type='radio' name='privilege' value='sysop'><label for='sysop'>Sysop</label></input><br>
+                        <p>
+                            <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label></input><br>
+                            <input type='radio' name='privilege' value='student'><label for='student'>Student</label></input><br>
+                            <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label></input><br>
+                            <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label></input><br>
+                            <input type='radio' name='privilege' value='sysop'><label for='sysop'>Sysop</label></input><br>
+                        </p>
                         <input type='submit' name='update' value='Update' />
                     </form>";
             endif;
