@@ -121,7 +121,11 @@ function updateCourse() {
         <!--Authorized-->
         <?php echo "<h2>Module ".$examData['module'].": ".$examData['title']."</h2>"; ?>
         <?php
-            if($_GET['question']) {
+        $previousExams = mysqli_query($link, "SELECT * FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']);
+            if(mysqli_num_rows($previousExams) >= $examData['attempts'] && $examData['attempts'] != 0) {
+                echo "<p>You have already used all of your attempts for this exam. If you would like to try again, ask your teacher to delete one of your current attempts.</p>";
+            }
+            else if($_GET['question']) {
                 echo '<div class="exam-container"><div class="review-container">';
                 $answerData = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
                 
