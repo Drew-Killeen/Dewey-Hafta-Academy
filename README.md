@@ -4,34 +4,32 @@ Repository for Dewey Hafta Academy. A simple website for creating and taking exa
 TODO
 ----
 
-1. Limit the number of attempts per exam
-2. Add notification system
-3. Implement administrator ability to send emails from the site
-4. Update user management system so that admins cannot edit sysops
-5. Rename table dewey_members to members
-6. _Give option to reset password if forgotten_
-7. Allow for a limit on the number of questions on an exam
-8. Make the sass switch actually do something
-9. Create ability to view past enrollments
-10. Create user profiles
-11. Update GET source on edit_exam.php to not require get field
-12. Integrate Gravatar
-13. Require new accounts to confirm email
-14. Create new statistics page for admins
-15. Calculate course grade after submitting an exam
-16. Allow exam to accept images
-17. Create time limits for exams
-18. Create logo
-19. Reply to emails to approve/deny users
-20. Add new user right "denied"
-21. Create ability for teachers to edit/grade students' progress
-22. Update formatting for help pages
-23. Update users.php to present information in a more readable manner. 
-24. Merge create_course.php with edit_course.php
-25. Merge create_exam.php with edit_exam.php
-26. Provide more information when reviewing an exam on grade.php
-27. Add window.find() button on edit_exam.php
-28. Prevent users from viewing grades that do not belong to them or their students
+1. Add notification system
+2. Implement administrator ability to send emails from the site
+3. Update user management system so that admins cannot edit sysops
+4. Rename table dewey_members to members
+5. _Give option to reset password if forgotten_
+6. Allow for a limit on the number of questions on an exam
+7. Make the sass switch actually do something
+8. Create ability to view past enrollments
+9. Create user profiles
+10. Update GET source on edit_exam.php to not require get field
+11. Integrate Gravatar
+12. Require new accounts to confirm email
+13. Create new statistics page for admins
+14. Calculate course grade after submitting an exam
+15. Allow exam to accept images
+16. Create time limits for exams
+17. Create logo
+18. Reply to emails to approve/deny users
+19. Add new user right "denied"
+20. Create ability for teachers to edit/grade students' progress
+21. Update formatting for help pages
+22. Update users.php to present information in a more readable manner. 
+23. Merge create_course.php with edit_course.php
+24. Merge create_exam.php with edit_exam.php
+25. Provide more information when reviewing an exam on grade.php
+26. Add window.find() button on edit_exam.php
 
 Completed
 ----
@@ -90,3 +88,5 @@ Completed
 53. ~~Add ability for teachers to view their students' progress~~
 54. ~~Separate admin and teacher menus~~
 55. ~~Organize questions into a table on edit_exam.php~~
+56. ~~Limit the number of attempts per exam~~
+57. ~~Prevent users from viewing grades that do not belong to them or their students~~
