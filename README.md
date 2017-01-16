@@ -30,6 +30,9 @@ TODO
 24. Merge create_exam.php with edit_exam.php
 25. Provide more information when reviewing an exam on grade.php
 26. Add window.find() button on edit_exam.php
+27. Expand live search to other parts of the site
+28. Consolidate registration process into one step
+29. Do away with mandatory user approval process
 
 Completed
 ----
@@ -90,3 +93,5 @@ Completed
 55. ~~Organize questions into a table on edit_exam.php~~
 56. ~~Limit the number of attempts per exam~~
 57. ~~Prevent users from viewing grades that do not belong to them or their students~~
+58. ~~Live search for selecting supervisor~~
+59. ~~Create second step in registration process for choosing student or teacher status~~
