@@ -160,7 +160,7 @@ if($_POST['shuffle']=='Shuffle') {
                 }
                 } else 
                 {
-                    echo "0 results";
+                    echo "<p>0 results</p>";
                 }
                 echo "<input type='button' onclick='location.href=\"create_exam\";' value='New'/>";
             } else if(!$_GET['question'])
@@ -203,7 +203,7 @@ if($_POST['shuffle']=='Shuffle') {
                     echo "</table>";
                 } else 
                 {
-                    echo "0 results";
+                    echo "<p>0 results</p>";
                 }
                 echo "<br><input type='submit' name='add' value='New' /> <input type='button' onclick='deleteExam();' name='delete' value='Delete' /></form>";
             } else
