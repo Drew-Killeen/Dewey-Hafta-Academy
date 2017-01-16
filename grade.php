@@ -41,6 +41,7 @@ require 'scripts/header.php';
         <?php
         if(!$_GET['attempt']) {
             $course =  mysqli_fetch_assoc(mysqli_query($link, "SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+            if(!$course['enrollment']) { header("Location: enroll"); exit(); }
             $exams = mysqli_query($link, "SELECT id,module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
             if (mysqli_num_rows($exams) > 0) {
                 while($row1 = mysqli_fetch_assoc($exams)) {
