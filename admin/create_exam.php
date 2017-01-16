@@ -8,9 +8,9 @@ if($_POST['submit']=='Submit')
     
     $err = array();
 	
-	if(strlen($_POST['title'])<4 || strlen($_POST['title'])>32)
+	if(strlen($_POST['title'])<4 || strlen($_POST['title'])>64)
 	{
-		$err[]='The exam title must be between 4 and 32 characters.';
+		$err[]='The exam title must be between 4 and 64 characters.';
 	}
     
     if(strlen($_POST['module'])<1 || strlen($_POST['module'])>2)
@@ -32,27 +32,22 @@ if($_POST['submit']=='Submit')
     
     if(!count($err))
 	{
-        $_POST['module'] = mysqli_real_escape_string($_POST['module']);
-        $_POST['title'] = mysqli_real_escape_string($_POST['title']);
-        mysqli_query($link, "INSERT INTO exams(course,module,title,createdby,dt)
-            VALUES(
-            '".$_POST['course']."',
-            '".$_POST['module']."',
-            '".$_POST['title']."',
-            '".$_SESSION['usr']."',
-            NOW()
-        )");
-        $_SESSION['msg']['create-success']='Exam successfully created.';
+        $module = mysqli_real_escape_string($link, $_POST['module']);
+        $title = mysqli_real_escape_string($link, $_POST['title']);
+        mysqli_query($link, "INSERT INTO exams(course,module,title,createdby)
+            VALUES('".$_POST['course']."', '".$module."', '".$title."', '".$_SESSION['usr']."')");
+        $_SESSION['msg']['success']='Exam successfully created.';
         $examNum = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM exams ORDER BY id DESC LIMIT 1;"));
         header("Location: edit_exam?exam=".$examNum['id']);
+        exit();
     }
     else $err[]='Error creating exam.';
     
     if(count($err))
 	{
-		$_SESSION['msg']['create-err'] = implode('<br />',$err);
+		$_SESSION['msg']['err'] = implode('<br />',$err);
         header("Location: create_exam");
-	    exit;
+	    exit();
 	}
 }
 ?>
@@ -83,19 +78,6 @@ if($_POST['submit']=='Submit')
         <!--Authorized-->
         <h1>Administrator Control Panel</h1>
         <p>You can use this page to create new exams for any of the courses available. As with the courses, please do not create an exam unless you intend to immediately begin filling it with questions.</p>
-        <?php		
-            if($_SESSION['msg']['create-err'])
-            {
-                echo '<div class="err">'.$_SESSION['msg']['create-err'].'</div>';
-                unset($_SESSION['msg']['create-err']);
-            }
-						
-            if($_SESSION['msg']['create-success'])
-            {
-                echo '<div class="success">'.$_SESSION['msg']['create-success'].'</div>';
-                unset($_SESSION['msg']['create-success']);
-            }
-        ?>
         <form action="" method="post">
             <label class="grey" for="course">Select Course</label><br>
             <?php
