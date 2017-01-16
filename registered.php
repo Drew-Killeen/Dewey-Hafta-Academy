@@ -145,7 +145,9 @@ if($_POST['request']=='Send Request')
 <html>
 <head>    
 <?php include_once('templates/htmlHeader.php'); ?>
-<script>    
+<script src="scripts/typeahead.min.js"></script>
+
+<script>
     function sasstivate() {
         var xhttp = new XMLHttpRequest();
         <?php echo 'xhttp.open("GET", "scripts/update.php?usr='.$_SESSION['id'].'&sass=1", true);'; ?>
@@ -160,6 +162,13 @@ if($_POST['request']=='Send Request')
             window.location.assign(<?php echo '"http://www.deweyhaftaacademy.x10host.com/main"'; ?>);
         }
     }
+    $(document).ready(function(){
+        $('input.typeahead').typeahead({
+            name: 'typeahead',
+            remote:'scripts/search.php?key=%QUERY',
+            limit : 8
+        });
+    });
 </script>
     
 </head>
@@ -233,9 +242,11 @@ if($_POST['request']=='Send Request')
             }
             ?></i></p>
         <form action="" method="post">
-            <input class="field" type="text" name="supervisor" id="supervisor" value="" size="23" placeholder="Supervisor Username"/>
-            <input type="submit" name="submit" value="Add" class="bt_add" />
-            <input type="submit" name="submit" value="Remove Supervisor" />
+            <input type="text" name="supervisor" id="supervisor" class="field typeahead tt-query" autocomplete="off" spellcheck="false" value="" placeholder="Supervisor Username"/>
+            <span class='supervisor_buttons'>
+                <input type="submit" name="submit" value="Add" class="bt_add" />
+                <input type="submit" name="submit" value="Remove Supervisor" />
+            </span>
         </form>
         
         <h3>Sass</h3>    
@@ -256,7 +267,9 @@ if($_POST['request']=='Send Request')
     </div>
 </div>
 
+<script src="scripts/typeahead.min.js"></script>
 <?php require 'scripts/jsload.php'; ?>
+    
     
 </body>
 </html>

@@ -261,6 +261,47 @@ td {
     font-weight:bold;
 }
 
+span#signup_step {
+    margin-top: -5px;
+    position: relative;
+    top: -8px;
+    margin-right:12px;
+}
+
+span#circle_up {
+    width: 16px;
+    height: 16px;
+    background: #6dabad;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    display: inline-block;
+    margin: 5px;
+    margin-top: 15px;
+}
+
+span#circle_down {
+    width: 12px;
+    height: 12px;
+    background: #c5c5c5;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    display: inline-block;
+    margin: 5px;
+    margin-top: 15px;
+    position: relative;
+    top: -1px;
+}
+
+.nodisplay {
+    display:none;
+}
+
+.display {
+    display:block;
+}
+
 /* ==================================== */
 /*		  	Buttons & Inputs		
 /* ==================================== */
@@ -428,6 +469,38 @@ input.warning {
 
 input.warning:hover {
     background-color: #ff6b6b;
+}
+
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+	color: #999999;
+}
+.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 5px;
+	padding: 8px 0;
+    left: 2px !important;
+}
+.tt-suggestion {
+	line-height: 24px;
+	padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+	background-color: rgba(109, 171, 173, 0.9);
+	color: #FFFFFF;
+}
+.tt-suggestion p {
+	margin: 0;
+}
+
+span.supervisor_buttons {
+    position: relative;
+    top: 9px;
 }
 
 /* ==================================== */
