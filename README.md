@@ -33,6 +33,7 @@ TODO
 27. Expand live search to other parts of the site
 28. Consolidate registration process into one step
 29. Do away with mandatory user approval process
+30. Allow teachers to choose if they want students to take multiple choice or free response exams
 
 Completed
 ----
