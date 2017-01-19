@@ -21,19 +21,18 @@ TODO
 15. Allow exam to accept images
 16. Create time limits for exams
 17. Create logo
-18. Reply to emails to approve/deny users
-19. Add new user right "denied"
-20. Create ability for teachers to edit/grade students' progress
-21. Update formatting for help pages
-22. Update users.php to present information in a more readable manner. 
-23. Merge create_course.php with edit_course.php
-24. Merge create_exam.php with edit_exam.php
-25. Provide more information when reviewing an exam on grade.php
-26. Add window.find() button on edit_exam.php
-27. Expand live search to other parts of the site
-28. Consolidate registration process into one step
-29. Do away with mandatory user approval process
-30. Allow teachers to choose if they want students to take multiple choice or free response exams
+18. Create ability for teachers to edit/grade students' progress
+19. Update formatting for help pages
+20. Merge create_course.php with edit_course.php
+21. Merge create_exam.php with edit_exam.php
+22. Provide more information when reviewing an exam on grade.php
+23. Add window.find() button on edit_exam.php
+24. Expand live search to other parts of the site
+25. Consolidate registration process into one step
+26. Do away with mandatory user approval process
+27. Create remove student ability
+28. Different systems for multiple choice/free response
+
 
 Completed
 ----
@@ -96,3 +95,5 @@ Completed
 57. ~~Prevent users from viewing grades that do not belong to them or their students~~
 58. ~~Live search for selecting supervisor~~
 59. ~~Create second step in registration process for choosing student or teacher status~~
+60. ~~Update users.php to present information in a more readable manner.~~
+61. ~~Allow teachers to choose if they want students to take multiple choice or free response exams~~
