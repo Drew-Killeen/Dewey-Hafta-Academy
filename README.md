@@ -30,7 +30,7 @@ TODO
 24. Expand live search to other parts of the site
 25. Consolidate registration process into one step
 26. Do away with mandatory user approval process
-27. Create remove student ability
+27. Create ability for teachers to unassign students
 28. Different systems for multiple choice/free response
 
 
