@@ -38,6 +38,9 @@ if($_POST['submit']=='Register')
         {
             $err[]='Please check the captcha form.';
         }
+        if(!$_POST['privilege'] || ($_POST['privilege'] != 'student' && $_POST['privilege'] != 'teacher')) {
+            $err[]='Please select whether you plan to use this site as a student or teacher.';
+        }
         else {
             $response=file_get_contents();
             $responseKeys = json_decode($response,true);
@@ -56,15 +59,17 @@ if($_POST['submit']=='Register')
 		$_POST['email'] = mysqli_real_escape_string($link, $_POST['email']);
 		$_POST['username'] = mysqli_real_escape_string($link, $_POST['username']);
         $_POST['pass'] = mysqli_real_escape_string($link, $_POST['pass']);
+        $_POST['privilege'] = mysqli_real_escape_string($link, $_POST['privilege']);
 		// Escape the input data
 		
-		mysqli_query($link, "INSERT INTO dewey_members(usr,email,pass,regIP,dt)
+		mysqli_query($link, "INSERT INTO dewey_members(usr,email,pass,regIP,dt,privilege)
 				VALUES(
 				'".$_POST['username']."',
 				'".$_POST['email']."',
                 '".md5($_POST['pass'])."',
 				'".$_SERVER['REMOTE_ADDR']."',
-				NOW()
+				NOW(),
+                '".$_POST['privilege']."'
                 )");
         
 			send_mail(	'noreply@deweyhaftaacademy.x10host.com',
@@ -73,10 +78,10 @@ if($_POST['submit']=='Register')
 						'A new account was registered at '.date("Y-m-d h:i:sa").' from IP '.$_SERVER['REMOTE_ADDR'].'. Email address '.$_POST['email'].', username '.$_POST['username'].'.');
             send_mail(	'noreply@deweyhaftaacademy.x10host.com',
 						$_POST['email'],
-						'Registration System - New Account',
-						"Your account has been successfully created. An administrator must approve your account before you have full access to the site. If you do not receive an email confirming your account's approval or denial within 48 hours, please contact admin@deweyhaftaacademy.x10host.com.");
+						'Dewey Hafta Academy - New Account',
+						"Your account has been successfully created, welcome to Dewey Hafta Academy! Please confirm your email by clicking <a href=''>here</a>.");
             
-			$_SESSION['msg']['success']='Account successfully created. An administrator has been notified and will approve your account shortly.';
+			$_SESSION['msg']['success']='Welcome to Dewey Hafta Academy! Visit your <a href="../registered">preferences</a> to complete your account.';
             
             $row = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,usr,privilege FROM dewey_members WHERE usr='{$_POST['username']}' AND email='".$_POST['email']."'"));
             $_SESSION['usr'] = $row['usr'];
@@ -88,65 +93,10 @@ if($_POST['submit']=='Register')
 	if(count($err))
 	{
 		$_SESSION['msg']['err'] = implode('<br />',$err);
-        header("Location: sign_up");
-	    exit;
 	}	
 	
-    else 
-    {
-	   header("Location: sign_up");
-	   exit;
-    }
-}
-
-if($_POST['submit']=='Submit') {
-    if($_POST['privilege']) {
-        $_POST['privilege'] = mysqli_real_escape_string($link, $_POST['privilege']);
-        mysqli_query($link, "UPDATE dewey_members SET privilege='".$_POST['privilege']."' WHERE id=".$_SESSION['id']);
-        $_SESSION['privilege'] = $_POST['privilege'];
-    }
-    if($_POST['supervisor']) {
-        $err = array();
-        // Will hold our errors
-        $teacher = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,privilege FROM dewey_members WHERE usr='{$_POST['supervisor']}'"));
-
-        if(!$_POST['supervisor']) {
-            $err[] = 'Field must be filled in.';
-        }
-        else if($_SESSION['usr'] == $_POST['supervisor']) {
-            $err[]='You cannot assign yourself as your own supervisor.';
-        }
-
-        else if(strlen($_POST['supervisor']) < 4 || strlen($_POST['supervisor']) > 32) {
-            $err[]='The Supervisor username must be between 3 and 32 characters.';
-        } 
-
-        else if(empty($teacher['id'])) {
-            $err[]='There is no user with the name '.$_POST['supervisor'].'.';
-        }
-
-        else if($teacher['privilege'] != 'teacher' && $teacher['privilege'] != 'admin' && $teacher['privilege'] != 'sysop') {
-            $err[]=$_POST['supervisor'].' does not have sufficient privileges to be a supervisor.';
-        }
-
-        if(!count($err)) {
-            $supervisor = mysqli_real_escape_string($link, $_POST['supervisor']);
-            // Escaping all input data
-
-            $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM dewey_members WHERE usr='".$supervisor."'"));
-            mysqli_query($link, "UPDATE dewey_members SET supervisor='".$supervisorID['id']."' WHERE id=".$_SESSION['id']);
-        }
-    }
-    if(count($err))
-    {
-        $_SESSION['msg']['err'] = implode('<br />',$err);
-    }
-    else {
-        $_SESSION['msg']['success'] = "Preferences updated";
-        unset($_SESSION['signup']);
-        header("Location: main");
-        exit();
-    }
+    header("Location: sign_up");
+    exit;
 }
 
 ?>
@@ -155,27 +105,10 @@ if($_POST['submit']=='Submit') {
 <head>
     
 <?php include_once('templates/htmlHeader.php'); ?>
-<script src="scripts/typeahead.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('input.typeahead').typeahead({
-            name: 'typeahead',
-            remote:'scripts/search.php?key=%QUERY',
-            limit : 8
-        });
-    });
-</script>
 </head>
 <body>
 
-<?php 
-    if($_SESSION['signup'] == 1) {
-        include_once("templates/login.php");
-    }
-    else { 
-        echo '<div id="header"><a href="main" id="title">Dewey Hafta Academy</a><span id="usrHeader"><a href="sign_in">Login</a></span></div>';
-    }
-?>
+<div id="header"><a href="main" id="title">Dewey Hafta Academy</a><span id="usrHeader"><a href="sign_in">Login</a></span></div>
     
 <div id="main">
     <div class="container">
@@ -189,29 +122,21 @@ if($_POST['submit']=='Submit') {
             <input class="field" type="text" name="email" id="email" size="23" placeholder="Email"/><br>
             <input class="field" type="password" name="pass" id="pass" size="23" placeholder="Password"/><br>
             <input class="field" type="password" name="pass_again" id="pass_again" size="23" placeholder="Confirm Password"/><br><br>
-            <div class="g-recaptcha" data-sitekey="6Lf2VQwUAAAAAB6g1e1p0DrjETPHCcrGGfCUe7I2"></div>
-            <p class="note">An administrator will be notified of your account and will respond within 48 hours.</p>
-            <input type="submit" name="submit" value="Register" class="bt_register" />
-        </form>
-        
-    <?php elseif($_SESSION['signup'] == 1): ?>
-        <h1>Not a member yet? Sign Up!</h1>	
-        <p>Please complete the following steps to finish your account.</p>
-        
-        <p>I am a...</p>
-        <form action="" method="post">
             <span id='privilege'>
+                <p>I plan to use this site as a...</p>
                 <label><input type='radio' name='privilege' value='student'>Student</label><br>
                 <label><input type='radio' name='privilege' value='teacher'>Teacher</label><br>
             </span>
-            <br>
-            <input type="text" name="supervisor" id="supervisor" class="field typeahead tt-query nodisplay" autocomplete="off" spellcheck="false" value="" placeholder="Supervisor Username"/><br>
-            <input type='submit' name='submit' value='Submit' />
+            <br><br>
+            <div class="g-recaptcha" data-sitekey="6Lf2VQwUAAAAAB6g1e1p0DrjETPHCcrGGfCUe7I2"></div><br>
+            <input type="submit" name="submit" value="Register" class="bt_register" />
         </form>
+        
     <?php
         else:
         
         header("Location: main");
+        exit();
         
 	   endif;
     ?>
@@ -220,7 +145,7 @@ if($_POST['submit']=='Submit') {
 
 <?php require 'scripts/jsload.php'; ?>
     
-    <script>
+    <!--<script>
     document.getElementById("privilege").addEventListener("click", function() {
         if($('input[name="privilege"]:checked').val() == "student") {
             document.getElementById("supervisor").classList.remove("nodisplay");
@@ -231,7 +156,7 @@ if($_POST['submit']=='Submit') {
             console.log('nodisplay');
         }
     });
-    </script>
+    </script>-->
 
 </body>
 </html>
