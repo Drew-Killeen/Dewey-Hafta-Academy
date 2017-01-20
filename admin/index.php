@@ -33,6 +33,7 @@
             <li><a href="edit_exam">Edit Exam</a></li>
             <li><a href="users">View Users</a></li>
             <li><a href="mail">Send Mail</a></li>
+            <li><a href="statistics">Statistics</a></li>
         </ul>
         
     <?php
