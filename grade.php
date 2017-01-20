@@ -40,7 +40,7 @@
             if(!$course['enrollment']) { header("Location: enroll"); exit(); }
             $exams = mysqli_query($link, "SELECT id,course,module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
             if (mysqli_num_rows($exams) > 0) {
-                $courseNum = mysqli_fetch_assoc($exams);
+                $courseNum = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM exams WHERE course=".$course['enrollment']));
                 $course = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,course FROM courses WHERE id=".$courseNum['course'])); 
                 $score = mysqli_fetch_assoc(mysqli_query($link, "SELECT score,weight FROM scores WHERE usr=".$_SESSION['id']." AND course=".$course['id']));
                 $overallScore = round($score['weight']/16 * $score['score'],2);
