@@ -38,13 +38,13 @@
         if(!$_GET['attempt']) {
             $course =  mysqli_fetch_assoc(mysqli_query($link, "SELECT enrollment FROM dewey_members WHERE id='{$_SESSION['id']}'"));
             if(!$course['enrollment']) { header("Location: enroll"); exit(); }
-            $exams = mysqli_query($link, "SELECT id,course,module,title FROM exams WHERE course='".$course['enrollment']."' ORDER BY  `exams`.`module` ASC ");
+            $exams = mysqli_query($link, "SELECT id,course,module,title FROM exams WHERE course=".$course['enrollment']." AND public=1 ORDER BY  `exams`.`module` ASC ");
             if (mysqli_num_rows($exams) > 0) {
-                $courseNum = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM exams WHERE course=".$course['enrollment']));
-                $course = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,course FROM courses WHERE id=".$courseNum['course'])); 
-                $score = mysqli_fetch_assoc(mysqli_query($link, "SELECT score,weight FROM scores WHERE usr=".$_SESSION['id']." AND course=".$course['id']));
-                $overallScore = round($score['weight']/16 * $score['score'],2);
-                echo "<h1>Course Progress for ".$course['course']."</h1>Current score: ".$score['score']."%<span class='attempt-time'>Overall score: ".$overallScore."%</span><hr>";
+                $courseData = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,course FROM courses WHERE id=".$course['enrollment'])); 
+                $score = mysqli_fetch_assoc(mysqli_query($link, "SELECT score,weight FROM scores WHERE usr=".$_SESSION['id']." AND course=".$courseData['id']));
+                $examCount = mysqli_num_rows($exams);
+                $overallScore = round($score['weight']/$examCount * $score['score'],2);
+                echo "<h1>Course Progress for ".$courseData['course']."</h1>Current score: ".$score['score']."%<span class='attempt-time'>Overall score: ".$overallScore."%</span><hr>";
                 while($row1 = mysqli_fetch_assoc($exams)) {
                     echo "<h3>Module ".$row1['module'].": ".$row1['title']."</h3>";
                     $attempts = mysqli_query($link, "SELECT id,score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$row1['id']);
