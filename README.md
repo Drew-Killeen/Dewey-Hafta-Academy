@@ -8,33 +8,33 @@ TODO
 2. Implement administrator ability to send emails from the site
 3. Update user management system so that admins cannot edit sysops
 4. Rename table dewey_members to members
-6. Allow for a limit on the number of questions on an exam
-7. Make the sass switch actually do something
-8. Create ability to view past enrollments
-9. Create user profiles
-10. Update GET source on edit_exam.php to not require get field
-11. Integrate Gravatar
-12. Require new accounts to confirm email
-13. Allow exam to accept images
-14. Create time limits for exams
-15. Create logo
-16. Create ability for teachers to edit/grade students' progress
-17. Update formatting for help pages
-18. Merge create_course.php with edit_course.php
-19. Merge create_exam.php with edit_exam.php
-20. Provide more information when reviewing an exam on grade.php
-21. Add window.find() button on edit_exam.php
-22. Expand live search to other parts of the site
-23. Consolidate registration process into one step
-24. Do away with mandatory user approval process
-25. Create ability for teachers to unassign students
-26. Different systems for multiple choice/free response
-27. Reorganize exam list on edit_exam.php to support a longer list of exams
-28. Improve print pages
-29. Make emails pretty
-30. Combine error/success messages
-31. Adapt course progress for students.php
-32. List question issues in table on edit_exam.php
+5. Allow for a limit on the number of questions on an exam
+6. Make the sass switch actually do something
+7. Create ability to view past enrollments
+8. Create user profiles
+9. Update GET source on edit_exam.php to not require get field
+10. Integrate Gravatar
+11. Require new accounts to confirm email
+12. Allow exam to accept images
+13. Create time limits for exams
+14. Create logo
+15. Create ability for teachers to edit/grade students' progress
+16. Update formatting for help pages
+17. Merge create_course.php with edit_course.php
+18. Merge create_exam.php with edit_exam.php
+19. Provide more information when reviewing an exam on grade.php
+20. Add window.find() button on edit_exam.php
+21. Expand live search to other parts of the site
+22. Consolidate registration process into one step
+23. Do away with mandatory user approval process
+24. Create ability for teachers to unassign students
+25. Different systems for multiple choice/free response
+26. Reorganize exam list on edit_exam.php to support a longer list of exams
+27. Improve print pages
+28. Make emails pretty
+29. Combine error/success messages
+30. Adapt course progress for students.php
+31. List question issues in table on edit_exam.php
 
 
 Completed
