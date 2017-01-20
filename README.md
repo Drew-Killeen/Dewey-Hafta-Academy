@@ -8,7 +8,6 @@ TODO
 2. Implement administrator ability to send emails from the site
 3. Update user management system so that admins cannot edit sysops
 4. Rename table dewey_members to members
-5. _Give option to reset password if forgotten_
 6. Allow for a limit on the number of questions on an exam
 7. Make the sass switch actually do something
 8. Create ability to view past enrollments
@@ -103,3 +102,4 @@ Completed
 61. ~~Allow teachers to choose if they want students to take multiple choice or free response exams~~
 62. ~~Create new statistics pages for admins~~
 63. ~~Calculate course grade after submitting an exam~~
+64. ~~Give option to reset password if forgotten~~
