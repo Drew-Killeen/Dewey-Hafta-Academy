@@ -25,16 +25,16 @@ TODO
 19. Provide more information when reviewing an exam on grade.php
 20. Add window.find() button on edit_exam.php
 21. Expand live search to other parts of the site
-22. Consolidate registration process into one step
-23. Do away with mandatory user approval process
-24. Create ability for teachers to unassign students
-25. Different systems for multiple choice/free response
-26. Reorganize exam list on edit_exam.php to support a longer list of exams
-27. Improve print pages
-28. Make emails pretty
-29. Combine error/success messages
-30. Adapt course progress for students.php
-31. List question issues in table on edit_exam.php
+22. Do away with mandatory user approval process
+23. Create ability for teachers to unassign students
+24. Different systems for multiple choice/free response
+25. Reorganize exam list on edit_exam.php to support a longer list of exams
+26. Improve print pages
+27. Make emails pretty
+28. Combine error/success messages
+29. Adapt course progress for students.php
+30. List question issues in table on edit_exam.php
+31. Calculate overall grade based on number of available exams
 
 
 Completed
@@ -103,3 +103,4 @@ Completed
 62. ~~Create new statistics pages for admins~~
 63. ~~Calculate course grade after submitting an exam~~
 64. ~~Give option to reset password if forgotten~~
+65. ~~Consolidate registration process into one step~~
