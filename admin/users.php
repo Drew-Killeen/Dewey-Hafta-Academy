@@ -26,6 +26,17 @@ if($_POST['update']=='Update')
 <head>
 
 <?php include_once("../templates/htmlHeader.php") ?>
+<script>
+    function deleteAccount() {
+        $confirm = confirm("Are you sure you want to delete this account? This cannot be undone.");
+            if($confirm === true) {
+            var xhttp = new XMLHttpRequest();
+            <?php echo 'xhttp.open("GET", "../scripts/delete.php?user='.$_GET['user'].'", true);'; ?>
+            xhttp.send();
+            window.location.assign(<?php echo '"../admin/users"'; ?>);
+        }
+    }
+</script>
 </head>
 <body>
     
@@ -129,7 +140,7 @@ if($_POST['update']=='Update')
         
             else:
                 $user = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM dewey_members WHERE id=".$_GET['user']));
-                if($user['enrollment'] != 0) {$enrollment = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM courses WHERE id=".$user['enrollment']));}
+                if($user['enrollment'] != 0) $enrollment = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM courses WHERE id=".$user['enrollment']));
                 echo 
                     "<h3><a href='users'>&larr;</a> Editing user: ".$user['usr']."</h3>
                     <ul>
@@ -141,13 +152,23 @@ if($_POST['update']=='Update')
                     <h4>Permissions</h4>
                     <form action='' method='post'>
                         <p>
-                            <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label></input><br>
-                            <input type='radio' name='privilege' value='student'><label for='student'>Student</label></input><br>
-                            <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label></input><br>
-                            <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label></input><br>
-                            <input type='radio' name='privilege' value='sysop'><label for='sysop'>Sysop</label></input><br>
+                            <input type='radio' name='privilege' value='unapproved'";
+                        if($user['privilege'] == 'unapproved') echo ' checked';
+                        echo "/><label for='unapproved'>Unapproved</label></input><br>
+                            <input type='radio' name='privilege' value='student'";
+                        if($user['privilege'] == 'student') echo ' checked';
+                        echo "/><label for='student'>Student</label></input><br>
+                            <input type='radio' name='privilege' value='teacher'";
+                        if($user['privilege'] == 'teacher') echo ' checked';
+                        echo "/><label for='teacher'>Teacher</label></input><br>
+                            <input type='radio' name='privilege' value='admin'";
+                        if($user['privilege'] == 'admin') echo ' checked';
+                        echo "/><label for='admin'>Administrator</label></input><br>
+                            <input type='radio' name='privilege' value='sysop'";
+                        if($user['privilege'] == 'sysop') echo ' checked';
+                        echo "/><label for='sysop'>Sysop</label></input><br>
                         </p>
-                        <input type='submit' name='update' value='Update' />
+                        <input type='submit' name='update' value='Update' /> <input type='button' class='warning' onclick='deleteAccount();' name='delete' value='Delete' />
                     </form>";
             endif;
         endif; 
