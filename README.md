@@ -16,25 +16,24 @@ TODO
 10. Update GET source on edit_exam.php to not require get field
 11. Integrate Gravatar
 12. Require new accounts to confirm email
-14. Calculate course grade after submitting an exam
-15. Allow exam to accept images
-16. Create time limits for exams
-17. Create logo
-18. Create ability for teachers to edit/grade students' progress
-19. Update formatting for help pages
-20. Merge create_course.php with edit_course.php
-21. Merge create_exam.php with edit_exam.php
-22. Provide more information when reviewing an exam on grade.php
-23. Add window.find() button on edit_exam.php
-24. Expand live search to other parts of the site
-25. Consolidate registration process into one step
-26. Do away with mandatory user approval process
-27. Create ability for teachers to unassign students
-28. Different systems for multiple choice/free response
-29. Reorganize exam list on edit_exam.php to support a longer list of exams
-30. Improve print pages
-31. Make emails pretty
-32. Combine error/success messages
+13. Allow exam to accept images
+14. Create time limits for exams
+15. Create logo
+16. Create ability for teachers to edit/grade students' progress
+17. Update formatting for help pages
+18. Merge create_course.php with edit_course.php
+19. Merge create_exam.php with edit_exam.php
+20. Provide more information when reviewing an exam on grade.php
+21. Add window.find() button on edit_exam.php
+22. Expand live search to other parts of the site
+23. Consolidate registration process into one step
+24. Do away with mandatory user approval process
+25. Create ability for teachers to unassign students
+26. Different systems for multiple choice/free response
+27. Reorganize exam list on edit_exam.php to support a longer list of exams
+28. Improve print pages
+29. Make emails pretty
+30. Combine error/success messages
 
 
 Completed
@@ -101,3 +100,4 @@ Completed
 60. ~~Update users.php to present information in a more readable manner.~~
 61. ~~Allow teachers to choose if they want students to take multiple choice or free response exams~~
 62. ~~Create new statistics pages for admins~~
+63. ~~Calculate course grade after submitting an exam~~
