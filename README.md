@@ -16,7 +16,6 @@ TODO
 10. Update GET source on edit_exam.php to not require get field
 11. Integrate Gravatar
 12. Require new accounts to confirm email
-13. Create new statistics page for admins
 14. Calculate course grade after submitting an exam
 15. Allow exam to accept images
 16. Create time limits for exams
@@ -97,3 +96,4 @@ Completed
 59. ~~Create second step in registration process for choosing student or teacher status~~
 60. ~~Update users.php to present information in a more readable manner.~~
 61. ~~Allow teachers to choose if they want students to take multiple choice or free response exams~~
+62. ~~Create new statistics pages for admins~~
