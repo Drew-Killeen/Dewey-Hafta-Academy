@@ -302,6 +302,10 @@ span#circle_down {
     display:block;
 }
 
+span.attempt-time {
+    float: right;
+}
+
 /* ==================================== */
 /*		  	Buttons & Inputs		
 /* ==================================== */
@@ -455,11 +459,11 @@ button:active {
 }
 
 input[type="radio"] {
-    margin-left: 8px;
+    margin-right: 5px;
 }
 
 label {
-    margin-left: 5px;
+    margin-left: 8px;
 }
 
 input.warning {
@@ -817,6 +821,7 @@ ul.sub-menu-dropdown {
     animation-name: animFlipFront;
     -webkit-animation-duration: 0.3s;
     animation-duration: 0.3s;
+    box-shadow: 4px 6px 15px 1px #B9ADAD;
 }
 
 .ns-effect-flip.ns-hide {
