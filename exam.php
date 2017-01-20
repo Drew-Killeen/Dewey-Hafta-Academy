@@ -60,36 +60,38 @@ if($_POST['submit'] == 'Submit') {
     $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$examNum."' ORDER BY id DESC LIMIT 1;"));
     $answersData = mysqli_query($link, "SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['id']."'");
     $finalScore = 0;
-    while($row = mysqli_fetch_assoc($answersData)) 
-    {
+    while($row = mysqli_fetch_assoc($answersData)) {
         if($row['correct'] == 1) $finalScore++;
     }
     $finalScore = round(($finalScore/mysqli_num_rows($answersData)) * 100);
-    /*$previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
-    if($previousBest['score'] >= $finalScore) $bestScore = 0;
-    else $bestScore = 1;*/
     mysqli_query($link, "UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$examNum."' AND score=-1");
     unset($_SESSION['questionsID']);
-    header("Location: grade?attempt=".$attempt['id']);
-    exit();
-}
-
-// FUNCTION NOT YET FUNCTIONAL
-function updateCourse() {
-    $examNum = mysqli_real_escape_string($link, $_GET['exam']);
-    $courseScore = mysqli_query($link, "SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$examNum);
-    $scoreTotal;
-    while($row = mysqli_fetch_assoc($courseScore)) 
-    {
-        $scoreTotal += $row['score'];
-    }
-    $scoreTotal = $scoreTotal/(100 * mysqli_num_rows($courseScore));
-    if(mysqli_query($link, "SELECT * FROM scores WHERE course=".$course['course'])) {
-        mysqli_query($link, "UPDATE scores SET score=".$scoreTotal." WHERE usr=".$_SESSION['id']." AND course=".$course['course']);
+    
+    $examData = mysqli_fetch_assoc(mysqli_query($link, "SELECT course FROM exams WHERE id=".$_GET['exam']));
+    $previousScore = mysqli_query($link, "SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$examNum." ORDER BY score ASC LIMIT 2;");
+    $courseScore = mysqli_query($link, "SELECT score,weight FROM scores WHERE course=".$examData['course']." AND usr=".$_SESSION['id']);
+    if(mysqli_num_rows($courseScore) > 0) {
+        $courseScore = mysqli_fetch_assoc($courseScore);
+        if(mysqli_num_rows($previousScore) > 1) {
+            $previousScore = mysqli_fetch_assoc($previousScore);
+            if($finalScore > $previousScore['score']) {
+                $newCourseScore = ($courseScore['score'] * $courseScore['weight'] + $finalScore - $previousScore['score']) / $courseScore['weight'];
+                mysqli_query($link, "UPDATE scores SET score=".$newCourseScore." WHERE usr=".$_SESSION['id']." AND course=".$examData['course']);
+            }
+        }
+        else {
+            $newCourseWeight = $courseScore['weight'] + 1;
+            $newCourseScore = ($courseScore['score'] * $courseScore['weight'] + $finalScore) / $newCourseWeight;
+            mysqli_query($link, "UPDATE scores SET score=".$newCourseScore.", weight=".$newCourseWeight." WHERE usr=".$_SESSION['id']." AND course=".$examData['course']);
+        }
     }
     else {
-        mysqli_query($link, "INSERT INTO scores (course,usr,score) VALUES (".$course['course'].", ".$_SESSION['id'].", ".$scoreTotal.")");
-    }
+        mysqli_query($link, "INSERT INTO scores (course,usr,score,weight) VALUES (".$enrollment['enrollment'].", ".$_SESSION['id'].", ".$finalScore.", 1)");
+    } 
+    
+    
+    header("Location: grade?attempt=".$attempt['id']);
+    exit();
 }
 ?>
 
@@ -125,7 +127,7 @@ function updateCourse() {
         <!--Authorized-->
         <?php echo "<h2>Module ".$examData['module'].": ".$examData['title']."</h2>"; ?>
         <?php
-        $previousExams = mysqli_query($link, "SELECT * FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']);
+        $previousExams = mysqli_query($link, "SELECT * FROM attempts WHERE usr=".$_SESSION['id']." AND score<>-1 AND examNum=".$_GET['exam']);
             if(mysqli_num_rows($previousExams) >= $examData['attempts'] && $examData['attempts'] != 0) {
                 echo "<p>You have already used all of your attempts for this exam. If you would like to try again, ask your teacher to delete one of your current attempts.</p>";
             }
