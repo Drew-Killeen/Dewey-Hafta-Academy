@@ -32,6 +32,8 @@ TODO
 27. Create ability for teachers to unassign students
 28. Different systems for multiple choice/free response
 29. Reorganize exam list on edit_exam.php to support a longer list of exams
+30. Improve print pages
+31. Make emails pretty
 
 
 Completed
