@@ -34,7 +34,6 @@ if($_POST['submit']=='Update')
     
     if(!count($err))
 	{
-        $_POST['oldpass'] = mysqli_real_escape_string($link, $_POST['oldpass']);
         $_POST['newpass'] = mysqli_real_escape_string($link, $_POST['newpass']);
         // Escaping all input data
         
@@ -58,17 +57,18 @@ if($_POST['submit']=='Add')
 	
 	$err = array();
 	// Will hold our errors
+    $_POST['supervisor'] = mysqli_real_escape_string($link, $_POST['supervisor']);
     $teacher = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,privilege FROM dewey_members WHERE usr='{$_POST['supervisor']}'"));
         
     if(!$_POST['supervisor']) {
 		$err[] = 'Field must be filled in.';
     }
     else if($_SESSION['usr'] == $_POST['supervisor']) {
-        $err[]='You cannot assign yourself as your own supervisor.';
+        $err[]='You cannot assign yourself as your own teacher.';
     }
     
     else if(strlen($_POST['supervisor']) < 4 || strlen($_POST['supervisor']) > 32) {
-		$err[]='The Supervisor username must be between 3 and 32 characters.';
+		$err[]='The teacher username must be between 3 and 32 characters.';
 	} 
     
     else if(empty($teacher['id'])) {
@@ -76,17 +76,16 @@ if($_POST['submit']=='Add')
     }
     
     else if($teacher['privilege'] != 'teacher' && $teacher['privilege'] != 'admin' && $teacher['privilege'] != 'sysop') {
-        $err[]=$_POST['supervisor'].' does not have sufficient privileges to be a supervisor.';
+        $err[]=$_POST['supervisor'].' does not have sufficient privileges to be a teacher.';
     }
     
     if(!count($err)) {
-        $supervisor = mysqli_real_escape_string($link, $_POST['supervisor']);
         // Escaping all input data
         
-        $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM dewey_members WHERE usr='".$supervisor."'"));
+        $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM dewey_members WHERE usr='".$_POST['supervisor']."'"));
         mysqli_query($link, "UPDATE dewey_members SET supervisor='".$supervisorID['id']."' WHERE id=".$_SESSION['id']);
         
-        $_SESSION['msg']['success']='Supervisor successfully updated.';
+        $_SESSION['msg']['success']='Preferences updated.';
         header("Location: registered");
         exit();
     }
@@ -97,10 +96,10 @@ if($_POST['submit']=='Add')
 	}
 }
 
-if($_POST['submit']=='Remove Supervisor')
+if($_POST['submit']=='Remove Teacher')
 {
     mysqli_query($link, "UPDATE dewey_members SET supervisor='none' WHERE id='".$_SESSION['id']."'");
-    $_SESSION['msg']['success']='Supervisor removed.';
+    $_SESSION['msg']['success']='Teacher removed.';
     header("Location: registered");
     exit();
 }
@@ -155,11 +154,11 @@ if($_POST['request']=='Send Request')
     } 
     function deleteAccount() {
         $confirm = confirm("Are you sure you want to delete your account? This cannot be undone.");
-            if($confirm === true) {
+        if($confirm === true) {
             var xhttp = new XMLHttpRequest();
             <?php echo 'xhttp.open("GET", "../scripts/delete.php?user='.$_SESSION['id'].'", true);'; ?>
             xhttp.send();
-            window.location.assign(<?php echo '"http://www.deweyhaftaacademy.x10host.com/main"'; ?>);
+            window.location.assign(<?php echo '"../main"'; ?>);
         }
     }
     $(document).ready(function(){
@@ -207,10 +206,10 @@ if($_POST['request']=='Send Request')
         
         <p>Use this form to request a change to your user rights.</p>
         <form action="" method="post">
-            <input type='radio' name='privilege' value='unapproved'><label for='unapproved'>Unapproved</label><br>
-            <input type='radio' name='privilege' value='student'><label for='student'>Student</label><br>
-            <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label><br>
-            <input type='radio' name='privilege' value='admin'><label for='admin'>Administrator</label><br>
+            <label><input type='radio' name='privilege' value='unapproved'>Unapproved</label><br>
+            <label><input type='radio' name='privilege' value='student'>Student</label><br>
+            <label><input type='radio' name='privilege' value='teacher'>Teacher</label><br>
+            <label><input type='radio' name='privilege' value='admin'>Administrator</label><br>
             <input type='text' name='explain' style="width:80%;" placeholder='Please provide a brief explanation as to why this should be changed.'><br>
             <input type='submit' name='request' value='Send Request' />
         </form>
@@ -221,32 +220,48 @@ if($_POST['request']=='Send Request')
         <i style="font-size:110%;">
         <?php echo $userInfo['privilege']; ?></i> <input type="button" onclick="location.href='?requestchange=1';" value="Request Change" style="margin-left:20px;"/>
         
+        <?php
+        if($_SESSION['privilege'] == 'student') {
+            echo "<h3>Teacher</h3>
+            <p>Current teacher: <i>";
+                $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
+                if($supervisorID['supervisor'] == 0) { 
+                    echo 'none'; 
+                }
+                else {
+                    $supervisorName = mysqli_fetch_assoc(mysqli_query($link, "SELECT usr FROM dewey_members WHERE id='{$supervisorID['supervisor']}'"));
+                    echo $supervisorName['usr'];
+                }
+                echo '</i></p>
+                    <form action="" method="post">
+                    <input type="text" name="supervisor" id="supervisor" class="field typeahead tt-query" autocomplete="off" spellcheck="false" value="" placeholder="Teacher Username"/>
+                    <span class="supervisor_buttons">
+                    <input type="submit" name="submit" value="Add" class="bt_add" />';
+                if($supervisorID['supervisor'] != 0) echo ' <input type="submit" name="submit" value="Remove Teacher" />';
+                echo '</span></form>';
+        }
+        else if($_SESSION['privilege'] == 'teacher' || $_SESSION['privilege'] == 'admin' || $_SESSION['privilege'] == 'sysop') {
+            echo '<h3>Students</h3>';
+            $students = mysqli_query($link, "SELECT id,usr FROM dewey_members WHERE supervisor=".$_SESSION['id']);
+
+            if(mysqli_num_rows($students) > 0) {
+                echo "<ul>";
+                while($row = mysqli_fetch_assoc($students)) {
+                    echo "<li><a href='students?id=".$row['id']."'>".$row['usr']."</a></li>";
+                }
+                echo "</ul>";
+            }
+            else {
+                echo "<p>You currently have no students.</p>";
+            }
+        }
+    ?>
         <h3>Update Password</h3>
         <form action="" method="post">               
             <input class="field" type="password" name="oldpass" value="" size="23" placeholder="Old Password"/>
             <input class="field" type="password" name="newpass" value="" size="23" placeholder="New Password"/>
             <input class="field" type="password" name="newpass_confirm" value="" size="23" placeholder="Confirm New Password"/>
             <input type="submit" name="submit" value="Update" />
-        </form>
-        
-        <h3>Supervisor</h3>
-        <p>Current supervisor: <i>
-        <?php 
-            $supervisorID = mysqli_fetch_assoc(mysqli_query($link, "SELECT supervisor FROM dewey_members WHERE id='{$_SESSION['id']}'"));
-            if($supervisorID['supervisor'] == 0) { 
-                echo 'none'; 
-            }
-            else {
-                $supervisorName = mysqli_fetch_assoc(mysqli_query($link, "SELECT usr FROM dewey_members WHERE id='{$supervisorID['supervisor']}'"));
-                echo $supervisorName['usr'];
-            }
-            ?></i></p>
-        <form action="" method="post">
-            <input type="text" name="supervisor" id="supervisor" class="field typeahead tt-query" autocomplete="off" spellcheck="false" value="" placeholder="Supervisor Username"/>
-            <span class='supervisor_buttons'>
-                <input type="submit" name="submit" value="Add" class="bt_add" />
-                <input type="submit" name="submit" value="Remove Supervisor" />
-            </span>
         </form>
         
         <h3>Sass</h3>    
