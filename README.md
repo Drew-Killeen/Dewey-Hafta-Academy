@@ -35,6 +35,7 @@ TODO
 29. Make emails pretty
 30. Combine error/success messages
 31. Adapt course progress for students.php
+32. List question issues in table on edit_exam.php
 
 
 Completed
