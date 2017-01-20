@@ -16,7 +16,8 @@
         if(!count($err)) {
             $input = mysqli_real_escape_string($link, $_POST['textarea']);
             $title = mysqli_real_escape_string($link, $_POST['title']);
-            mysqli_query($link, "UPDATE help SET content='".$input."', public=".$_POST['public']." WHERE id=".$_GET['article']);
+            $_POST['public'] = mysqli_real_escape_string($link, $_POST['public']);
+            mysqli_query($link, "UPDATE help SET content='".$input."', public=".$_POST['public'].", title='".$title."' WHERE id=".$_GET['article']);
             $_SESSION['msg']['success']='Article succesfully updated.';
             header('Location: ?article='.$_GET['article']);
             exit();
@@ -117,13 +118,13 @@
             echo 
                 "<form method='post'><label class='grey' for='title'>Title</label> <input type='text' name='title' value='".$content['title']."' size='23'/><br><br><textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea><p>";
             if($_GET['article'] != 1) {
-                echo "<b>Public:</b><input type='radio' name='public' value='1' ";
+                echo "<b>Public:</b><label><input type='radio' name='public' value='1' ";
                 if($content['public'] == 1) echo "checked";
-                echo "/><label for='1'>Yes</label><input type='radio' name='public' value='0' ";
+                echo "/>Yes</label><label><input type='radio' name='public' value='0' ";
                 if($content['public'] == 0) echo "checked";
-                echo "/><label for='0'>No</label><input type='radio' name='public' value='2' ";
+                echo "/>No</label><label><input type='radio' name='public' value='2' ";
                 if($content['public'] == 2) echo "checked";
-                echo "/><label for='2'>Members only</label>";
+                echo "/>Members only</label>";
             }
             echo "<input type='submit' name='submit' class='editor-submit' value='Submit'/></p></form>";
                 

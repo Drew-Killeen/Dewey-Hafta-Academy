@@ -5,7 +5,7 @@ require 'scripts/header.php';
 if($_POST['submit']=='Submit')
 {
     // If the form has been submitted
-    
+    $_POST['course'] = mysqli_real_escape_string($link, $_POST['course']);
     mysqli_query($link, "UPDATE dewey_members SET enrollment='".$_POST['course']."' WHERE id='".$_SESSION['id']."'");
 
     $_SESSION['msg']['update-success']='Enrollment successfully updated.';
@@ -63,7 +63,7 @@ if($_POST['submit']=='Submit')
                     {
                         // output data of each row
                         while($row = mysqli_fetch_assoc($courses)) {
-                           echo "<input class='field' type='radio' name='course' value='".$row['id']."'/><label class='grey' for='".$row["course"]."'>".$row["course"]."</label><br>";
+                           echo "<label><input class='field' type='radio' name='course' value='".$row['id']."'/>".$row["course"]."</label><br>";
                     }
                     } else 
                     {

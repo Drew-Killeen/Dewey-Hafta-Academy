@@ -20,13 +20,14 @@ else $questionNum = 1;
 
 if($_POST['begin'] == 'Begin') {
     /* When exam begins */
-    mysqli_query($link, "INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$_GET['exam'].", ".$course['id'].", ".$_SESSION['id'].", -1)");
+    $examNum = mysqli_real_escape_string($link, $_GET['exam']);
+    mysqli_query($link, "INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$examNum.", ".$course['id'].", ".$_SESSION['id'].", -1)");
     $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
-    $questionData = mysqli_query($link, "SELECT id,question FROM questions WHERE examNum=".$_GET['exam']." AND public=1 ORDER BY RAND()");
+    $questionData = mysqli_query($link, "SELECT id,question FROM questions WHERE examNum=".$examNum." AND public=1 ORDER BY RAND()");
     
     for($i = 1; $row = mysqli_fetch_assoc($questionData); $i++) {
-        mysqli_query($link, "INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$_GET['exam'].", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
+        mysqli_query($link, "INSERT INTO answers (examNum, questionNum, attemptNum, correct, usr) VALUES (".$examNum.", ".$row['id'].", ".$attempt['id'].", 2, ".$_SESSION['id'].")");
         $_SESSION['questionsID'][$i] = $row['id'];
     }
     
@@ -37,13 +38,14 @@ if($_POST['begin'] == 'Begin') {
 }
 
 if($_POST['continue_attempt'] == "Continue") {
-    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    $examNum = mysqli_real_escape_string($link, $_GET['exam']);
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$examNum." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
     
     $tempAnswers = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$attempt['id']." ORDER BY id ASC");
 
     for($i = 1; $row = mysqli_fetch_assoc($tempAnswers); $i++) {
-        $tempQuestion = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM questions WHERE examNum=".$_GET['exam']." AND id=".$row['questionNum']));
+        $tempQuestion = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM questions WHERE examNum=".$examNum." AND id=".$row['questionNum']));
         $_SESSION['questionsID'][$i] = $tempQuestion['id'];
     }
 
@@ -54,7 +56,8 @@ if($_POST['continue_attempt'] == "Continue") {
 
 if($_POST['submit'] == 'Submit') {
     /* When exam is submitted */
-    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' ORDER BY id DESC LIMIT 1;"));
+    $examNum = mysqli_real_escape_string($link, $_GET['exam']);
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT * FROM attempts WHERE usr='".$_SESSION['id']."' AND examNum='".$examNum."' ORDER BY id DESC LIMIT 1;"));
     $answersData = mysqli_query($link, "SELECT correct FROM answers WHERE attemptNum=".$attempt['id']." AND usr='".$_SESSION['id']."'");
     $finalScore = 0;
     while($row = mysqli_fetch_assoc($answersData)) 
@@ -65,7 +68,7 @@ if($_POST['submit'] == 'Submit') {
     /*$previousBest = mysql_fetch_assoc(mysql_query("SELECT score FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." AND primary=1 LIMIT 1;"));
     if($previousBest['score'] >= $finalScore) $bestScore = 0;
     else $bestScore = 1;*/
-    mysqli_query($link, "UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$_GET['exam']."' AND score=-1");
+    mysqli_query($link, "UPDATE attempts SET score=".$finalScore." WHERE usr='".$_SESSION['id']."' AND examNum='".$examNum."' AND score=-1");
     unset($_SESSION['questionsID']);
     header("Location: grade?attempt=".$attempt['id']);
     exit();
@@ -73,7 +76,8 @@ if($_POST['submit'] == 'Submit') {
 
 // FUNCTION NOT YET FUNCTIONAL
 function updateCourse() {
-    $courseScore = mysqli_query($link, "SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$_GET['exam']);
+    $examNum = mysqli_real_escape_string($link, $_GET['exam']);
+    $courseScore = mysqli_query($link, "SELECT score FROM attempts WHERE usr=".$_SESSSION['id']." AND examNum=".$examNum);
     $scoreTotal;
     while($row = mysqli_fetch_assoc($courseScore)) 
     {
@@ -146,38 +150,38 @@ function updateCourse() {
                 if($optionNum['flag'] == 1) echo " class='red-flag'";
                 echo "></span><p>".$questionData['question']."</p><p><span id='option'>";
                 if($questionData['option1']) {
-                    echo "<input type='radio' name='option' value='1' "; 
+                    echo "<label><input type='radio' name='option' value='1' "; 
                     if($optionNum['option'] == 1) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$questionData['option1']."'>".$questionData['option1']."</label><br>";
+                    echo "/>".$questionData['option1']."</label><br>";
                 }
                 if($questionData['option2']) {
-                    echo "<input type='radio' name='option' value='2' "; 
+                    echo "<label><input type='radio' name='option' value='2' "; 
                     if($optionNum['option'] == 2) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$questionData['option2']."'>".$questionData['option2']."</label><br>";
+                    echo "/>".$questionData['option2']."</label><br>";
                 }
                 if($questionData['option3']) {
-                    echo "<input type='radio' name='option' value='3' "; 
+                    echo "<label><input type='radio' name='option' value='3' "; 
                     if($optionNum['option'] == 3) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$questionData['option3']."'>".$questionData['option3']."</label><br>";
+                    echo "/>".$questionData['option3']."</label><br>";
                 }
                 if($questionData['option4']) {
-                    echo "<input type='radio' name='option' value='4' "; 
+                    echo "<label><input type='radio' name='option' value='4' "; 
                     if($optionNum['option'] == 4) {
                         echo 'checked';
-                    } echo "/><label for='".$questionData['option4']."'>".$questionData['option4']."</label><br>";
+                    } echo "/>".$questionData['option4']."</label><br>";
                 }
                 if($questionData['option5']) {
-                    echo "<input type='radio' name='option' value='5' "; 
+                    echo "<label><input type='radio' name='option' value='5' "; 
                     if($optionNum['option'] == 5) {
                         echo 'checked';
                     } 
-                    echo "/><label for='".$questionData['option5']."'>".$questionData['option5']."</label><br>";
+                    echo "/>".$questionData['option5']."</label><br>";
                 }
                 echo "</span></p></form></div></div>";
             } 

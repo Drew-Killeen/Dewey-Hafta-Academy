@@ -201,8 +201,8 @@ if($_POST['submit']=='Submit') {
         <p>I am a...</p>
         <form action="" method="post">
             <span id='privilege'>
-                <input type='radio' name='privilege' value='student'><label for='student'>Student</label><br>
-                <input type='radio' name='privilege' value='teacher'><label for='teacher'>Teacher</label><br>
+                <label><input type='radio' name='privilege' value='student'>Student</label><br>
+                <label><input type='radio' name='privilege' value='teacher'>Teacher</label><br>
             </span>
             <br>
             <input type="text" name="supervisor" id="supervisor" class="field typeahead tt-query nodisplay" autocomplete="off" spellcheck="false" value="" placeholder="Supervisor Username"/><br>
