@@ -159,6 +159,15 @@ td {
     width:78%;
 }
 
+.exam-container {
+    clear: both;
+}
+
+.timer {
+    float: right;
+    margin-bottom: 10px;
+}
+
 .editor-container {
     position: relative;
     top: 70px;

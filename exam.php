@@ -22,8 +22,9 @@ if($_POST['begin'] == 'Begin') {
     /* When exam begins */
     $examNum = mysqli_real_escape_string($link, $_GET['exam']);
     mysqli_query($link, "INSERT INTO attempts (examNum,courseNum,usr,score) VALUES (".$examNum.", ".$course['id'].", ".$_SESSION['id'].", -1)");
-    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,dt FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$_GET['exam']." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
+    $_SESSION['begindt'] = new DateTime($attempt['dt']);
     $questionData = mysqli_query($link, "SELECT id,question FROM questions WHERE examNum=".$examNum." AND public=1 ORDER BY RAND()");
     
     for($i = 1; $row = mysqli_fetch_assoc($questionData); $i++) {
@@ -39,9 +40,9 @@ if($_POST['begin'] == 'Begin') {
 
 if($_POST['continue_attempt'] == "Continue") {
     $examNum = mysqli_real_escape_string($link, $_GET['exam']);
-    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$examNum." ORDER BY id DESC LIMIT 1;"));
+    $attempt = mysqli_fetch_assoc(mysqli_query($link, "SELECT id,dt FROM attempts WHERE usr=".$_SESSION['id']." AND examNum=".$examNum." ORDER BY id DESC LIMIT 1;"));
     $_SESSION['attemptNum'] = $attempt['id'];
-    
+    $_SESSION['begindt'] = new DateTime($attempt['dt']);
     $tempAnswers = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$attempt['id']." ORDER BY id ASC");
 
     for($i = 1; $row = mysqli_fetch_assoc($tempAnswers); $i++) {
@@ -132,7 +133,10 @@ if($_POST['submit'] == 'Submit') {
                 echo "<p>You have already used all of your attempts for this exam. If you would like to try again, ask your teacher to delete one of your current attempts.</p>";
             }
             else if($_GET['question']) {
-                echo '<div class="exam-container"><div class="review-container">';
+                $date1=date_create($_SESSION['begindt']->format('Y-m-d H:i:s'));
+                $date2=date_create(date('Y-m-d H:i:s', time()));
+                $diff=date_diff($date2,$date1);
+                echo '<div class="timer">Time taken: '.$diff->format("%M:%S").'</div><div class="exam-container"><div class="review-container">';
                 $answerData = mysqli_query($link, "SELECT * FROM answers WHERE attemptNum=".$_SESSION['attemptNum']." ORDER BY id ASC");
                 
                 echo "<p>";
