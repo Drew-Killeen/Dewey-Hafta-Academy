@@ -9,8 +9,8 @@
         
         $err = array();
 	
-        if(strlen($_POST['title'])<1 || strlen($_POST['title'])>32) {
-            $err[]='The title must be between 1 and 32 characters.';
+        if(strlen($_POST['title'])<1 || strlen($_POST['title'])>255) {
+            $err[]='The title must be between 1 and 255 characters.';
         }
         
         if(!count($err)) {
@@ -18,7 +18,6 @@
             $title = mysqli_real_escape_string($link, $_POST['title']);
             $_POST['public'] = mysqli_real_escape_string($link, $_POST['public']);
             mysqli_query($link, "UPDATE help SET content='".$input."', public=".$_POST['public'].", title='".$title."' WHERE id=".$_GET['article']);
-            $_SESSION['msg']['success']='Article succesfully updated.';
             header('Location: ?article='.$_GET['article']);
             exit();
         }
@@ -86,7 +85,7 @@
         }
         else {
             $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content FROM help WHERE id=".$_GET['article']));
-            echo "<p>".$content['content']."</p>";
+            echo "<h1><a href='../about' class='black'>&larr;</a> ".$content['title']."</h1><p>".$content['content']."</p>";
         }
     ?>
     </div>
@@ -116,7 +115,7 @@
         else if($_GET['action'] == 'edit') {
             $content = mysqli_fetch_assoc(mysqli_query($link, "SELECT title,content,public FROM help WHERE id=".$_GET['article']));
             echo 
-                "<form method='post'><label class='grey' for='title'>Title</label> <input type='text' name='title' value='".$content['title']."' size='23'/><br><br><textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea><p>";
+                "<form method='post'><label class='grey' for='title'>Title</label> <input type='text' name='title' value='".htmlspecialchars($content['title'], ENT_QUOTES)."' size='50'/><br><br><textarea id='textarea' name='textarea'><p>".$content['content']."</p></textarea><p>";
             if($_GET['article'] != 1) {
                 echo "<b>Public:</b><label><input type='radio' name='public' value='1' ";
                 if($content['public'] == 1) echo "checked";
