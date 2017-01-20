@@ -34,6 +34,7 @@ TODO
 28. Improve print pages
 29. Make emails pretty
 30. Combine error/success messages
+31. Adapt course progress for students.php
 
 
 Completed
