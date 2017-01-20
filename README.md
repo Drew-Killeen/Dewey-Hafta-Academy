@@ -34,6 +34,7 @@ TODO
 29. Reorganize exam list on edit_exam.php to support a longer list of exams
 30. Improve print pages
 31. Make emails pretty
+32. Combine error/success messages
 
 
 Completed
