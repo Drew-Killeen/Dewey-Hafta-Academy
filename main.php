@@ -20,7 +20,7 @@
         if(!$_SESSION['id']):
     ?>
         <!--Unauthorized-->
-        <p>This site is for members only. Click <a href="sign_in">here</a> to login. To apply for a membership, please visit the <a href="sign_up">sign up</a> page.</p>
+        <p>This site is for members only. Please <a href='sign_in'>login</a> to view this page.</p>
     <?php
         else:
     ?>
