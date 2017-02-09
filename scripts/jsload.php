@@ -1,4 +1,5 @@
-<!--I'm here-->
+<script src="../scripts/login.js"></script>
+
 <?php if($_SESSION['msg']['err']): ?>
 
 <script src="../scripts/notificationFx.js"></script>

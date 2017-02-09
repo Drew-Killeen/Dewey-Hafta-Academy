@@ -28,3 +28,4 @@
 <script src="../scripts/script.js"></script>
 <script src="../scripts/modernizr.custom.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<script type="text/javascript" src="../scripts/LeanModal.min.js"></script>
